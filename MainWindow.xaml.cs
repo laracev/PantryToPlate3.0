@@ -18,7 +18,8 @@ namespace PTP
         private string rezepteDatei = "data/rezepte.csv";
         private string pantryDatei = "data/pantry.csv";
         private string lebensmittelDatei = "data/test_utf8.csv";
-
+        private List<string> mahlzeitenHeuteNamen = new List<string>();
+        private List<double> mahlzeitenHeuteKalorien = new List<double>();
         private double kalorienZiel = 2000;
         private double gegesseneKalorien = 0;
         private double verbrannteKalorien = 0;
@@ -271,15 +272,9 @@ namespace PTP
 
                         double menge = ZahlLesen(mengeText);
 
-                        zutatName = zutatName.Replace(" roh", "");
-                        zutatName = zutatName.Replace(", roh", "");
                         zutatName = zutatName.Trim();
 
-                        if (zutatName.Contains("/"))
-                        {
-                            string[] parts = zutatName.Split('/');
-                            zutatName = parts[0].Trim();
-                        }
+                       
 
                         if (zutatName.Length > 0 && zutatName.Length < 60 && menge > 0 && menge < 2000)
                         {
@@ -397,6 +392,9 @@ namespace PTP
             kohlenhydrateHeute = 0;
             fettHeute = 0;
 
+            mahlzeitenHeuteNamen.Clear();
+            mahlzeitenHeuteKalorien.Clear();
+
             string heute = DateTime.Now.ToString("yyyy-MM-dd");
 
             try
@@ -404,11 +402,14 @@ namespace PTP
                 if (File.Exists(mahlzeitenDatei))
                 {
                     string[] zeilen = File.ReadAllLines(mahlzeitenDatei);
+
                     for (int i = 1; i < zeilen.Length; i++)
                     {
                         string[] teile = zeilen[i].Split(';');
+
                         if (teile.Length >= 7 && teile[0] == heute)
                         {
+                            string name = teile[1];
                             double kalorien = ZahlLesen(teile[3]);
                             double proteine = ZahlLesen(teile[4]);
                             double kohlen = ZahlLesen(teile[5]);
@@ -418,16 +419,20 @@ namespace PTP
                             proteineHeute += proteine;
                             kohlenhydrateHeute += kohlen;
                             fettHeute += fettWert;
+
+                            mahlzeitenHeuteNamen.Add(name);
+                            mahlzeitenHeuteKalorien.Add(kalorien);
                         }
                     }
                 }
+
+                heuteGegessenAnzeigen.SetzeMahlzeiten(mahlzeitenHeuteNamen, mahlzeitenHeuteKalorien);
             }
             catch
             {
                 Logger.Fehler("Fehler beim Laden der Mahlzeiten");
             }
         }
-
         private void LadeHeutigeFitness()
         {
             verbrannteKalorien = 0;
@@ -540,6 +545,16 @@ namespace PTP
             }
             Logger.Info("Anwendung geschlossen");
             base.OnClosed(e);
+        }
+
+        private void heuteGegessenAnzeigen_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void rezeptVorschlag_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

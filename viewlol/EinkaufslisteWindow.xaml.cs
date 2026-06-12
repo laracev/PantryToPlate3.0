@@ -1,15 +1,6 @@
 ﻿using PantryToPlate.Models;
 using System.Globalization;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-using PantryToPlate.Models;
-using PTP;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -191,29 +182,169 @@ namespace PantryToPlate
                     inhalt = inhalt + einkaufsliste[i].Name + "\n";
                 }
             }
+            Directory.CreateDirectory("data");
             File.WriteAllText(einkaufslisteDatei, inhalt);
         }
 
 
         private string NameOhneMenge(string text)
         {
-            if (text.Contains("("))
+            int letzteKlammer = text.LastIndexOf('(');
+            if (letzteKlammer > 0)
             {
-                return text.Substring(0, text.IndexOf('(')).Trim();
+                return text.Substring(0, letzteKlammer).Trim();
             }
             return text.Trim();
         }
-
         private double MengeAusText(string text)
         {
-            int start = text.IndexOf('(');
-            int ende = text.IndexOf('g');
+            int start = text.LastIndexOf('(');
+            int ende = text.IndexOf(')', start + 1);
             if (start >= 0 && ende > start)
             {
-                string zahlText = text.Substring(start + 1, ende - start - 1);
-                return ZahlLesen(zahlText);
+                string mengenText = text.Substring(start + 1, ende - start - 1).ToLower().Trim();
+                double zahl = ZahlLesen(mengenText);
+
+                if (mengenText.Contains("kg")) zahl = zahl * 1000;
+                else if (mengenText.Contains("l") && !mengenText.Contains("ml")) zahl = zahl * 1000;
+
+                if (zahl > 0) return zahl;
             }
-            return 0;
+
+            // Fallback, damit gekaufte Zutaten ohne Mengenangabe nicht verschwinden.
+            return 100;
+        }
+
+
+        private string NormalisiereName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return "";
+
+            name = NameOhneMenge(name).ToLower().Trim();
+            name = name.Replace("ä", "ae");
+            name = name.Replace("ö", "oe");
+            name = name.Replace("ü", "ue");
+            name = name.Replace("ß", "ss");
+            name = name.Replace(",", " ");
+            name = name.Replace("/", " ");
+            name = name.Replace("-", " ");
+
+            string[] woerter = name.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string ergebnis = "";
+
+            for (int i = 0; i < woerter.Length; i++)
+            {
+                string wort = woerter[i].Trim();
+
+                if (wort == "roh" || wort == "gekocht" || wort == "geschält" || wort == "geschaelt" ||
+                    wort == "frisch" || wort == "getrocknet" || wort == "tiefgekuehlt" || wort == "tk" ||
+                    wort == "klein" || wort == "gross" || wort == "groß" || wort == "gehackt" ||
+                    wort == "gewuerfelt" || wort == "gewürfelt" || wort == "gerieben")
+                {
+                    continue;
+                }
+
+                // einfache Plural-Annäherung: kartoffeln -> kartoffel, tomaten -> tomate
+                if (wort.Length > 5 && wort.EndsWith("n")) wort = wort.Substring(0, wort.Length - 1);
+                if (wort.Length > 5 && wort.EndsWith("en")) wort = wort.Substring(0, wort.Length - 2);
+                if (wort.Length > 5 && wort.EndsWith("e")) wort = wort.Substring(0, wort.Length - 1);
+                if (wort.Length > 5 && wort.EndsWith("s")) wort = wort.Substring(0, wort.Length - 1);
+
+                if (ergebnis != "") ergebnis = ergebnis + " ";
+                ergebnis = ergebnis + wort;
+            }
+
+            return ergebnis.Trim();
+        }
+        private bool IstSinnvollesWort(string wort)
+        {
+            if (wort.Length <= 2) return false;
+
+            bool nurZiffern = true;
+            for (int i = 0; i < wort.Length; i++)
+            {
+                char c = wort[i];
+                if (!char.IsDigit(c) && c != '.' && c != ',')
+                {
+                    nurZiffern = false;
+                    break;
+                }
+            }
+            return !nurZiffern;
+        }
+        private int BerechneAehnlichkeit(string gesuchterName, string lebensmittelName)
+        {
+            string gesucht = NormalisiereName(gesuchterName);
+            string lebensmittel = NormalisiereName(lebensmittelName);
+
+            if (gesucht == "" || lebensmittel == "") return 0;
+            if (gesucht == lebensmittel) return 1000;
+            if (gesucht.Contains(lebensmittel) || lebensmittel.Contains(gesucht)) return 800;
+
+            string[] gesuchtWoerter = gesucht.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] lebensmittelWoerter = lebensmittel.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            int score = 0;
+            for (int i = 0; i < gesuchtWoerter.Length; i++)
+            {
+                string wortA = gesuchtWoerter[i];
+                if (!IstSinnvollesWort(wortA)) continue;
+
+                for (int j = 0; j < lebensmittelWoerter.Length; j++)
+                {
+                    string wortB = lebensmittelWoerter[j];
+                    if (!IstSinnvollesWort(wortB)) continue;
+
+                    if (wortA == wortB) score = score + 200;
+                    else if (wortA.Contains(wortB) || wortB.Contains(wortA)) score = score + 120;
+                }
+            }
+
+            // Fallback: erste paar Buchstaben gleich -> "wahrscheinlich dasselbe Lebensmittel"
+            if (score == 0)
+            {
+                int praefixLaenge = 4;
+                if (gesucht.Length >= praefixLaenge && lebensmittel.Length >= praefixLaenge)
+                {
+                    string praefixA = gesucht.Substring(0, praefixLaenge);
+                    string praefixB = lebensmittel.Substring(0, praefixLaenge);
+                    if (praefixA == praefixB)
+                    {
+                        score = 150;
+                    }
+                }
+            }
+
+            return score;
+        }
+
+
+
+        private string FindeBestenLebensmittelNamen(string itemName)
+        {
+            string besterName = itemName;
+            int besterScore = 0;
+
+            for (int i = 0; i < AppDaten.Lebensmittel.Count; i++)
+            {
+                string lebensmittelName = AppDaten.Lebensmittel[i].Name;
+                int score = BerechneAehnlichkeit(itemName, lebensmittelName);
+
+                if (score > besterScore)
+                {
+                    besterScore = score;
+                    besterName = lebensmittelName;
+                }
+            }
+
+            // Nur automatisch ersetzen, wenn die Ähnlichkeit sinnvoll ist.
+            // Sonst wird der ursprüngliche Name verwendet.
+            if (besterScore >= 120)
+            {
+                return besterName;
+            }
+
+            return itemName;
         }
         private void btnGekaufteEntfernen_Click(object sender, RoutedEventArgs e)
         {
@@ -245,12 +376,13 @@ namespace PantryToPlate
             for (int i = 0; i < gekaufteItems.Count; i++)
             {
                 string itemName = gekaufteItems[i];
+                string passenderName = FindeBestenLebensmittelNamen(itemName);
                 double menge = gekaufteMengen[i];
                 bool gefunden = false;
 
                 for (int j = 0; j < pantryItems.Count; j++)
                 {
-                    if (pantryItems[j].Name.ToLower() == itemName.ToLower())
+                    if (NormalisiereName(pantryItems[j].Name) == NormalisiereName(passenderName))
                     {
                         pantryItems[j].Menge = pantryItems[j].Menge + menge;
                         gefunden = true;
@@ -261,10 +393,12 @@ namespace PantryToPlate
                 if (!gefunden)
                 {
                     PantryItem neuesItem = new PantryItem();
-                    neuesItem.Name = itemName;
+                    neuesItem.Name = passenderName;
                     neuesItem.Menge = menge;
                     pantryItems.Add(neuesItem);
                 }
+
+                gekaufteItems[i] = passenderName;
             }
 
             string pantryInhalt = "Name;Menge\n";
@@ -272,9 +406,10 @@ namespace PantryToPlate
             {
                 if (pantryItems[i].Menge > 0)
                 {
-                    pantryInhalt = pantryInhalt + pantryItems[i].Name + ";" + pantryItems[i].Menge + "\n";
+                    pantryInhalt = pantryInhalt + pantryItems[i].Name + ";" + pantryItems[i].Menge.ToString(CultureInfo.InvariantCulture) + "\n";
                 }
             }
+            Directory.CreateDirectory("data");
             File.WriteAllText(pantryDatei, pantryInhalt);
 
             einkaufsliste = neueListe;

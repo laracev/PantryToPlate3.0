@@ -36,6 +36,7 @@ namespace PantryToPlate
         {
             InitializeComponent();
             this.Loaded += SplashScreenWindow_Loaded;
+            
         }
 
         private void SplashScreenWindow_Loaded(object sender, RoutedEventArgs e)
@@ -125,6 +126,12 @@ namespace PantryToPlate
                     MainWindow main = new MainWindow();
                     main.Show();
                     this.Close();
+                    AppDaten.Lebensmittel = vorgeladeneLebensmittel;
+                    AppDaten.Rezepte = vorgeladeneRezepte;
+                    AppDaten.Pantry = vorgeladenePantry;
+                    AppDaten.MetEintraege = vorgeladeneMetEintraege;
+                    AppDaten.LebensmittelKalorien = vorgeladeneKalorien;
+                    AppDaten.IstGeladen = true;
                 };
                 schliessTimer.Start();
             }
