@@ -1,0 +1,213 @@
+﻿<Window x:Class="PTP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PTP"
+        xmlns:ctrl="clr-namespace:PantryToPlate.Usercontrols"
+        WindowState="Maximized"
+        mc:Ignorable="d"
+        Title="Pantry To Plate" 
+        Height="752" 
+        Width="1330"
+        Background="#F7F9FC">
+
+
+    <!-- chatgpt promt: wie mache ich diese Window.resources das so alles schön mach und so farben palette und so-->
+    <Window.Resources>
+        <SolidColorBrush x:Key="PrimaryColor" Color="#8360A6"/>
+        <SolidColorBrush x:Key="SecondaryColor" Color="#F2F2F2"/>
+        <SolidColorBrush x:Key="SuccessColor" Color="#C0A7D9"/>
+        <SolidColorBrush x:Key="WarningColor" Color="#C6D9B4"/>
+        <SolidColorBrush x:Key="InfoColor" Color="#9ABF75"/>
+        <SolidColorBrush x:Key="LightGray" Color="#F7E3FC"/>
+        <SolidColorBrush x:Key="MediumGray" Color="#BDC3C7"/>
+
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="5" ShadowDepth="1" Opacity="0.2"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#34495E"/>
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#1A252F"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ValueBoxStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource LightGray}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Margin" Value="0,4"/>
+        </Style>
+
+        <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <!-- chatgpt ende -->
+
+    <Canvas Margin="20,20,12,20">
+
+
+        <Border Grid.Row="0" Grid.ColumnSpan="3" Background="{StaticResource PrimaryColor}" CornerRadius="15" Padding="20,15" Canvas.Left="11" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1283" Height="92">
+            <StackPanel>
+                <TextBlock Text="-`♡´- Pantry To Plate -`♡´-" FontSize="32" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="txtBenutzerInfo" Text="" FontSize="13" Foreground="#BDC3C7" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource CardStyle}" Padding="20" Grid.RowSpan="2" Canvas.Left="311" Canvas.Top="127" HorizontalAlignment="Center" Height="552" VerticalAlignment="Top" Width="333">
+            <StackPanel>
+                <TextBlock Text="Kalorienübersicht" Style="{StaticResource SectionTitleStyle}"/>
+                <ctrl:KalorienFortschrittControl x:Name="kalorienControl" HorizontalAlignment="Center" Margin="0,0,0,25"/>
+
+                <Border Style="{StaticResource ValueBoxStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="🎯 Ziel:" FontWeight="Bold" FontSize="14" Foreground="{StaticResource PrimaryColor}" Margin="0,5"/>
+                        <TextBlock x:Name="txtKalorienZiel" Grid.Row="0" Grid.Column="1" Text="0" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="🍽️ Gegessen:" FontWeight="Bold" FontSize="14" Foreground="{StaticResource WarningColor}" Margin="0,5"/>
+                        <TextBlock x:Name="txtGegesseneKalorien" Grid.Row="1" Grid.Column="1" Text="0" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="⚡︎ Verbrannt:" FontWeight="Bold" FontSize="14" Foreground="{StaticResource InfoColor}" Margin="0,5"/>
+                        <TextBlock x:Name="txtVerbrannteKalorien" Grid.Row="2" Grid.Column="1" Text="0" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+
+                    </Grid>
+                </Border>
+
+                <Border Background="{StaticResource SuccessColor}" CornerRadius="10" Padding="15" Margin="0,15,0,0">
+                    <TextBlock x:Name="txtUebrigeKalorien"  Text="" FontSize="20" FontWeight="Bold" Foreground="White" TextAlignment="Center"/>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource CardStyle}" Padding="25" Canvas.Left="663" Canvas.Top="126" HorizontalAlignment="Center" VerticalAlignment="Top" Width="619" Height="319" RenderTransformOrigin="0.5,0.5">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-0.439"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="1.326"/>
+                </TransformGroup>
+            </Border.RenderTransform>
+            <StackPanel>
+
+                <TextBlock Text="Heutige Nährstoffe" Style="{StaticResource SectionTitleStyle}"/>
+
+                <Border Background="{StaticResource LightGray}" CornerRadius="8" Padding="15" Margin="0,8" Width="555">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="💪 " FontSize="22"/>
+                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                            <TextBlock Text="Proteine" FontWeight="Bold" FontSize="12" Foreground="{StaticResource PrimaryColor}"/>
+                            <TextBlock x:Name="txtProteine" Text="0 g" FontSize="18" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Background="{StaticResource LightGray}" 
+                        CornerRadius="8" 
+                        Padding="15" 
+                        Margin="0,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="🍚 " FontSize="22"/>
+                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                            <TextBlock Text="Kohlenhydrate" FontWeight="Bold" FontSize="12" Foreground="{StaticResource PrimaryColor}"/>
+
+                            <TextBlock x:Name="txtKohlenhydrate" Text="0 g" FontSize="18" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Background="{StaticResource LightGray}" CornerRadius="8" Padding="15" Margin="0,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="🥑 " FontSize="22"/>
+                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                            <TextBlock Text="Fett" FontWeight="Bold" FontSize="12" Foreground="{StaticResource PrimaryColor}"/>
+
+                            <TextBlock x:Name="txtFett" Text="0 g" FontSize="18" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource CardStyle}" Padding="20" Grid.RowSpan="2" Canvas.Left="11" Canvas.Top="128" HorizontalAlignment="Center" Height="558" VerticalAlignment="Top" Width="282">
+            <StackPanel>
+                <TextBlock Text="˚˖𓍢ִ໋❀ Aktionen˚˖𓍢ִ໋❀" Style="{StaticResource SectionTitleStyle}"/>
+
+                <Button x:Name="btnEinstellungen" Content="⫶☰ Einstellungen" Click="btnEinstellungen_Click"/>
+
+                <Button x:Name="btnMahlzeitHinzufuegen" Content="➕ Mahlzeit hinzufügen" Click="btnMahlzeitHinzufuegen_Click"/>
+
+                <Button x:Name="btnPantry" Content="📦 Meine Vorräte" Click="btnPantry_Click"/>
+
+                <Button x:Name="btnRezepte" Content="📖 Rezepte" Click="btnRezepte_Click"/>
+
+                <Button x:Name="btnFitness" Content="⚡︎Fitness" Click="btnFitness_Click"/>
+                <Button x:Name="btnEinkaufsliste" Content="🛒 Einkaufsliste" Click="btnEinkaufsliste_Click"/>
+            </StackPanel>
+        </Border>
+
+        <ctrl:RezeptVorschlagControl x:Name="rezeptVorschlag" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.RowSpan="2" Height="221" Width="305" Canvas.Left="652" Canvas.Top="462"/>
+        <ctrl:HeuteGegessenAnzeigenControl x:Name="heuteGegessenAnzeigen" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.RowSpan="2" Height="211" Width="305" Canvas.Left="970" Canvas.Top="475"/>
+        <Border Grid.Row="2" Grid.ColumnSpan="2" Background="Transparent" Margin="36,12,0,-24" Padding="10" Grid.Column="1"/>
+        <Image Height="86" Width="95" Source="/logo.png" Stretch="Fill" Canvas.Left="214"/>
+    </Canvas>
+</Window>
