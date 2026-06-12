@@ -5,18 +5,36 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PantryToPlate.Usercontrols"
              mc:Ignorable="d"
-             Background="#F2F2F2"
-             Height="211" Width="305">
-    <Canvas>
-        <Label Content="Label" Height="29" Canvas.Left="32" Canvas.Top="8" Width="250"/>
-        <Label Content="Label" Height="35" Canvas.Left="13" Canvas.Top="51" Width="135" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <Label Content="Label" Height="32" Canvas.Left="13" Canvas.Top="87" Width="141"/>
-        <Label Content="Label" Height="33" Canvas.Left="11" Canvas.Top="126" Width="144"/>
-        <Label Content="Label" Height="33" Canvas.Left="12" Canvas.Top="162" Width="144" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label Content="Label" Height="23" Canvas.Left="235" Canvas.Top="48" Width="44" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <Label Content="Label" Height="23" Canvas.Left="234" Canvas.Top="88" Width="41" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <Label Content="Label" Height="24" Canvas.Left="237" Canvas.Top="123" Width="38" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <Label Content="Label" Height="26" Canvas.Left="237" Canvas.Top="163" Width="37" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+             Background="Transparent"
+             Height="257" Width="338">
+
+
+
+
+    <Canvas Margin="13,20,0,27" RenderTransformOrigin="0.5,0.5">
+        <Canvas.Effect>
+            <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
+        </Canvas.Effect>
+        <Rectangle Fill="White" Height="206" Width="322" HorizontalAlignment="Left" Canvas.Left="3" VerticalAlignment="Center" Canvas.Top="12" RadiusX="20" RadiusY="20">
+            <Rectangle.Effect>
+                <DropShadowEffect BlurRadius="7" Color="#FFE2DCDC" Opacity="0.4" />
+            </Rectangle.Effect>
+        </Rectangle>
+        <Canvas Margin="19,5,25,19">
+            <Label Foreground="#8360A6" Content="Mahlzeiten Heute" FontWeight="SemiBold" FontSize="18" Height="29" Canvas.Left="55" Canvas.Top="17" Width="165" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label Name="ersteMahlzeitLabel" Content="Label" Height="35" Canvas.Left="13" Canvas.Top="51" Width="135" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Label Name="zweiteMahlzeitLabel" Content="Label" Height="32" Canvas.Left="13" Canvas.Top="87" Width="141"/>
+            <Label Name="dritteMahlzeitLabel" Content="Label" Height="33" Canvas.Left="11" Canvas.Top="126" Width="144"/>
+            <Label Name="vierteMahlzeitLabel" Content="Label" Height="33" Canvas.Left="12" Canvas.Top="162" Width="144" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Name="ersteMahlzeitKalorienLabel" Foreground="#8360A6" Content="Label" Height="23" Canvas.Left="220" Canvas.Top="51" Width="44" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Name="zweiteMahlzeitKalorienLabel" Foreground="#8360A6" Content="Label" Height="23" Canvas.Left="223" Canvas.Top="87" Width="41" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Name="dritteMahlzeitKalorienLabel" Foreground="#8360A6" Content="Label" Height="24" Canvas.Left="225" Canvas.Top="125" Width="38" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Name="vierteMahlzeitKalorienLabel" Foreground="#8360A6" Content="Label" Height="26" Canvas.Left="224" Canvas.Top="164" Width="37" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </Canvas>
+
+
 
     </Canvas>
+
+
 </UserControl>

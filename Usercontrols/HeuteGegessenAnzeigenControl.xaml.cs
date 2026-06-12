@@ -1,26 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PantryToPlate.Usercontrols
 {
-    /// <summary>
-    /// Interaktionslogik für HeuteGegessenAnzeigenControl.xaml
-    /// </summary>
     public partial class HeuteGegessenAnzeigenControl : UserControl
     {
         public HeuteGegessenAnzeigenControl()
         {
             InitializeComponent();
+            LeereAnzeige();
+        }
+
+        public void SetzeMahlzeiten(List<string> namen, List<double> kalorien)
+        {
+            LeereAnzeige();
+
+            Label[] mahlzeitLabels =
+            {
+                ersteMahlzeitLabel,
+                zweiteMahlzeitLabel,
+                dritteMahlzeitLabel,
+                vierteMahlzeitLabel
+            };
+
+            Label[] kalorienLabels =
+            {
+                ersteMahlzeitKalorienLabel,
+                zweiteMahlzeitKalorienLabel,
+                dritteMahlzeitKalorienLabel,
+                vierteMahlzeitKalorienLabel
+            };
+
+            int anzahl = namen.Count;
+
+            if (anzahl > 4)
+            {
+                anzahl = 4;
+            }
+
+            for (int i = 0; i < anzahl; i++)
+            {
+                mahlzeitLabels[i].Content = namen[i];
+                kalorienLabels[i].Content = kalorien[i].ToString("0") + " kcal";
+            }
+        }
+
+        private void LeereAnzeige()
+        {
+            ersteMahlzeitLabel.Content = "-";
+            zweiteMahlzeitLabel.Content = "-";
+            dritteMahlzeitLabel.Content = "-";
+            vierteMahlzeitLabel.Content = "-";
+
+            ersteMahlzeitKalorienLabel.Content = "";
+            zweiteMahlzeitKalorienLabel.Content = "";
+            dritteMahlzeitKalorienLabel.Content = "";
+            vierteMahlzeitKalorienLabel.Content = "";
         }
     }
 }

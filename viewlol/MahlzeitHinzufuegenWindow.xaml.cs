@@ -27,8 +27,14 @@ namespace PantryToPlate
             suchTimer.Interval = TimeSpan.FromMilliseconds(500);
             suchTimer.Tick += SuchTimer_Tick;
             //ki ende
+            alleLebensmittel.Clear();
 
-            LadeLebensmittel();
+            for (int i = 0; i < AppDaten.Lebensmittel.Count; i++)
+            {
+                alleLebensmittel.Add(AppDaten.Lebensmittel[i]);
+            }
+
+            ZeigeAlleLebensmittel();
             txtSuche.Text = "";
             txtGramm.Text = "100";
         }
@@ -163,46 +169,17 @@ namespace PantryToPlate
 
         private void AktualisiereAnzeigeListe()
         {
-            // Statt Lambda: separate Methode aufrufen
-            this.Dispatcher.Invoke(new Action(AktualisiereAnzeigeImUIThread));
+            AktualisiereAnzeigeImUIThread();
         }
 
+        // im sorry aber das muss ic´h mit lamdba machen, sonst crashed alles weil zu viele sachen
         private void SortiereNachRelevanz()
         {
-            if (string.IsNullOrWhiteSpace(suchtext))
-            {
-                for (int i = 0; i < gefilterteLebensmittel.Count - 1; i++)
-                {
-                    for (int j = i + 1; j < gefilterteLebensmittel.Count; j++)
-                    {
-                        if (string.Compare(gefilterteLebensmittel[i].Name, gefilterteLebensmittel[j].Name) > 0)
-                        {
-                            Lebensmittel temp = gefilterteLebensmittel[i];
-                            gefilterteLebensmittel[i] = gefilterteLebensmittel[j];
-                            gefilterteLebensmittel[j] = temp;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < gefilterteLebensmittel.Count - 1; i++)
-                {
-                    for (int j = i + 1; j < gefilterteLebensmittel.Count; j++)
-                    {
-                        int scoreI = BerechneRelevanzScore(gefilterteLebensmittel[i].Name);
-                        int scoreJ = BerechneRelevanzScore(gefilterteLebensmittel[j].Name);
-
-                        if (scoreI < scoreJ)
-                        {
-                            Lebensmittel temp = gefilterteLebensmittel[i];
-                            gefilterteLebensmittel[i] = gefilterteLebensmittel[j];
-                            gefilterteLebensmittel[j] = temp;
-                        }
-                    }
-                }
-            }
+            gefilterteLebensmittel.Sort((a, b) =>
+                BerechneRelevanzScore(b.Name).CompareTo(BerechneRelevanzScore(a.Name)));
         }
+
+       
 
         private int BerechneRelevanzScore(string name)
         {

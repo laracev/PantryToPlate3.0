@@ -31,6 +31,22 @@ namespace PantryToPlate
         {
             InitializeComponent();
             this.Loaded += RezepteWindow_Loaded;
+            this.Activated += RezepteWindow_Activated;
+        }
+
+        private void RezepteWindow_Activated(object sender, EventArgs e)
+        {
+            // Falls Pantry/Einkaufsliste in einem anderen Fenster geändert wurde, Rezepte neu bewerten.
+            LadePantry();
+            for (int i = 0; i < alleRezepte.Count; i++)
+            {
+                BerechneMatchProzent(alleRezepte[i]);
+            }
+            FiltereUndZeigeRezepte();
+            if (aktuellesRezept != null)
+            {
+                ZeigeRezeptDetails(aktuellesRezept);
+            }
         }
 
         private void RezepteWindow_Loaded(object sender, RoutedEventArgs e)
@@ -253,15 +269,6 @@ namespace PantryToPlate
                         string mengeText = zutatBlock.Substring(letzterDoppelpunkt + 1);
                         double menge = ZahlLesen(mengeText);
 
-                        zutatName = zutatName.Replace(" roh", "");
-                        zutatName = zutatName.Replace(", roh", "");
-                        zutatName = zutatName.Trim();
-
-                        if (zutatName.Contains("/"))
-                        {
-                            string[] parts = zutatName.Split('/');
-                            zutatName = parts[0].Trim();
-                        }
 
                         if (zutatName.Length > 0 && zutatName.Length < 60 && menge > 0 && menge < 2000)
                         {
@@ -325,20 +332,15 @@ namespace PantryToPlate
             int vorhanden = 0;
             for (int i = 0; i < r.Zutaten.Count; i++)
             {
-                string zutatRezept = BereinigeZutatName(r.Zutaten[i]);
                 double benoetigt = r.ZutatenMengen[i];
-                bool gefunden = false;
-                for (int j = 0; j < pantryItems.Count; j++)
+                PantryItem passendesItem = FindePassendesPantryItem(r.Zutaten[i]);
+
+                if (passendesItem != null && passendesItem.Menge >= benoetigt)
                 {
-                    string pantryName = BereinigeZutatName(pantryItems[j].Name);
-                    if (pantryName.ToLower() == zutatRezept.ToLower() && pantryItems[j].Menge >= benoetigt)
-                    {
-                        gefunden = true;
-                        break;
-                    }
+                    vorhanden++;
                 }
-                if (gefunden) vorhanden++;
             }
+
             if (r.Zutaten.Count > 0)
                 r.MatchProzent = (vorhanden * 100) / r.Zutaten.Count;
             else
@@ -514,35 +516,21 @@ namespace PantryToPlate
                 string zutatBereinigt = BereinigeZutatName(zutatRoh);
                 double menge = r.ZutatenMengen[i];
 
-                bool istVorhanden = false;
-                for (int j = 0; j < pantryItems.Count; j++)
-                {
-                    string pantryNameBereinigt = BereinigeZutatName(pantryItems[j].Name);
-                    if (pantryNameBereinigt.ToLower() == zutatBereinigt.ToLower() &&
-                        pantryItems[j].Menge >= menge)
-                    {
-                        istVorhanden = true;
-                        break;
-                    }
-                }
+                double vorhanden = PantryMengeVon(zutatRoh);
+                bool istVorhanden = vorhanden >= menge;
 
                 Border zutatBorder = new Border();
+                zutatBorder.Background = new SolidColorBrush(Color.FromRgb(248, 249, 250));
                 zutatBorder.Padding = new Thickness(8, 5, 8, 5);
                 zutatBorder.Margin = new Thickness(0, 2, 0, 2);
                 zutatBorder.CornerRadius = new CornerRadius(6);
 
                 TextBlock zutatText = new TextBlock();
                 zutatText.FontSize = 12;
+                zutatText.Text = zutatRoh + " (" + menge + "g)";
 
-                if (istVorhanden)
+                if (!istVorhanden)
                 {
-                    zutatBorder.Background = new SolidColorBrush(Color.FromRgb(232, 245, 233));
-                    zutatText.Text = "✓ " + zutatRoh + " (" + menge + "g)";
-                }
-                else
-                {
-                    zutatBorder.Background = new SolidColorBrush(Color.FromRgb(253, 235, 236));
-                    zutatText.Text = "✗ " + zutatRoh + " (" + menge + "g) - fehlt";
                     fehlendeZutaten.Add(zutatRoh);
                 }
 
@@ -579,7 +567,7 @@ namespace PantryToPlate
         // Entfernt alles ab der ersten öffnenden Klammer und trimmt
         private string BereinigeZutatName(string name)
         {
-            if (string.IsNullOrWhiteSpace(name)) return name;
+            if (string.IsNullOrWhiteSpace(name)) return "";
             int klammerIndex = name.IndexOf('(');
             if (klammerIndex > 0)
                 name = name.Substring(0, klammerIndex);
@@ -588,41 +576,184 @@ namespace PantryToPlate
 
         private string NameOhneMenge(string text)
         {
+            if (string.IsNullOrWhiteSpace(text)) return "";
             if (text.Contains("("))
             {
                 return text.Substring(0, text.IndexOf('(')).Trim();
             }
             return text.Trim();
         }
-
         private double MengeAusText(string text)
         {
-            // Beispiel: "Kürbis Hokkaido (100g)"  ->  100
-            int start = text.IndexOf('(');
-            int ende = text.IndexOf('g');
+            int start = text.LastIndexOf('(');
+            int ende = text.IndexOf('g', start + 1);
             if (start >= 0 && ende > start)
             {
                 string zahlText = text.Substring(start + 1, ende - start - 1);
                 return ZahlLesen(zahlText);
             }
-            return 0; // keine Klammer mit g gefunden
+            return 0;
+        }
+
+        private string NormalisiereName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return "";
+
+            name = BereinigeZutatName(name).ToLower().Trim();
+            name = name.Replace("ä", "ae");
+            name = name.Replace("ö", "oe");
+            name = name.Replace("ü", "ue");
+            name = name.Replace("ß", "ss");
+            name = name.Replace(",", " ");
+            name = name.Replace("/", " ");
+            name = name.Replace("-", " ");
+
+            string[] woerter = name.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string ergebnis = "";
+
+            for (int i = 0; i < woerter.Length; i++)
+            {
+                string wort = woerter[i].Trim();
+
+                if (wort == "roh" || wort == "gekocht" || wort == "geschält" || wort == "geschaelt" ||
+                    wort == "frisch" || wort == "getrocknet" || wort == "tiefgekuehlt" || wort == "tk" ||
+                    wort == "klein" || wort == "gross" || wort == "groß" || wort == "gehackt" ||
+                    wort == "gewuerfelt" || wort == "gewürfelt" || wort == "gerieben" ||
+                    wort == "bio" || wort == "dose" || wort == "konserve")
+                {
+                    continue;
+                }
+
+                if (wort.Length > 5 && wort.EndsWith("en")) wort = wort.Substring(0, wort.Length - 2);
+                if (wort.Length > 5 && wort.EndsWith("n")) wort = wort.Substring(0, wort.Length - 1);
+                if (wort.Length > 5 && wort.EndsWith("e")) wort = wort.Substring(0, wort.Length - 1);
+                if (wort.Length > 5 && wort.EndsWith("s")) wort = wort.Substring(0, wort.Length - 1);
+
+                if (ergebnis != "") ergebnis = ergebnis + " ";
+                ergebnis = ergebnis + wort;
+            }
+
+            return ergebnis.Trim();
+        }
+
+        private bool IstSinnvollesWort(string wort)
+        {
+            if (wort.Length <= 2) return false;
+
+            bool nurZiffern = true;
+            for (int i = 0; i < wort.Length; i++)
+            {
+                char c = wort[i];
+                if (!char.IsDigit(c) && c != '.' && c != ',')
+                {
+                    nurZiffern = false;
+                    break;
+                }
+            }
+            return !nurZiffern;
+        }
+
+        private int BerechneAehnlichkeit(string nameA, string nameB)
+        {
+            string a = NormalisiereName(nameA);
+            string b = NormalisiereName(nameB);
+
+            if (a == "" || b == "") return 0;
+            if (a == b) return 1000;
+            if (a.Contains(b) || b.Contains(a)) return 800;
+
+            string[] aWoerter = a.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] bWoerter = b.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            int score = 0;
+            for (int i = 0; i < aWoerter.Length; i++)
+            {
+                if (!IstSinnvollesWort(aWoerter[i])) continue;
+
+                for (int j = 0; j < bWoerter.Length; j++)
+                {
+                    if (!IstSinnvollesWort(bWoerter[j])) continue;
+
+                    if (aWoerter[i] == bWoerter[j]) score = score + 200;
+                    else if (aWoerter[i].Contains(bWoerter[j]) || bWoerter[j].Contains(aWoerter[i])) score = score + 120;
+                }
+            }
+
+            if (score == 0 && a.Length >= 4 && b.Length >= 4 && a.Substring(0, 4) == b.Substring(0, 4))
+            {
+                score = 150;
+            }
+
+            return score;
+        }
+
+        private bool IstPassendesPantryItem(string zutat, PantryItem item)
+        {
+            if (item == null) return false;
+            return BerechneAehnlichkeit(zutat, item.Name) >= 120;
+        }
+
+        private PantryItem FindePassendesPantryItem(string zutat)
+        {
+            PantryItem bestesItem = null;
+            int besterScore = 0;
+
+            for (int i = 0; i < pantryItems.Count; i++)
+            {
+                int score = BerechneAehnlichkeit(zutat, pantryItems[i].Name);
+                if (score > besterScore)
+                {
+                    besterScore = score;
+                    bestesItem = pantryItems[i];
+                }
+            }
+
+            if (besterScore >= 120)
+            {
+                return bestesItem;
+            }
+
+            return null;
         }
 
         private double PantryMengeVon(string zutat)
         {
-            string zutatBereinigt = BereinigeZutatName(zutat).ToLower();
+            // WICHTIGER FIX:
+            // Nicht nur das "beste" Pantry-Item zählen, sondern alle passenden Einträge zusammenrechnen.
+            // Sonst reichen z.B. 100g Tomate + 100g Tomaten nie für ein Rezept mit 200g.
+            double gesamt = 0;
+
             for (int i = 0; i < pantryItems.Count; i++)
             {
-                string pantryNameBereinigt = BereinigeZutatName(pantryItems[i].Name).ToLower();
-                if (pantryNameBereinigt == zutatBereinigt)
+                if (IstPassendesPantryItem(zutat, pantryItems[i]))
                 {
-                    return pantryItems[i].Menge;
+                    gesamt += pantryItems[i].Menge;
                 }
             }
-            return 0;
+
+            return gesamt;
         }
 
-        // Fehlende Zutaten zur Einkaufsliste hinzufügen (korrigiert)
+        private void ZieheAusPantryAb(string zutat, double benoetigt)
+        {
+            double rest = benoetigt;
+
+            for (int i = 0; i < pantryItems.Count && rest > 0; i++)
+            {
+                if (IstPassendesPantryItem(zutat, pantryItems[i]))
+                {
+                    double abzug = pantryItems[i].Menge;
+                    if (abzug > rest) abzug = rest;
+
+                    pantryItems[i].Menge -= abzug;
+                    rest -= abzug;
+
+                    if (pantryItems[i].Menge < 0) pantryItems[i].Menge = 0;
+                }
+            }
+        }
+
+        // Fehlende Zutaten zur Einkaufsliste hinzufügen
         private void btnFehlendeKaufen_Click(object sender, RoutedEventArgs e)
         {
             if (aktuellesRezept == null)
@@ -631,60 +762,82 @@ namespace PantryToPlate
                 return;
             }
 
+            string portionenText = Microsoft.VisualBasic.Interaction.InputBox(
+                "Für wie viele Portionen möchtest du einkaufen?\n(1-5 Portionen möglich)",
+                "Portionen für Einkaufsliste",
+                "1");
+
+            int portionen = 1;
+            try { portionen = Convert.ToInt32(portionenText); }
+            catch { portionen = 1; }
+            if (portionen < 1) portionen = 1;
+            if (portionen > 5) portionen = 5;
+
             // Bestehende Einkaufsliste einlesen
             List<string> einkaufsListe = new List<string>();
             if (File.Exists(einkaufslisteDatei))
             {
                 string[] zeilen = File.ReadAllLines(einkaufslisteDatei);
-                for (int i = 1; i < zeilen.Length; i++) // erste Zeile ist Header
+                for (int i = 1; i < zeilen.Length; i++)
                 {
                     if (!string.IsNullOrWhiteSpace(zeilen[i]))
+                    {
                         einkaufsListe.Add(zeilen[i].Trim());
+                    }
                 }
             }
 
-            List<string> hinzugefuegt = new List<string>();
+            List<string> neuHinzugefuegt = new List<string>();
+            List<string> schonAufListe = new List<string>();
+            List<string> alleFehlenden = new List<string>();
 
             for (int i = 0; i < aktuellesRezept.Zutaten.Count; i++)
             {
                 string zutat = aktuellesRezept.Zutaten[i];
-                double benoetigt = aktuellesRezept.ZutatenMengen[i];
+                double benoetigt = aktuellesRezept.ZutatenMengen[i] * portionen;
                 double vorhanden = PantryMengeVon(zutat);
                 double fehlt = benoetigt - vorhanden;
-                if (fehlt <= 0) continue;
+
+                if (fehlt <= 0)
+                {
+                    continue;
+                }
 
                 int fehltGerundet = (int)Math.Ceiling(fehlt);
                 string neuerEintrag = zutat + " (" + fehltGerundet + "g)";
-                bool schonVorhanden = false;
+                alleFehlenden.Add(neuerEintrag);
 
-                // Prüfen, ob diese Zutat schon auf der Liste steht (gleicher Name ohne Menge)
+                bool gefundenAufListe = false;
+
                 for (int j = 0; j < einkaufsListe.Count; j++)
                 {
                     string vorhandenerName = NameOhneMenge(einkaufsListe[j]);
-                    string vorhandenBereinigt = BereinigeZutatName(vorhandenerName);
-                    string zutatBereinigt = BereinigeZutatName(zutat);
-                    if (vorhandenBereinigt.ToLower() == zutatBereinigt.ToLower())
+
+
+                    if (BerechneAehnlichkeit(vorhandenerName, zutat) >= 120)
                     {
-                        // Überschreibe mit dem neuen Eintrag (aktuelle Menge)
                         einkaufsListe[j] = neuerEintrag;
-                        schonVorhanden = true;
+                        gefundenAufListe = true;
+                        schonAufListe.Add(neuerEintrag);
                         break;
                     }
                 }
-                if (!schonVorhanden)
+
+                if (!gefundenAufListe)
                 {
                     einkaufsListe.Add(neuerEintrag);
+                    neuHinzugefuegt.Add(neuerEintrag);
                 }
-                hinzugefuegt.Add(neuerEintrag);
             }
 
-            if (hinzugefuegt.Count == 0)
+            if (alleFehlenden.Count == 0)
             {
-                MessageBox.Show("Keine fehlenden Zutaten – alles ist bereits in der Pantry oder auf der Liste.");
+                MessageBox.Show("Keine fehlenden Zutaten – alles ist bereits in der Pantry.",
+                                "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            // Speichern
+            // Speichern, auch wenn nur bestehende Einträge auf der Einkaufsliste aktualisiert wurden.
             string inhalt = "Zutat\n";
             for (int i = 0; i < einkaufsListe.Count; i++)
             {
@@ -693,12 +846,28 @@ namespace PantryToPlate
             Directory.CreateDirectory("data");
             File.WriteAllText(einkaufslisteDatei, inhalt);
 
-            string msg = "Zur Einkaufsliste hinzugefügt:\n";
-            for (int i = 0; i < hinzugefuegt.Count; i++)
+            string msg = "Fehlende Zutaten für " + portionen + " Portion(en):\n\n";
+
+            if (neuHinzugefuegt.Count > 0)
             {
-                msg += "• " + hinzugefuegt[i] + "\n";
+                msg += "Neu zur Einkaufsliste hinzugefügt:\n";
+                for (int i = 0; i < neuHinzugefuegt.Count; i++)
+                {
+                    msg += "• " + neuHinzugefuegt[i] + "\n";
+                }
+                msg += "\n";
             }
-            MessageBox.Show(msg, "Erfolg", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            if (schonAufListe.Count > 0)
+            {
+                msg += "Schon auf der Einkaufsliste / Menge aktualisiert:\n";
+                for (int i = 0; i < schonAufListe.Count; i++)
+                {
+                    msg += "• " + schonAufListe[i] + "\n";
+                }
+            }
+
+            MessageBox.Show(msg, "Einkaufsliste aktualisiert", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
 
@@ -743,31 +912,23 @@ namespace PantryToPlate
                 return;
             }
 
-            // Zutaten aus der Pantry abziehen (exakte Namensübereinstimmung)
+            // Zutaten aus der Pantry abziehen, auch wenn Namen leicht unterschiedlich sind.
+            // Dabei werden mehrere passende Pantry-Einträge zusammen verwendet.
             for (int i = 0; i < r.Zutaten.Count; i++)
             {
                 string zutatRoh = r.Zutaten[i];
-                string zutatBereinigt = BereinigeZutatName(zutatRoh);
                 double benoetigt = r.ZutatenMengen[i] * portionen;
-                for (int j = 0; j < pantryItems.Count; j++)
-                {
-                    string pantryNameBereinigt = BereinigeZutatName(pantryItems[j].Name);
-                    if (pantryNameBereinigt.ToLower() == zutatBereinigt.ToLower())
-                    {
-                        pantryItems[j].Menge -= benoetigt;
-                        if (pantryItems[j].Menge < 0) pantryItems[j].Menge = 0;
-                        break;
-                    }
-                }
+                ZieheAusPantryAb(zutatRoh, benoetigt);
             }
 
             // Pantry speichern
+            Directory.CreateDirectory("data");
             string pantryInhalt = "Name;Menge\n";
             for (int i = 0; i < pantryItems.Count; i++)
             {
                 if (pantryItems[i].Menge > 0)
                 {
-                    pantryInhalt += pantryItems[i].Name + ";" + pantryItems[i].Menge + "\n";
+                    pantryInhalt += pantryItems[i].Name + ";" + pantryItems[i].Menge.ToString(CultureInfo.InvariantCulture) + "\n";
                 }
             }
             File.WriteAllText(pantryDatei, pantryInhalt);
@@ -784,6 +945,7 @@ namespace PantryToPlate
             }
             else
             {
+                Directory.CreateDirectory("data");
                 File.WriteAllText(mahlzeitenDatei, "Datum;Lebensmittel;Gramm;Kalorien;Proteine;Kohlenhydrate;Fett\n" + zeile);
             }
 

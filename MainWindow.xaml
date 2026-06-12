@@ -8,8 +8,8 @@
         WindowState="Maximized"
         mc:Ignorable="d"
         Title="Pantry To Plate" 
-        Height="752" 
-        Width="1330"
+        Height="799" 
+        Width="1543"
         Background="#F7F9FC">
 
 
@@ -84,14 +84,14 @@
     <Canvas Margin="20,20,12,20">
 
 
-        <Border Grid.Row="0" Grid.ColumnSpan="3" Background="{StaticResource PrimaryColor}" CornerRadius="15" Padding="20,15" Canvas.Left="11" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1283" Height="92">
+        <Border Grid.Row="0" Grid.ColumnSpan="3" Background="{StaticResource PrimaryColor}" CornerRadius="15" Padding="20,15" Canvas.Left="11" HorizontalAlignment="Left" VerticalAlignment="Center" Width="1495" Height="92">
             <StackPanel>
                 <TextBlock Text="-`♡´- Pantry To Plate -`♡´-" FontSize="32" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
                 <TextBlock x:Name="txtBenutzerInfo" Text="" FontSize="13" Foreground="#BDC3C7" HorizontalAlignment="Center" Margin="0,5,0,0"/>
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource CardStyle}" Padding="20" Grid.RowSpan="2" Canvas.Left="311" Canvas.Top="127" HorizontalAlignment="Center" Height="552" VerticalAlignment="Top" Width="333">
+        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource CardStyle}" Padding="20" Grid.RowSpan="2" Canvas.Left="311" Canvas.Top="127" HorizontalAlignment="Center" Height="593" VerticalAlignment="Top" Width="448">
             <StackPanel>
                 <TextBlock Text="Kalorienübersicht" Style="{StaticResource SectionTitleStyle}"/>
                 <ctrl:KalorienFortschrittControl x:Name="kalorienControl" HorizontalAlignment="Center" Margin="0,0,0,25"/>
@@ -126,7 +126,7 @@
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource CardStyle}" Padding="25" Canvas.Left="663" Canvas.Top="126" HorizontalAlignment="Center" VerticalAlignment="Top" Width="619" Height="319" RenderTransformOrigin="0.5,0.5">
+        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource CardStyle}" Padding="25" Canvas.Left="791" Canvas.Top="129" HorizontalAlignment="Center" VerticalAlignment="Top" Width="688" Height="353" RenderTransformOrigin="0.5,0.5">
             <Border.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -139,7 +139,7 @@
 
                 <TextBlock Text="Heutige Nährstoffe" Style="{StaticResource SectionTitleStyle}"/>
 
-                <Border Background="{StaticResource LightGray}" CornerRadius="8" Padding="15" Margin="0,8" Width="555">
+                <Border Background="{StaticResource LightGray}" CornerRadius="8" Padding="15" Margin="0,8" Width="633">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -188,7 +188,7 @@
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource CardStyle}" Padding="20" Grid.RowSpan="2" Canvas.Left="11" Canvas.Top="128" HorizontalAlignment="Center" Height="558" VerticalAlignment="Top" Width="282">
+        <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource CardStyle}" Padding="20" Grid.RowSpan="2" Canvas.Left="11" Canvas.Top="128" HorizontalAlignment="Center" Height="589" VerticalAlignment="Top" Width="282">
             <StackPanel>
                 <TextBlock Text="˚˖𓍢ִ໋❀ Aktionen˚˖𓍢ִ໋❀" Style="{StaticResource SectionTitleStyle}"/>
 
@@ -205,8 +205,10 @@
             </StackPanel>
         </Border>
 
-        <ctrl:RezeptVorschlagControl x:Name="rezeptVorschlag" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.RowSpan="2" Height="221" Width="305" Canvas.Left="652" Canvas.Top="462"/>
-        <ctrl:HeuteGegessenAnzeigenControl x:Name="heuteGegessenAnzeigen" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.RowSpan="2" Height="211" Width="305" Canvas.Left="970" Canvas.Top="475"/>
+        <ctrl:RezeptVorschlagControl x:Name="rezeptVorschlag" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.RowSpan="2" Height="203" Width="356" Canvas.Left="781" Canvas.Top="501" Loaded="rezeptVorschlag_Loaded"/>
+        <ctrl:HeuteGegessenAnzeigenControl x:Name="heuteGegessenAnzeigen" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.RowSpan="2" Height="264" Width="370" Canvas.Left="1142" Canvas.Top="467" Loaded="heuteGegessenAnzeigen_Loaded">
+
+        </ctrl:HeuteGegessenAnzeigenControl>
         <Border Grid.Row="2" Grid.ColumnSpan="2" Background="Transparent" Margin="36,12,0,-24" Padding="10" Grid.Column="1"/>
         <Image Height="86" Width="95" Source="/logo.png" Stretch="Fill" Canvas.Left="214"/>
     </Canvas>
