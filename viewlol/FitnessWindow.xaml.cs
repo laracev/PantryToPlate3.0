@@ -1,9 +1,8 @@
-﻿using PantryToPlate.Models;
-using PTP;
+﻿using PantryToPlate.helpers;
+using PantryToPlate.logik;
+using PantryToPlate.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,16 +10,13 @@ namespace PantryToPlate
 {
     public partial class FitnessWindow : Window
     {
-        private string fitnessDatei = "data/FitnessEintraege.csv";
-        private string metDatei = "data/MET_Werte_Tabelle.csv";
         private List<MetEintrag> metEintraege = new List<MetEintrag>();
         private double benutzerGewicht = 70;
-        private string benutzerDatei = "data/benutzer.csv";
+        private FitnessRechner fitnessRechner = new FitnessRechner();
 
         public FitnessWindow()
         {
             InitializeComponent();
-
             LadeMetEintraege();
             LadeBenutzerGewicht();
             LadeHeutigeAktivitaeten();
@@ -31,174 +27,113 @@ namespace PantryToPlate
 
         private void LadeMetEintraege()
         {
-            metEintraege.Clear();
-
-            if (File.Exists(metDatei))
+            try
             {
-                string[] zeilen = File.ReadAllLines(metDatei);
-                for (int i = 1; i < zeilen.Length; i++)
-                {
-                    string[] teile = zeilen[i].Split(';');
-                    if (teile.Length >= 2)
-                    {
-                        MetEintrag met = new MetEintrag();
-                        met.Aktivitaet = teile[0].Trim();
-
-                        string metText = teile[1].Trim();
-                        double metWert = ZahlLesen(metText);
-                        met.MetWert = metWert;
-
-                        metEintraege.Add(met);
-                    }
-                }
+                metEintraege = MetEintrag.LadeAlleAusCsv();
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error(ex, "Fehler beim Laden der MET-Werte");
+                metEintraege = new List<MetEintrag>();
             }
         }
 
-
-        private double ZahlLesen(string text)
+        private void LadeBenutzerGewicht()
         {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return 0;
-            }
-
-            text = text.Trim();
-            text = text.Replace(" kcal", "");
-            text = text.Replace("g", "");
-            text = text.Replace(" ", "");
-
-            if (text.Contains(",") && !text.Contains("."))
-            {
-                text = text.Replace(",", ".");
-            }
-
             try
             {
-                return Convert.ToDouble(text, CultureInfo.InvariantCulture);
+                Benutzer benutzer = Benutzer.LadeAusCsv();
+                if (benutzer != null && benutzer.Gewicht > 0)
+                {
+                    benutzerGewicht = benutzer.Gewicht;
+                }
+                else
+                {
+                    benutzerGewicht = 70;
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return 0;
+                AppLogger.Error(ex, "Fehler beim Laden des Benutzergewichts");
+                benutzerGewicht = 70;
             }
         }
 
         private void BefuelleComboBox()
         {
             cboAktivitaet.Items.Clear();
-            for (int i = 0; i < metEintraege.Count; i++)
+            foreach (MetEintrag met in metEintraege)
             {
-                cboAktivitaet.Items.Add(metEintraege[i].Aktivitaet + " (MET " + metEintraege[i].MetWert.ToString("0.0") + ")");
+                cboAktivitaet.Items.Add(met.Aktivitaet + " (MET " + met.MetWert.ToString("0.0") + ")");
             }
-
             if (cboAktivitaet.Items.Count > 0)
             {
                 cboAktivitaet.SelectedIndex = 0;
             }
         }
 
-        private void LadeBenutzerGewicht()
-        {
-            if (File.Exists(benutzerDatei))
-            {
-                string[] zeilen = File.ReadAllLines(benutzerDatei);
-                if (zeilen.Length > 1)
-                {
-                    string[] teile = zeilen[1].Split(';');
-                    if (teile.Length >= 2)
-                    {
-                        benutzerGewicht = ZahlLesen(teile[1]);
-                    }
-                }
-            }
-
-            if (benutzerGewicht <= 0) benutzerGewicht = 70;
-        }
-
         private void BerechneKalorien()
         {
-            double dauerMinuten = ZahlLesen(txtDauer.Text);
+            double dauerMinuten = Namensvergleich.ZahlLesen(txtDauer.Text);
             if (dauerMinuten <= 0)
             {
                 txtVerbrannteKalorien.Text = "0 kcal";
                 return;
             }
-
-            double metWert = HoleMETWert();
-            double dauerStunden = dauerMinuten / 60.0;
-
-            double kalorien = metWert * benutzerGewicht * dauerStunden;
-
+            double metWert = (cboAktivitaet.SelectedIndex >= 0 && cboAktivitaet.SelectedIndex < metEintraege.Count) ? metEintraege[cboAktivitaet.SelectedIndex].MetWert : 1;
+            double kalorien = fitnessRechner.BerechneKalorien(metWert, benutzerGewicht, dauerMinuten);
             txtVerbrannteKalorien.Text = kalorien.ToString("0") + " kcal";
-        }
-
-        private double HoleMETWert()
-        {
-            if (cboAktivitaet.SelectedIndex >= 0 && cboAktivitaet.SelectedIndex < metEintraege.Count)
-            {
-                return metEintraege[cboAktivitaet.SelectedIndex].MetWert;
-            }
-            return 1;
         }
 
         private void LadeHeutigeAktivitaeten()
         {
             lstAktivitaeten.Items.Clear();
-            string heute = DateTime.Now.ToString("yyyy-MM-dd");
-
-            if (File.Exists(fitnessDatei))
+            try
             {
-                string[] zeilen = File.ReadAllLines(fitnessDatei);
-                for (int i = 1; i < zeilen.Length; i++)
+                List<FitnessEintrag> eintraege = FitnessEintrag.LadeVonTag(DateTime.Now);
+                foreach (FitnessEintrag f in eintraege)
                 {
-                    string[] teile = zeilen[i].Split(';');
-                    if (teile.Length >= 3 && teile[0] == heute)
-                    {
-                        lstAktivitaeten.Items.Add(teile[1] + " - " + teile[2] + " kcal");
-                    }
+                    lstAktivitaeten.Items.Add(f.Aktivitaet + " - " + f.VerbrannteKalorien.ToString("0") + " kcal");
                 }
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error(ex, "Fehler beim Laden der heutigen Fitnessaktivitäten");
             }
         }
 
         private void btnSpeichern_Click(object sender, RoutedEventArgs e)
         {
-            if (cboAktivitaet.SelectedIndex < 0)
+            if (!EingabePruefung.IstGueltigeDauer(txtDauer.Text))
             {
-                MessageBox.Show("Bitte eine Aktivität auswählen");
+                MessageBox.Show("Bitte eine gültige Dauer (1-1440 Minuten) eingeben.");
                 return;
             }
-
-            double dauerMinuten = ZahlLesen(txtDauer.Text);
+            double dauerMinuten = Namensvergleich.ZahlLesen(txtDauer.Text);
             if (dauerMinuten <= 0)
             {
-                MessageBox.Show("Bitte eine gültige Dauer eingeben");
+                MessageBox.Show("Dauer muss größer als 0 sein.");
                 return;
             }
 
             string aktivitaetText = metEintraege[cboAktivitaet.SelectedIndex].Aktivitaet;
             double metWert = metEintraege[cboAktivitaet.SelectedIndex].MetWert;
-            double dauerStunden = dauerMinuten / 60.0;
-            double kalorien = metWert * benutzerGewicht * dauerStunden;
-
-            string heute = DateTime.Now.ToString("yyyy-MM-dd");
-            string zeile = heute + ";" + aktivitaetText + ";" + kalorien.ToString("0");
-
-            Directory.CreateDirectory("data");
-
-            if (File.Exists(fitnessDatei))
+            double kalorien = fitnessRechner.BerechneKalorien(metWert, benutzerGewicht, dauerMinuten);
+            FitnessEintrag neuerEintrag = new FitnessEintrag(DateTime.Now, aktivitaetText, kalorien);
+            try
             {
-                File.AppendAllText(fitnessDatei, "\n" + zeile);
+                FitnessEintrag.Speichere(neuerEintrag);
+                MessageBox.Show(kalorien.ToString("0") + " kcal wurden gespeichert!\n" + "Das entspricht " + dauerMinuten + " Minuten " + aktivitaetText);
+                AppLogger.Info($"Fitness gespeichert: {aktivitaetText}, {dauerMinuten} min, {kalorien} kcal");
+                LadeHeutigeAktivitaeten();
+                txtDauer.Text = "30";
+                cboAktivitaet.SelectedIndex = 0;
             }
-            else
+            catch (Exception ex)
             {
-                File.WriteAllText(fitnessDatei, "Datum;Aktivitaet;Kalorien\n" + zeile);
+                AppLogger.Error(ex, "Fehler beim Speichern des Fitnesseintrags");
+                MessageBox.Show("Fehler beim Speichern.");
             }
-
-            MessageBox.Show(kalorien.ToString("0") + " kcal wurden gespeichert!\n" +
-                           "Das entspricht " + dauerMinuten + " Minuten " + aktivitaetText);
-
-            LadeHeutigeAktivitaeten();
-            txtDauer.Text = "30";
-            cboAktivitaet.SelectedIndex = 0;
         }
 
         private void cboAktivitaet_SelectionChanged(object sender, SelectionChangedEventArgs e)

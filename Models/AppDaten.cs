@@ -10,7 +10,6 @@ namespace PantryToPlate
         public static List<PantryItem> Pantry = new List<PantryItem>();
         public static List<MetEintrag> MetEintraege = new List<MetEintrag>();
         public static Dictionary<string, double> LebensmittelKalorien = new Dictionary<string, double>();
-
         public static bool IstGeladen = false;
     }
 }

@@ -99,7 +99,7 @@ namespace PantryToPlate.Usercontrols
 
         public void SetzeBeschreibung(string text)
         {
-            txtBeschreibung.Text = text;
+           
         }
     }
 }
