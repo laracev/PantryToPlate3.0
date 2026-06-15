@@ -21,14 +21,13 @@ namespace PantryToPlate.Usercontrols
             {
                 txtRezeptName.Text = "Keine Rezepte verfügbar";
                 txtMatchProzent.Text = "0%";
-       
+
                 btnZumRezept.IsEnabled = false;
                 return;
             }
 
             bestesRezept = rezept;
 
-            // Name kürzen wenn zu lang
             string name = rezept.Name;
             if (name.Length > 40)
             {
@@ -36,45 +35,22 @@ namespace PantryToPlate.Usercontrols
             }
             txtRezeptName.Text = name;
 
-            // Match Prozent mit Farbe
             txtMatchProzent.Text = rezept.MatchProzent + "%";
 
             if (rezept.MatchProzent >= 80)
             {
-                matchBorder.Background = new SolidColorBrush(Color.FromRgb(16, 185, 129)); // Grün
+                matchBorder.Background = new SolidColorBrush(Color.FromRgb(16, 185, 129));
             }
             else if (rezept.MatchProzent >= 50)
             {
-                matchBorder.Background = new SolidColorBrush(Color.FromRgb(245, 158, 11)); // Orange
+                matchBorder.Background = new SolidColorBrush(Color.FromRgb(245, 158, 11)); 
             }
             else
             {
-                matchBorder.Background = new SolidColorBrush(Color.FromRgb(239, 68, 68)); // Rot
+                matchBorder.Background = new SolidColorBrush(Color.FromRgb(239, 68, 68));
             }
 
-            // Top 3 Zutaten anzeigen
-            string zutatenText = "";
-            int maxZutaten = 3;
-            if (rezept.Zutaten.Count < maxZutaten)
-            {
-                maxZutaten = rezept.Zutaten.Count;
-            }
-
-            for (int i = 0; i < maxZutaten; i++)
-            {
-                if (i > 0)
-                {
-                    zutatenText = zutatenText + " • ";
-                }
-                zutatenText = zutatenText + rezept.Zutaten[i];
-            }
-
-            if (rezept.Zutaten.Count > 3)
-            {
-                zutatenText = zutatenText + " • +" + (rezept.Zutaten.Count - 3) + " mehr";
-            }
-
-         
+ 
             btnZumRezept.IsEnabled = true;
         }
 

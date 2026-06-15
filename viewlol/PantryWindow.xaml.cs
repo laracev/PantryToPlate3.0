@@ -1,9 +1,9 @@
-﻿using PantryToPlate.Models;
-using System.Globalization;
-using System.IO;
+﻿using PantryToPlate.helpers;
+using PantryToPlate.Models;
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-
 
 namespace PantryToPlate
 {
@@ -14,196 +14,65 @@ namespace PantryToPlate
         private List<PantryItem> pantryItems = new List<PantryItem>();
         private Lebensmittel ausgewaehltesLebensmittel = null;
         private string suchtext = "";
-        private string pantryDatei = "data/pantry.csv";
-
-        private List<string> lebensmittelNamen = new List<string>();
         private System.Windows.Threading.DispatcherTimer suchTimer;
 
         public PantryWindow()
         {
-         
             InitializeComponent();
             this.Activated += PantryWindow_Activated;
-
             suchTimer = new System.Windows.Threading.DispatcherTimer();
             suchTimer.Interval = TimeSpan.FromMilliseconds(400);
             suchTimer.Tick += SuchTimer_Tick;
-            alleLebensmittel.Clear();
-
-            for (int i = 0; i < AppDaten.Lebensmittel.Count; i++)
-            {
-                alleLebensmittel.Add(AppDaten.Lebensmittel[i]);
-            }
-
-            ZeigeAlleLebensmittel();
+            LadeLebensmittel();
             LadePantry();
             ZeigePantry();
             txtMenge.Text = "100";
         }
 
-
         private void PantryWindow_Activated(object sender, EventArgs e)
         {
-            // Aktualisiert die Anzeige, wenn die Einkaufsliste in einem anderen Fenster etwas zur Pantry geschrieben hat.
             LadePantry();
             ZeigePantry();
         }
 
-        private string NormalisiereName(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name)) return "";
-
-            name = name.ToLower().Trim();
-            name = name.Replace("ä", "ae");
-            name = name.Replace("ö", "oe");
-            name = name.Replace("ü", "ue");
-            name = name.Replace("ß", "ss");
-            name = name.Replace(",", " ");
-            name = name.Replace("/", " ");
-            name = name.Replace("-", " ");
-
-            string[] woerter = name.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            string ergebnis = "";
-
-            for (int i = 0; i < woerter.Length; i++)
-            {
-                string wort = woerter[i].Trim();
-
-                if (wort == "roh" || wort == "gekocht" || wort == "geschält" || wort == "geschaelt" ||
-                    wort == "frisch" || wort == "getrocknet" || wort == "tiefgekuehlt" || wort == "tk" ||
-                    wort == "klein" || wort == "gross" || wort == "groß" || wort == "gehackt" ||
-                    wort == "gewuerfelt" || wort == "gewürfelt" || wort == "gerieben" ||
-                    wort == "bio" || wort == "dose" || wort == "konserve")
-                {
-                    continue;
-                }
-
-                if (wort.Length > 5 && wort.EndsWith("en")) wort = wort.Substring(0, wort.Length - 2);
-                if (wort.Length > 5 && wort.EndsWith("n")) wort = wort.Substring(0, wort.Length - 1);
-                if (wort.Length > 5 && wort.EndsWith("e")) wort = wort.Substring(0, wort.Length - 1);
-                if (wort.Length > 5 && wort.EndsWith("s")) wort = wort.Substring(0, wort.Length - 1);
-
-                if (ergebnis != "") ergebnis = ergebnis + " ";
-                ergebnis = ergebnis + wort;
-            }
-
-            return ergebnis.Trim();
-        }
-
-        private double ZahlLesen(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return 0;
-            }
-
-            text = text.Trim();
-            text = text.Replace(" kcal", "");
-            text = text.Replace("g", "");
-            text = text.Replace(" ", "");
-
-            if (text.Contains(",") && !text.Contains("."))
-            {
-                text = text.Replace(",", ".");
-            }
-
-            try
-            {
-                return Convert.ToDouble(text, CultureInfo.InvariantCulture);
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-
-        private void SuchTimer_Tick(object sender, EventArgs e)
-        {
-            suchTimer.Stop();
-            FuehreSucheAus();
-        }
-
         private void LadeLebensmittel()
         {
-            string datei = "data/test_utf8.csv";
-            alleLebensmittel.Clear();
-            lebensmittelNamen.Clear();
-
-            if (File.Exists(datei))
+            try
             {
-                string[] zeilen = File.ReadAllLines(datei);
-
-                for (int i = 1; i < zeilen.Length; i++)
-                {
-                    string zeile = zeilen[i];
-                    if (string.IsNullOrWhiteSpace(zeile)) continue;
-
-                    string[] teile = zeile.Split(';');
-                    if (teile.Length >= 5)
-                    {
-                        Lebensmittel lm = new Lebensmittel();
-                        lm.Name = teile[0].Trim();
-                        lebensmittelNamen.Add(lm.Name);
-
-                        double kalorien = ZahlLesen(teile[1]);
-                        double proteine = ZahlLesen(teile[2]);
-                        double fett = ZahlLesen(teile[3]);
-                        double kohlen = ZahlLesen(teile[4]);
-
-                        lm.KalorienPro100g = kalorien;
-                        lm.ProteinePro100g = proteine;
-                        lm.FettPro100g = fett;
-                        lm.KohlenhydratePro100g = kohlen;
-
-                        lm.BallaststoffePro100g = 0;
-                        if (teile.Length >= 6)
-                        {
-                            lm.BallaststoffePro100g = ZahlLesen(teile[5]);
-                        }
-
-                        alleLebensmittel.Add(lm);
-                    }
-                }
+                alleLebensmittel = Lebensmittel.LadeAlleAusCsv();
+                ZeigeAlleLebensmittel();
             }
-
-            ZeigeAlleLebensmittel();
+            catch (Exception ex)
+            {
+                AppLogger.Error(ex, "Fehler beim Laden der Lebensmittel");
+                alleLebensmittel = new List<Lebensmittel>();
+            }
         }
 
         private void LadePantry()
         {
-            pantryItems.Clear();
-
-            if (File.Exists(pantryDatei))
+            try
             {
-                string[] zeilen = File.ReadAllLines(pantryDatei);
-                for (int i = 1; i < zeilen.Length; i++)
-                {
-                    string[] teile = zeilen[i].Split(';');
-                    if (teile.Length >= 2)
-                    {
-                        PantryItem item = new PantryItem();
-                        item.Name = teile[0];
-                        double menge = ZahlLesen(teile[1]);
-                        item.Menge = menge;
-                        pantryItems.Add(item);
-                    }
-                }
+                pantryItems = PantryItem.LadeAlleAusCsv();
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error(ex, "Fehler beim Laden der Pantry");
+                pantryItems = new List<PantryItem>();
             }
         }
 
         private void SpeicherePantry()
         {
-            string inhalt = "Name;Menge\n";
-            for (int i = 0; i < pantryItems.Count; i++)
+            try
             {
-                if (pantryItems[i].Menge > 0)
-                {
-                    inhalt = inhalt + pantryItems[i].Name + ";" + pantryItems[i].Menge.ToString(CultureInfo.InvariantCulture) + "\n";
-                }
+                PantryItem.SpeichereAlle(pantryItems);
             }
-
-            Directory.CreateDirectory("data");
-            File.WriteAllText(pantryDatei, inhalt);
+            catch (Exception ex)
+            {
+                AppLogger.Error(ex, "Fehler beim Speichern der Pantry");
+                MessageBox.Show("Die Pantry konnte nicht gespeichert werden.");
+            }
         }
 
         private void ZeigePantry()
@@ -214,61 +83,79 @@ namespace PantryToPlate
 
         private void ZeigeAlleLebensmittel()
         {
-            gefilterteLebensmittel = new List<Lebensmittel>();
-            for (int i = 0; i < alleLebensmittel.Count; i++)
-            {
-                gefilterteLebensmittel.Add(alleLebensmittel[i]);
-            }
+            gefilterteLebensmittel = new List<Lebensmittel>(alleLebensmittel);
             AktualisiereLebensmittelListe();
         }
 
         private void AktualisiereLebensmittelListe()
         {
             lstLebensmittel.Items.Clear();
-
             int maxAnzeige = gefilterteLebensmittel.Count;
             if (maxAnzeige > 50)
             {
                 maxAnzeige = 50;
             }
-
             for (int i = 0; i < maxAnzeige; i++)
             {
                 lstLebensmittel.Items.Add(gefilterteLebensmittel[i].Name);
             }
-
             txtAnzahlErgebnisse.Text = gefilterteLebensmittel.Count + " Lebensmittel gefunden";
         }
-
-        //wieder sorry, muss aber sein sonst kackt das programm ab
-        private void SortiereNachRelevanz()
-        {
-            gefilterteLebensmittel.Sort((a, b) =>
-                BerechneRelevanzScore(b.Name).CompareTo(BerechneRelevanzScore(a.Name)));
-        }
-
 
         private int BerechneRelevanzScore(string name)
         {
             string nameLower = name.ToLower();
             string suchLower = suchtext.ToLower();
-
-            if (nameLower == suchLower) return 1000;
-            if (nameLower.StartsWith(suchLower)) return 500;
-            if (nameLower.Contains(suchLower)) return 100;
-
+            if (nameLower == suchLower)
+            {
+                return 1000;
+            }
+            if (nameLower.StartsWith(suchLower))
+            {
+                return 500;
+            }
+            if (nameLower.Contains(suchLower))
+            {
+                return 100;
+            }
             int matches = 0;
             int maxLength = suchLower.Length;
             if (maxLength > nameLower.Length)
             {
                 maxLength = nameLower.Length;
             }
-
             for (int i = 0; i < maxLength; i++)
             {
-                if (nameLower[i] == suchLower[i]) matches++;
+                if (nameLower[i] == suchLower[i])
+                {
+                    matches++;
+                }
             }
             return matches;
+        }
+
+        private void SortiereNachRelevanz()
+        {
+            for (int i = 0; i < gefilterteLebensmittel.Count - 1; i++)
+            {
+                for (int j = i + 1; j < gefilterteLebensmittel.Count; j++)
+                {
+                    int scoreA = BerechneRelevanzScore(gefilterteLebensmittel[i].Name);
+                    int scoreB = BerechneRelevanzScore(gefilterteLebensmittel[j].Name);
+                    if (scoreB > scoreA)
+                    {
+                        Lebensmittel temp = gefilterteLebensmittel[i];
+                        gefilterteLebensmittel[i] = gefilterteLebensmittel[j];
+                        gefilterteLebensmittel[j] = temp;
+                    }
+                }
+            }
+        }
+
+        private void SuchTimer_Tick(object sender, EventArgs e)
+        {
+            suchTimer.Stop();
+            FuehreSucheAus();
         }
 
         private void txtSuche_TextChanged(object sender, TextChangedEventArgs e)
@@ -281,26 +168,21 @@ namespace PantryToPlate
         private void FuehreSucheAus()
         {
             gefilterteLebensmittel.Clear();
-
             if (string.IsNullOrWhiteSpace(suchtext))
             {
-                for (int i = 0; i < alleLebensmittel.Count; i++)
-                {
-                    gefilterteLebensmittel.Add(alleLebensmittel[i]);
-                }
+                gefilterteLebensmittel.AddRange(alleLebensmittel);
             }
             else
             {
                 string suchLower = suchtext.ToLower();
-                gefilterteLebensmittel.Clear();
-
-                for (int i = 0; i < alleLebensmittel.Count; i++)
+                foreach (Lebensmittel lm in alleLebensmittel)
                 {
-                    if (alleLebensmittel[i].Name.ToLower().Contains(suchLower))
-                        gefilterteLebensmittel.Add(alleLebensmittel[i]);
+                    if (lm.Name.ToLower().Contains(suchLower))
+                    {
+                        gefilterteLebensmittel.Add(lm);
+                    }
                 }
             }
-
             SortiereNachRelevanz();
             AktualisiereLebensmittelListe();
         }
@@ -323,43 +205,35 @@ namespace PantryToPlate
 
         private void btnZurPantryHinzufuegen_Click(object sender, RoutedEventArgs e)
         {
+            if (!EingabePruefung.IstGueltigeMenge(txtMenge.Text))
+            {
+                MessageBox.Show("Bitte eine gültige Menge eingeben.");
+                return;
+            }
             if (ausgewaehltesLebensmittel == null)
             {
-                MessageBox.Show("Bitte ein Lebensmittel auswählen");
+                MessageBox.Show("Bitte ein Lebensmittel auswählen.");
                 return;
             }
-
-            double menge = ZahlLesen(txtMenge.Text);
-            if (menge <= 0)
-            {
-                MessageBox.Show("Bitte eine gültige Menge eingeben");
-                return;
-            }
-
+            double menge = Helper.ToDouble(txtMenge.Text);
             bool gefunden = false;
-            for (int i = 0; i < pantryItems.Count; i++)
+            foreach (PantryItem item in pantryItems)
             {
-                if (NormalisiereName(pantryItems[i].Name) == NormalisiereName(ausgewaehltesLebensmittel.Name))
+                if (item.Name == ausgewaehltesLebensmittel.Name)
                 {
-                    pantryItems[i].Menge = pantryItems[i].Menge + menge;
+                    item.Menge += menge;
                     gefunden = true;
                     break;
                 }
             }
-
             if (!gefunden)
             {
-                PantryItem neuesItem = new PantryItem();
-                neuesItem.Name = ausgewaehltesLebensmittel.Name;
-                neuesItem.Menge = menge;
-                pantryItems.Add(neuesItem);
+                pantryItems.Add(new PantryItem(ausgewaehltesLebensmittel.Name, menge));
             }
-
             SpeicherePantry();
             ZeigePantry();
-
             MessageBox.Show(ausgewaehltesLebensmittel.Name + " (" + menge + "g) wurde zur Pantry hinzugefügt");
-
+            AppLogger.Info($"Pantry hinzugefügt: {ausgewaehltesLebensmittel.Name}, {menge}g");
             txtMenge.Text = "100";
         }
 
@@ -367,18 +241,16 @@ namespace PantryToPlate
         {
             Button btn = (Button)sender;
             PantryItem item = (PantryItem)btn.Tag;
-
-            if (item != null)
+            if (item == null)
             {
-                MessageBoxResult result = MessageBox.Show(item.Name + " wirklich aus der Pantry löschen?",
-                    "Bestätigen", MessageBoxButton.YesNo);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    pantryItems.Remove(item);
-                    SpeicherePantry();
-                    ZeigePantry();
-                }
+                return;
+            }
+            if (MessageBox.Show(item.Name + " wirklich aus der Pantry löschen?", "Bestätigen", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                pantryItems.Remove(item);
+                SpeicherePantry();
+                ZeigePantry();
+                AppLogger.Info($"Aus Pantry gelöscht: {item.Name}");
             }
         }
 
