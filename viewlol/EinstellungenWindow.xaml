@@ -76,17 +76,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <Border Grid.Row="0" Background="{StaticResource Primary}" 
-                CornerRadius="16" Padding="20" Margin="0,7,0,7">
+        <Border Grid.Row="0" Background="{StaticResource Primary}" CornerRadius="16" Padding="20" Margin="0,7,0,7">
             <StackPanel>
-                <TextBlock Text="⚙️ Persönliche Einstellungen" 
-                           FontSize="24" FontWeight="Bold" 
-                           Foreground="White" HorizontalAlignment="Center"/>
+                <TextBlock Text="Einstellungen" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
             </StackPanel>
         </Border>
 
-        <!-- Inhalt -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
 
@@ -125,37 +120,23 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Ergebnis -->
                 <Border Style="{StaticResource Card}" Margin="0,0,0,15" Height="224">
                     <StackPanel>
-                        <TextBlock Text="🎯 Dein Kalorienziel" 
-                                   FontSize="16" FontWeight="Bold"
-                                   Foreground="{StaticResource TextDark}"
-                                   Margin="0,0,0,15"/>
+                        <TextBlock Text="🎯 Dein Kalorienziel" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextDark}" Margin="0,0,0,15"/>
 
-                        <Border Background="{StaticResource Primary}" CornerRadius="12" 
-                                Padding="20" Margin="0,0,0,15" Height="113">
+                        <Border Background="{StaticResource Primary}" CornerRadius="12" Padding="20" Margin="0,0,0,15" Height="113">
                             <StackPanel>
-                                <TextBlock x:Name="txtKalorienZiel" Text="0" 
-                                           FontSize="48" FontWeight="Bold" 
-                                           Foreground="White" TextAlignment="Center" Height="54" Width="608"/>
-                                <TextBlock Text="kcal pro Tag" 
-                                           Foreground="#C7D2FE" TextAlignment="Center"
-                                           FontSize="14" Height="21"/>
+                                <TextBlock x:Name="txtKalorienZiel" Text="0" FontSize="48" FontWeight="Bold" Foreground="White" TextAlignment="Center" Height="54" Width="608"/>
+                                <TextBlock Text="kcal pro Tag" Foreground="#C7D2FE" TextAlignment="Center" FontSize="14" Height="21"/>
                             </StackPanel>
                         </Border>
-                        <Button x:Name="btnBerechnen" Content="Empfehlung berechnen" 
-                                Background="{StaticResource Warning}"
-                                Click="btnBerechnen_Click" Height="19" Width="190"/>
+                        <Button x:Name="btnBerechnen" Content="Empfehlung berechnen" Background="{StaticResource Warning}" Click="btnBerechnen_Click" Height="19" Width="190"/>
                     </StackPanel>
                 </Border>
 
-                <!-- Buttons -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
-                    <Button x:Name="btnSpeichern" Content="💾 Speichern" Width="120" 
-                            Background="{StaticResource Success}" Click="btnSpeichern_Click" Height="41"/>
-                    <Button x:Name="btnAbbrechen" Content="Abbrechen" Width="100" Margin="10,0,0,0"
-                            Click="btnAbbrechen_Click"/>
+                    <Button x:Name="btnSpeichern" Content="💾 Speichern" Width="120" Background="{StaticResource Success}" Click="btnSpeichern_Click" Height="41"/>
+                    <Button x:Name="btnAbbrechen" Content="Abbrechen" Width="100" Margin="10,0,0,0" Click="btnAbbrechen_Click"/>
                 </StackPanel>
 
             </StackPanel>

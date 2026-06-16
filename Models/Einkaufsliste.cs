@@ -27,7 +27,7 @@ namespace PantryToPlate.Models
         {
             Directory.CreateDirectory("data");
             List<string> zeilen = new List<string> { "Zutat" };
-            zeilen.AddRange(eintraege);
+            zeilen.AddRange(eintraege); // aus internet genommen, is kinda einfacher als andere stuff
             File.WriteAllLines(dateiPfad, zeilen);
         }
     }

@@ -63,6 +63,8 @@ namespace PantryToPlate.logik
             return vorhanden * 100 / rezept.Zutaten.Count;
         }
 
+
+        //chatgt: wie mache ich so berechnen von den fehlenden zutaten am besten?nn
         public List<string> ErmittleFehlendeZutaten(Rezept rezept, List<PantryItem> pantryItems)
         {
             List<string> fehlende = new List<string>();
@@ -86,6 +88,7 @@ namespace PantryToPlate.logik
                 }
             }
             return fehlende;
+            //chatgpt ende
         }
     }
 }

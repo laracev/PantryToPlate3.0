@@ -1,4 +1,4 @@
-﻿// PantryItem.cs
+﻿
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -7,8 +7,8 @@ namespace PantryToPlate.Models
 {
     public class PantryItem
     {
-        public string Name { get; private set; }
-        public double Menge { get; set; }   // Menge darf von aussen geändert werden (z.B. beim Abziehen)
+        public string Name { get; set; }
+        public double Menge { get; set; }  
 
         public PantryItem(string name, double menge)
         {

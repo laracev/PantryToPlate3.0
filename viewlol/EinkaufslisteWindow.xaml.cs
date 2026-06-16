@@ -58,6 +58,8 @@ namespace PantryToPlate
             }
         }
 
+
+        //chatgpt: promt: kannst du mir helfen das es halt so schöner angezeigt wird und bissl besser so yk
         private void ZeigeEinkaufsliste()
         {
             spEinkaufsliste.Children.Clear();
@@ -110,6 +112,7 @@ namespace PantryToPlate
                 spEinkaufsliste.Children.Add(emptyText);
             }
         }
+        //chatgpt ende
 
         private void CheckboxGeklickt(object sender, RoutedEventArgs e)
         {
@@ -135,6 +138,8 @@ namespace PantryToPlate
             Einkaufsliste.Speichere(eintraege);
         }
 
+
+        // chatgpt, promt: kannst du mir helfen das es einfach den besten namen sucht anstatt den genauen namen so checkst du
         private string FindeBestenLebensmittelNamen(string itemName)
         {
             List<Lebensmittel> alleLebensmittel = Lebensmittel.LadeAlleAusCsv();
@@ -151,7 +156,7 @@ namespace PantryToPlate
             }
             return (besterScore >= 120) ? besterName : itemName;
         }
-
+        //chatgpt ende
         private void btnGekaufteEntfernen_Click(object sender, RoutedEventArgs e)
         {
             List<string> gekaufteItems = new List<string>();
@@ -162,7 +167,7 @@ namespace PantryToPlate
             {
                 if (item.IstGekauft)
                 {
-                    gekaufteItems.Add(Namensvergleich.NameOhneMenge(item.Name));
+             
                     gekaufteMengen.Add(Namensvergleich.MengeAusText(item.Name));
                 }
                 else

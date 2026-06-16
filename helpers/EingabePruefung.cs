@@ -7,6 +7,8 @@ namespace PantryToPlate.helpers
         public static bool IstGueltigesGewicht(string text)
         {
             double gewicht;
+
+  
             if (!double.TryParse(text, out gewicht))
             {
                 return false;

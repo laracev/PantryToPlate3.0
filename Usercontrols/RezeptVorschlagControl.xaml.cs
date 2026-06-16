@@ -27,19 +27,20 @@ namespace PantryToPlate.Usercontrols
             }
 
             bestesRezept = rezept;
-
+            //chatgpt start: promt: Kürze den Rezeptnamen auf maximal 40 Zeichen
             string name = rezept.Name;
             if (name.Length > 40)
             {
                 name = name.Substring(0, 37) + "...";
             }
             txtRezeptName.Text = name;
+            //chatgpt end
 
             txtMatchProzent.Text = rezept.MatchProzent + "%";
 
             if (rezept.MatchProzent >= 80)
             {
-                matchBorder.Background = new SolidColorBrush(Color.FromRgb(16, 185, 129));
+                matchBorder.Background = new SolidColorBrush(Color.FromRgb(16, 185, 129)); //bin sehr stolz drauf das ich das rausgefunden hab lol ich bin voll gut mit rgb vom üben mit leds einstellen
             }
             else if (rezept.MatchProzent >= 50)
             {

@@ -13,22 +13,16 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Pantry To Plate" FontSize="32" FontWeight="Bold" 
-                       Foreground="White" Margin="0,0,0,10"/>
-            <TextBlock FontSize="16" 
-                       Foreground="#BDC3C7" HorizontalAlignment="Center"><Run Language="de-at" Text="Healthy Eating made easy •ᴗ•"/></TextBlock>
+            <TextBlock Text="Pantry To Plate" FontSize="32" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
+            <TextBlock FontSize="16" Foreground="#BDC3C7" HorizontalAlignment="Center"><Run Language="de-at" Text="Healthy Eating made easy •ᴗ•"/></TextBlock>
         </StackPanel>
 
-        <Border Grid.Row="1" Height="30" Width="400" Background="#C0A7D9" 
-                CornerRadius="15" Margin="20" HorizontalAlignment="Center">
-            <Border x:Name="progressBar" Width="0" Background="#9ABF75" 
-                    CornerRadius="15" HorizontalAlignment="Left"/>
+        <Border Grid.Row="1" Height="30" Width="400" Background="#C0A7D9" CornerRadius="15" Margin="20" HorizontalAlignment="Center">
+            <Border x:Name="progressBar" Width="0" Background="#9ABF75" CornerRadius="15" HorizontalAlignment="Left"/>
         </Border>
 
-        <TextBlock x:Name="txtStatus" Grid.Row="2" Text="Initialisiere..." 
-                   Foreground="#BDC3C7" HorizontalAlignment="Center" Margin="10"/>
+        <TextBlock x:Name="txtStatus" Grid.Row="2" Text="Initialisiere..." Foreground="#BDC3C7" HorizontalAlignment="Center" Margin="10"/>
 
-        <!-- Animierte Punkte -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <Ellipse x:Name="dot1" Width="10" Height="10" Fill="#8360A6" Margin="5">
                 <Ellipse.RenderTransform>
