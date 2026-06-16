@@ -23,20 +23,8 @@ namespace PantryToPlate.helpers
             return 0;
         }
 
-        public static string NameOhneMenge(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return "";
-            }
-            int letzteKlammer = text.LastIndexOf('(');
-            if (letzteKlammer > 0)
-            {
-                return text.Substring(0, letzteKlammer).Trim();
-            }
-            return text.Trim();
-        }
 
+        //chatgpt, promt: Schreibe eine Funktion, die aus einem Text die Menge in Gramm oder Milliliter extrahiert. Die Menge steht immer in Klammern und kann entweder mit "kg", "g", "l" oder "ml" angegeben sein. Wenn die Menge mit "kg" oder "l" angegeben ist, soll sie in Gramm umgerechnet werden (1 kg = 1000 g, 1 l = 1000 ml). Wenn keine gültige Menge gefunden wird, soll 100 zurückgegeben werden.
         public static double MengeAusText(string text)
         {
             int start = text.LastIndexOf('(');
@@ -60,14 +48,17 @@ namespace PantryToPlate.helpers
             }
             return 100;
         }
+        //chatgpt ende
 
+
+        //chatgpt, promt: Schreibe eine Funktion, die einen Namen normalisiert, indem sie Umlaute ersetzt, bestimmte Wörter entfernt und Pluralformen reduziert. Die Funktion soll auch alle Wörter in Kleinbuchstaben umwandeln und überflüssige Leerzeichen entfernen.
         public static string NormalisiereName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 return "";
             }
-            name = NameOhneMenge(name).ToLower().Trim();
+        
             name = name.Replace("ä", "ae").Replace("ö", "oe").Replace("ü", "ue").Replace("ß", "ss");
             name = name.Replace(",", " ").Replace("/", " ").Replace("-", " ");
 
@@ -110,24 +101,7 @@ namespace PantryToPlate.helpers
             }
             return ergebnis.Trim();
         }
-
-        public static bool IstSinnvollesWort(string wort)
-        {
-            if (wort.Length <= 2)
-            {
-                return false;
-            }
-            bool nurZiffern = true;
-            foreach (char c in wort)
-            {
-                if (!char.IsDigit(c) && c != '.' && c != ',')
-                {
-                    nurZiffern = false;
-                    break;
-                }
-            }
-            return !nurZiffern;
-        }
+        //chatgpt ende
 
         public static int BerechneAehnlichkeit(string nameA, string nameB)
         {
@@ -146,21 +120,17 @@ namespace PantryToPlate.helpers
                 return 800;
             }
 
+
+            //chatgpt, promt: Schreibe eine Funktion, die die Ähnlichkeit von zwei Namen berechnet, indem sie die Anzahl der gemeinsamen Wörter zählt. Jedes gemeinsame Wort erhöht die Ähnlichkeit um 200 Punkte. Wenn ein Wort in einem Namen im anderen Namen enthalten ist (z.B. "Apfel" und "Apfelmus"), erhöht das die Ähnlichkeit um 120 Punkte. Wenn die Ähnlichkeit 0 ist, aber die ersten 4 Buchstaben der Namen gleich sind, soll die Ähnlichkeit 150 Punkte betragen.
             string[] aWoerter = a.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             string[] bWoerter = b.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             int score = 0;
             foreach (string wa in aWoerter)
             {
-                if (!IstSinnvollesWort(wa))
-                {
-                    continue;
-                }
+
                 foreach (string wb in bWoerter)
                 {
-                    if (!IstSinnvollesWort(wb))
-                    {
-                        continue;
-                    }
+             
                     if (wa == wb)
                     {
                         score += 200;
@@ -177,6 +147,8 @@ namespace PantryToPlate.helpers
                 score = 150;
             }
             return score;
+
+            //chatgpt ende
         }
     }
 }

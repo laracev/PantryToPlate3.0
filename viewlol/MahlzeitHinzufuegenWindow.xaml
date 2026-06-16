@@ -67,8 +67,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
-                        <Border x:Name="Border" Background="{TemplateBinding Background}" 
-                                CornerRadius="10" Margin="{TemplateBinding Margin}">
+                                
+                        <Border x:Name="Border" Background="{TemplateBinding Background}" CornerRadius="10" Margin="{TemplateBinding Margin}">
                             <ContentPresenter VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -89,27 +89,21 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
+        
         <Border Grid.Row="0" Background="{StaticResource Primary}" 
                 CornerRadius="16" Padding="20" Margin="0,10,0,6">
             <StackPanel>
-                <TextBlock Text="➕ Mahlzeit hinzufügen" 
-                           FontSize="24" FontWeight="Bold" 
-                           Foreground="White" HorizontalAlignment="Center" Height="28"/>
+                <TextBlock Text="➕ Mahlzeit hinzufügen" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Height="28"/>
             </StackPanel>
         </Border>
 
-        <!-- Inhalt -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,-4">
             <StackPanel>
 
-                <!-- Suche -->
+             
                 <Border Style="{StaticResource Card}" Margin="0,0,0,15" Height="230">
                     <StackPanel>
-                        <TextBlock Text="🔍 Lebensmittel suchen" 
-                                   FontSize="16" FontWeight="Bold"
-                                   Foreground="{StaticResource TextDark}"
-                                   Margin="0,0,0,15"/>
+                        <TextBlock Text="🔍 Lebensmittel suchen" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextDark}" Margin="0,0,0,15"/>
 
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
@@ -117,54 +111,33 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="txtSuche" Grid.Column="0" 
-                                     TextChanged="txtSuche_TextChanged"/>
-                            <Button x:Name="btnSuchen" Grid.Column="1" 
-                                    Content="🔍 Suchen" Width="80" Margin="10,0,0,0"
-                                    Background="{StaticResource Primary}"
-                                    Click="btnSuchen_Click"/>
+                            <TextBox x:Name="txtSuche" Grid.Column="0" TextChanged="txtSuche_TextChanged"/>
+                            <Button x:Name="btnSuchen" Grid.Column="1" Content="Suchen" Width="80" Margin="10,0,0,0" Background="{StaticResource Primary}" Click="btnSuchen_Click"/>
                         </Grid>
 
-                        <ListBox x:Name="lstLebensmittel" 
-                                 SelectionChanged="lstLebensmittel_SelectionChanged"/>
+                        <ListBox x:Name="lstLebensmittel" SelectionChanged="lstLebensmittel_SelectionChanged"/>
 
-                        <TextBlock x:Name="txtAnzahlErgebnisse" 
-                                   FontSize="11" Foreground="{StaticResource TextGray}"
-                                   Margin="0,8,0,0" TextAlignment="Right"/>
+                        <TextBlock x:Name="txtAnzahlErgebnisse" FontSize="11" Foreground="{StaticResource TextGray}" Margin="0,8,0,0" TextAlignment="Right"/>
                     </StackPanel>
                 </Border>
 
-                <!-- Ausgewähltes Lebensmittel -->
+         
                 <Border Style="{StaticResource Card}" Margin="0,0,0,15">
                     <StackPanel>
-                        <TextBlock Text="📝 Ausgewähltes Lebensmittel" 
-                                   FontSize="16" FontWeight="Bold"
-                                   Foreground="{StaticResource TextDark}"
-                                   Margin="0,0,0,15"/>
+                        <TextBlock Text="Ausgewähltes Lebensmittel" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextDark}" Margin="0,0,0,15"/>
 
-                        <Border Background="{StaticResource BgGray}" CornerRadius="12" 
-                                Padding="15" Margin="0,0,0,15" Height="54">
-                            <TextBlock x:Name="txtAusgewaehltes" Text="Kein Lebensmittel ausgewählt" 
-                                       FontSize="15" FontWeight="SemiBold"
-                                       Foreground="{StaticResource Primary}"
-                                       TextAlignment="Center"/>
+                        <Border Background="{StaticResource BgGray}" CornerRadius="12" Padding="15" Margin="0,0,0,15" Height="54">
+                            <TextBlock x:Name="txtAusgewaehltes" Text="Kein Lebensmittel ausgewählt" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource Primary}" TextAlignment="Center"/>
                         </Border>
 
-                        <TextBlock Text="⚖️ Menge (Gramm)" 
-                                   FontSize="13" FontWeight="SemiBold"
-                                   Foreground="{StaticResource TextGray}"
-                                   Margin="0,0,0,8"/>
+                        <TextBlock Text="Menge (Gramm)" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextGray}" Margin="0,0,0,8"/>
                         <TextBox x:Name="txtGramm" Text="100" TextChanged="txtGramm_TextChanged"/>
                     </StackPanel>
                 </Border>
 
-                <!-- Nährwerte -->
                 <Border Style="{StaticResource Card}" Height="181">
                     <StackPanel>
-                        <TextBlock Text="🥗 Nährwerte für diese Portion" 
-                                   FontSize="16" FontWeight="Bold"
-                                   Foreground="{StaticResource TextDark}"
-                                   Margin="0,0,0,15"/>
+                        <TextBlock Text="Nährwerte für diese Portion" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextDark}" Margin="0,0,0,15"/>
 
                         <Grid>
                             <Grid.RowDefinitions>
@@ -179,40 +152,28 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="🔥 Kalorien:" 
-                                       FontWeight="SemiBold" Margin="0,0,15,10"/>
-                            <TextBlock x:Name="txtKalorien" Grid.Row="0" Grid.Column="1" 
-                                       Text="0 kcal" Foreground="{StaticResource Primary}"
-                                       FontWeight="Bold" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Kalorien:" FontWeight="SemiBold" Margin="0,0,15,10"/>
+                            <TextBlock x:Name="txtKalorien" Grid.Row="0" Grid.Column="1" Text="0 kcal" Foreground="{StaticResource Primary}" FontWeight="Bold" Margin="0,0,0,10"/>
 
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="💪 Proteine:" 
-                                       FontWeight="SemiBold" Margin="0,0,15,10"/>
-                            <TextBlock x:Name="txtProteine" Grid.Row="1" Grid.Column="1" 
-                                       Text="0 g" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Proteine:" FontWeight="SemiBold" Margin="0,0,15,10"/>
+                            <TextBlock x:Name="txtProteine" Grid.Row="1" Grid.Column="1" Text="0 g" Margin="0,0,0,10"/>
 
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="🍚 Kohlenhydrate:" 
-                                       FontWeight="SemiBold" Margin="0,0,15,10"/>
-                            <TextBlock x:Name="txtKohlenhydrate" Grid.Row="2" Grid.Column="1" 
-                                       Text="0 g" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Kohlenhydrate:" FontWeight="SemiBold" Margin="0,0,15,10"/>
+                            <TextBlock x:Name="txtKohlenhydrate" Grid.Row="2" Grid.Column="1" Text="0 g" Margin="0,0,0,10"/>
 
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="🥑 Fett:" 
-                                       FontWeight="SemiBold" Margin="0,0,15,10"/>
-                            <TextBlock x:Name="txtFett" Grid.Row="3" Grid.Column="1" 
-                                       Text="0 g" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Fett:" FontWeight="SemiBold" Margin="0,0,15,10"/>
+                            <TextBlock x:Name="txtFett" Grid.Row="3" Grid.Column="1" Text="0 g" Margin="0,0,0,10"/>
 
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="🌾 Ballaststoffe:" 
-                                       FontWeight="SemiBold" Margin="0,0,15,0"/>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Ballaststoffe:" FontWeight="SemiBold" Margin="0,0,15,0"/>
                             <TextBlock x:Name="txtBallaststoffe" Grid.Row="4" Grid.Column="1"/>
                         </Grid>
                     </StackPanel>
                 </Border>
 
-                <!-- Buttons -->
+           
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                    <Button x:Name="btnHinzufuegen" Content="➕ Hinzufügen" Width="120" 
-                            Background="{StaticResource Success}" Click="btnHinzufuegen_Click"/>
-                    <Button x:Name="btnAbbrechen" Content="Abbrechen" Width="100" Margin="10,0,0,0"
-                            Background="{StaticResource Danger}" Click="btnAbbrechen_Click"/>
+                    <Button x:Name="btnHinzufuegen" Content="➕ Hinzufügen" Width="120" Background="{StaticResource Success}" Click="btnHinzufuegen_Click"/>
+                    <Button x:Name="btnAbbrechen" Content="Abbrechen" Width="100" Margin="10,0,0,0" Background="{StaticResource Danger}" Click="btnAbbrechen_Click"/>
                 </StackPanel>
 
             </StackPanel>

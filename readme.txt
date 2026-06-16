@@ -9,3 +9,5 @@ die nugets die ihr braucht sind:
 serilog (4.3.1)
 serilog.Settings.configuration (10.0.1)
 Serilog.Sinks.File (7.0.0)
+
+Alle emojis kommen von der einen website

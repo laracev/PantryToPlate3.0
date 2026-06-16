@@ -18,6 +18,8 @@ namespace PantryToPlate.Models
             VerbrannteKalorien = kalorien;
         }
 
+
+        //das mit datum hab ich gegoogelt wie ich das machen kann
         public static List<FitnessEintrag> LadeVonTag(DateTime datum, string dateiPfad = "data/FitnessEintraege.csv")
         {
             List<FitnessEintrag> list = new List<FitnessEintrag>();
@@ -25,7 +27,7 @@ namespace PantryToPlate.Models
             {
                 return list;
             }
-            string target = datum.ToString("yyyy-MM-dd");
+            string target = datum.ToString("yyyy-MM-dd"); 
             string[] zeilen = File.ReadAllLines(dateiPfad);
             for (int i = 1; i < zeilen.Length; i++)
             {

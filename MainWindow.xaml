@@ -153,10 +153,7 @@
                     </Grid>
                 </Border>
 
-                <Border Background="{StaticResource LightGray}" 
-                        CornerRadius="8" 
-                        Padding="15" 
-                        Margin="0,8">
+                <Border Background="{StaticResource LightGray}" CornerRadius="8" Padding="15" Margin="0,8">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>

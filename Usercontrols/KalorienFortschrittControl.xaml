@@ -12,18 +12,13 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Canvas x:Name="zeichnenCanvas" Grid.Row="0" Width="180" Height="180" 
-                HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Canvas x:Name="zeichnenCanvas" Grid.Row="0" Width="180" Height="180" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <Ellipse x:Name="hintergrundKreis" Width="160" Height="160" 
-                     Stroke="#DDDDDD" StrokeThickness="12"
-                     Canvas.Left="10" Canvas.Top="10"/>
+            <Ellipse x:Name="hintergrundKreis" Width="160" Height="160" Stroke="#DDDDDD" StrokeThickness="12" Canvas.Left="10" Canvas.Top="10"/>
 
             <Path x:Name="fortschrittsBogen" Stroke="#A050A6" StrokeThickness="12"/>
 
-            <TextBlock x:Name="txtProzent" Canvas.Left="46" Canvas.Top="76" 
-                       FontSize="24" FontWeight="Bold" TextAlignment="Center"
-                       Width="100" Text="0%"/>
+            <TextBlock x:Name="txtProzent" Canvas.Left="46" Canvas.Top="76" FontSize="24" FontWeight="Bold" TextAlignment="Center" Width="100" Text="0%"/>
         </Canvas>
     </Grid>
 </UserControl>

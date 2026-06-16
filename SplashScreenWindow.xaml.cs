@@ -9,9 +9,13 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace PantryToPlate
+
+   
 {
     public partial class SplashScreenWindow : Window
     {
+
+        //hab das ganze auf github gefunden also so eine animation vorlage hab einfach nur bestimmte dinge umgeändert und so
         private DispatcherTimer ladetimer;
         private int ladestatus = 0;
         private bool ladenAbgeschlossen = false;

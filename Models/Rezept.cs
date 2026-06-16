@@ -6,7 +6,7 @@ namespace PantryToPlate.Models
     public class Rezept
     {
         public string Name { get; private set; }
-        public double KalorienProPortion { get; set; }   // wird von Rechner gesetzt
+        public double KalorienProPortion { get; set; }
         public List<string> Zutaten { get; private set; }
         public List<double> ZutatenMengen { get; private set; }
         public double MatchProzent { get; set; }
@@ -57,8 +57,7 @@ namespace PantryToPlate.Models
 
             string name = teile[0].Trim();
             string anleitung = (teile.Length >= 4) ? teile[3] : "Keine Anleitung verfügbar.";
-            anleitung = anleitung.Replace("<br>", "\n").Replace("<br/>", "\n")
-                                 .Replace("<p>", "").Replace("</p>", "");
+            anleitung = anleitung.Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<p>", "").Replace("</p>", "");
 
             List<string> zutatenListe = new List<string>();
             List<double> mengenListe = new List<double>();

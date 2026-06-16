@@ -60,12 +60,7 @@ namespace PantryToPlate.Models
         {
             Directory.CreateDirectory("data");
             string heute = DateTime.Now.ToString("yyyy-MM-dd");
-            string zeile = heute + ";" + eintrag.Name + ";" +
-                eintrag.Menge.ToString(CultureInfo.InvariantCulture) + ";" +
-                eintrag.Kalorien.ToString(CultureInfo.InvariantCulture) + ";" +
-                eintrag.Proteine.ToString(CultureInfo.InvariantCulture) + ";" +
-                eintrag.Kohlenhydrate.ToString(CultureInfo.InvariantCulture) + ";" +
-                eintrag.Fett.ToString(CultureInfo.InvariantCulture);
+            string zeile = heute + ";" + eintrag.Name + ";" + eintrag.Menge.ToString(CultureInfo.InvariantCulture) + ";" + eintrag.Kalorien.ToString(CultureInfo.InvariantCulture) + ";" + eintrag.Proteine.ToString(CultureInfo.InvariantCulture) + ";" + eintrag.Kohlenhydrate.ToString(CultureInfo.InvariantCulture) + ";" + eintrag.Fett.ToString(CultureInfo.InvariantCulture);
             if (!File.Exists(dateiPfad))
             {
                 File.WriteAllText(dateiPfad, "Datum;Lebensmittel;Gramm;Kalorien;Proteine;Kohlenhydrate;Fett\n" + zeile);

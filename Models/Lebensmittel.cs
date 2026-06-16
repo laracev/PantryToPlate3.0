@@ -37,10 +37,7 @@ namespace PantryToPlate.Models
                 {
                     continue;
                 }
-                if (double.TryParse(teile[1], out double kal) &&
-                    double.TryParse(teile[2], out double pro) &&
-                    double.TryParse(teile[3], out double fett) &&
-                    double.TryParse(teile[4], out double kohlen))
+                if (double.TryParse(teile[1], out double kal) && double.TryParse(teile[2], out double pro) && double.TryParse(teile[3], out double fett) && double.TryParse(teile[4], out double kohlen))
                 {
                     double ballast = (teile.Length >= 6 && double.TryParse(teile[5], out double b)) ? b : 0;
                     liste.Add(new Lebensmittel(teile[0], kal, pro, fett, kohlen, ballast));

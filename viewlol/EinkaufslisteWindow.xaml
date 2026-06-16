@@ -42,37 +42,25 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" 
-                CornerRadius="12" Padding="15" Margin="0,0,0,20">
+      
+        <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" CornerRadius="12" Padding="15" Margin="0,0,0,20">
             <StackPanel>
-                <TextBlock Text="Meine Einkaufsliste" 
-                           FontSize="24" FontWeight="Bold" 
-                           Foreground="White" HorizontalAlignment="Center"/>
-                <TextBlock Text="Hake ab was du gekauft hast" 
-                           FontSize="12" Foreground="#BDC3C7" 
-                           HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                <TextBlock Text="Meine Einkaufsliste" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                <TextBlock Text="Hake ab was du gekauft hast" FontSize="12" Foreground="#BDC3C7" HorizontalAlignment="Center" Margin="0,5,0,0"/>
             </StackPanel>
         </Border>
 
-        <!-- Liste mit Checkboxen -->
         <Border Grid.Row="1" Style="{StaticResource CardStyle}" Padding="15">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="spEinkaufsliste" Margin="0"/>
             </ScrollViewer>
         </Border>
 
-        <!-- Buttons -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" 
-                    HorizontalAlignment="Center" Margin="0,15,0,0">
-            <Button x:Name="btnGekaufteEntfernen" Content="✓ Gekaufte zur Pantry hinzufügen" 
-                    Background="{StaticResource WarningColor}" Width="220" Margin="5"
-                    Click="btnGekaufteEntfernen_Click"/>
-            <Button x:Name="btnLeeren" Content="Liste leeren" 
-                    Background="#E74C3C" Width="120" Margin="5"
-                    Click="btnLeeren_Click"/>
-            <Button x:Name="btnSchliessen" Content="Schließen" Width="100" Margin="5"
-                    Click="btnSchliessen_Click"/>
+    
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+            <Button x:Name="btnGekaufteEntfernen" Content="✓ Gekaufte zur Pantry hinzufügen" Background="{StaticResource WarningColor}" Width="220" Margin="5" Click="btnGekaufteEntfernen_Click"/>
+            <Button x:Name="btnLeeren" Content="Liste leeren" Background="#E74C3C" Width="120" Margin="5" Click="btnLeeren_Click"/>
+            <Button x:Name="btnSchliessen" Content="Schließen" Width="100" Margin="5" Click="btnSchliessen_Click"/>
         </StackPanel>
     </Grid>
 </Window>

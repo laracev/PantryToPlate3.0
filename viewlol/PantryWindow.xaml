@@ -8,7 +8,6 @@
         Background="#F0F4F8">
 
     <Window.Resources>
-        <!-- Einfache, schöne Farben -->
         <SolidColorBrush x:Key="Primary" Color="#8360A6"/>
         <SolidColorBrush x:Key="PrimaryDark" Color="#9ABF75"/>
         <SolidColorBrush x:Key="Success" Color="#C0A7D9"/>
@@ -26,7 +25,6 @@
             <Setter Property="Padding" Value="20"/>
         </Style>
 
-        <!-- Einfache Buttons -->
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -41,7 +39,7 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Einfache TextBox -->
+
         <Style TargetType="TextBox">
             <Setter Property="Height" Value="36"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -58,7 +56,7 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Einfache ListBox -->
+
         <Style TargetType="ListBox">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -88,7 +86,6 @@
             </Setter>
         </Style>
 
-        <!-- Einfaches DataGrid -->
         <Style TargetType="DataGrid">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -115,7 +112,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
         <Border Grid.Row="0" Background="{StaticResource Primary}" 
                 CornerRadius="16" Padding="20" Margin="0,0,0,20">
             <StackPanel>
@@ -126,46 +122,31 @@
             </StackPanel>
         </Border>
 
-        <!-- Inhalt -->
+      
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,12">
             <StackPanel>
 
-                <!-- Statistik -->
-
-                <!-- Lebensmittel suchen & hinzufügen -->
+                
                 <Border Style="{StaticResource Card}" Margin="0,0,0,15" Height="368">
                     <StackPanel>
-                        <TextBlock Text="✨ Lebensmittel hinzufügen" 
-                                   FontSize="16" FontWeight="Bold"
-                                   Foreground="{StaticResource TextDark}"
-                                   Margin="0,0,0,15"/>
+                        <TextBlock Text="Lebensmittel hinzufügen" FontSize="16" FontWeight="Bold"  Foreground="{StaticResource TextDark}" Margin="0,0,0,15"/>
 
-                        <!-- Suche -->
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="txtSuche" Grid.Column="0" 
-                                     TextChanged="txtSuche_TextChanged"/>
-                            <Button x:Name="btnAlleAnzeigen" Grid.Column="1" 
-                                    Content="Alle" Width="60" Margin="10,0,0,0"
-                                    Background="{StaticResource Primary}"
-                                    Click="btnAlleAnzeigen_Click"/>
-                        </Grid>
+                            <TextBox x:Name="txtSuche" Grid.Column="0" TextChanged="txtSuche_TextChanged"/>
+                            <Button x:Name="btnAlleAnzeigen" Grid.Column="1" Content="Alle" Width="60" Margin="10,0,0,0" Background="{StaticResource Primary}" Click="btnAlleAnzeigen_Click"/>
+                        </Grid> 
+                        
+                        <ListBox x:Name="lstLebensmittel" SelectionChanged="lstLebensmittel_SelectionChanged"/>
 
-                        <!-- Lebensmittel Liste -->
-                        <ListBox x:Name="lstLebensmittel" 
-                                 SelectionChanged="lstLebensmittel_SelectionChanged"/>
+                        <TextBlock x:Name="txtAnzahlErgebnisse" FontSize="11" Foreground="{StaticResource TextGray}" Margin="0,5,0,10"/>
 
-                        <TextBlock x:Name="txtAnzahlErgebnisse" 
-                                   FontSize="11" Foreground="{StaticResource TextGray}"
-                                   Margin="0,5,0,10"/>
-
-                        <!-- Auswahl & Menge -->
-                        <Border Background="{StaticResource BgGray}" CornerRadius="12" 
-                                Padding="15" Margin="0,5,0,0">
+                        
+                        <Border Background="{StaticResource BgGray}" CornerRadius="12" Padding="15" Margin="0,5,0,0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -174,51 +155,34 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0">
-                                    <TextBlock Text="Ausgewählt" FontSize="11" 
-                                               Foreground="{StaticResource TextGray}"/>
-                                    <TextBlock x:Name="txtAusgewaehltes" Text="-" 
-                                               FontSize="15" FontWeight="SemiBold"
-                                               Foreground="{StaticResource Primary}"/>
+                                    <TextBlock Text="Ausgewählt" FontSize="11" Foreground="{StaticResource TextGray}"/>
+                                    <TextBlock x:Name="txtAusgewaehltes" Text="-" FontSize="15" FontWeight="SemiBold" Foreground="{StaticResource Primary}"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1" Margin="15,0">
-                                    <TextBlock Text="Gramm" FontSize="11" 
-                                               Foreground="{StaticResource TextGray}"/>
+                                    <TextBlock Text="Gramm" FontSize="11" Foreground="{StaticResource TextGray}"/>
                                     <TextBox x:Name="txtMenge" Text="100" Width="80"
                                              TextAlignment="Center"/>
                                 </StackPanel>
 
-                                <Button x:Name="btnZurPantryHinzufuegen" Grid.Column="2"
-                                        Content="➕ Hinzufügen" Width="100" Height="38"
-                                        Background="{StaticResource Success}"
-                                        Click="btnZurPantryHinzufuegen_Click"/>
+                                <Button x:Name="btnZurPantryHinzufuegen" Grid.Column="2" Content="➕ Hinzufügen" Width="100" Height="38" Background="{StaticResource Success}" Click="btnZurPantryHinzufuegen_Click"/>
                             </Grid>
                         </Border>
                     </StackPanel>
                 </Border>
 
-                <!-- Meine Vorräte -->
                 <Border Style="{StaticResource Card}" Height="254">
                     <StackPanel>
-                        <TextBlock Text="📋 Meine Vorräte" 
-                                   FontSize="16" FontWeight="Bold"
-                                   Foreground="{StaticResource TextDark}"
-                                   Margin="0,0,0,15"/>
+                        <TextBlock Text="Meine Vorräte" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextDark}" Margin="0,0,0,15"/>
 
-                        <DataGrid x:Name="dgPantry" AutoGenerateColumns="False" 
-                                  Height="211">
+                        <DataGrid x:Name="dgPantry" AutoGenerateColumns="False" Height="211">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Lebensmittel" 
-                                                    Width="*" Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Menge (g)" 
-                                                    Width="100" Binding="{Binding Menge}"/>
+                                <DataGridTextColumn Header="Lebensmittel" Width="*" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Menge (g)" Width="100" Binding="{Binding Menge}"/>
                                 <DataGridTemplateColumn Header="" Width="80">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="Löschen" Width="60" Height="28"
-                                                    Background="{StaticResource Danger}"
-                                                    FontSize="11" Click="btnLoeschen_Click"
-                                                    Tag="{Binding}"/>
+                                            <Button Content="Löschen" Width="60" Height="28" Background="{StaticResource Danger}" FontSize="11" Click="btnLoeschen_Click" Tag="{Binding}"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -226,12 +190,8 @@
                         </DataGrid>
                     </StackPanel>
                 </Border>
-
-                <!-- Schließen -->
-                <Button x:Name="btnSchliessen" Content="Schließen" 
-                        Width="100" Height="38" HorizontalAlignment="Center" 
-                        Margin="0,20,0,0" Background="{StaticResource Primary}"
-                        Click="btnSchliessen_Click"/>
+                
+                <Button x:Name="btnSchliessen" Content="Schließen" Width="100" Height="38" HorizontalAlignment="Center" Margin="0,20,0,0" Background="{StaticResource Primary}" Click="btnSchliessen_Click"/>
 
             </StackPanel>
         </ScrollViewer>
