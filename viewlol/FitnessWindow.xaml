@@ -4,20 +4,16 @@
         Title="⚡ Fitness" Height="753" Width="1097"
         WindowStartupLocation="CenterOwner"
         WindowState="Maximized"
-        Background="#F7F9FC">
+        Background="#F5F6F8">
 
     <Window.Resources>
-        <SolidColorBrush x:Key="PrimaryColor" Color="#8360A6"/>
-        <SolidColorBrush x:Key="InfoColor" Color="#C6D9B4"/>
+        <SolidColorBrush x:Key="PrimaryColor" Color="#6F5A8A"/>
+        <SolidColorBrush x:Key="InfoColor" Color="#D7E3CF"/>
 
         <Style x:Key="CardStyle" TargetType="Border">
             <Setter Property="Background" Value="White"/>
             <Setter Property="CornerRadius" Value="12"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
-                </Setter.Value>
-            </Setter>
+
         </Style>
 
         <Style TargetType="Button">
@@ -28,7 +24,7 @@
             <Setter Property="Height" Value="35"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="BorderThickness" Value="0"/>
-            
+
         </Style>
     </Window.Resources>
 
@@ -38,11 +34,11 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-       
-        <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" CornerRadius="12" Padding="15" Margin="0,0,0,20">
+
+        <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" CornerRadius="8" Padding="15" Margin="0,0,0,20">
             <StackPanel>
                 <TextBlock Text="⚡ Fitness Aktivität" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
-                <TextBlock Text="Erfasse deine verbrannten Kalorien" FontSize="12" Foreground="#BDC3C7" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                <TextBlock Text="Erfasse deine verbrannten Kalorien" FontSize="12" Foreground="#D9D4DF" HorizontalAlignment="Center" Margin="0,5,0,0"/>
             </StackPanel>
         </Border>
 
@@ -50,15 +46,15 @@
             <StackPanel>
                 <Border Style="{StaticResource CardStyle}" Padding="20" Margin="0,0,0,15">
                     <StackPanel>
-                        <TextBlock Text="🏃 Aktivität" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                        <TextBlock Text="🏃 Aktivität" FontWeight="Medium" Margin="0,0,0,8"/>
                         <ComboBox x:Name="cboAktivitaet" Height="40" Margin="0,0,0,15" SelectionChanged="cboAktivitaet_SelectionChanged"/>
 
-                        <TextBlock Text="⏱️ Dauer (Minuten)" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                        <TextBlock Text="⏱️ Dauer (Minuten)" FontWeight="Medium" Margin="0,0,0,8"/>
                         <TextBox x:Name="txtDauer" Height="40" TextChanged="txtDauer_TextChanged"/>
                     </StackPanel>
                 </Border>
 
-                <Border Background="{StaticResource InfoColor}" CornerRadius="12" Padding="20" Margin="0,0,0,15">
+                <Border Background="{StaticResource InfoColor}" CornerRadius="8" Padding="20" Margin="0,0,0,15">
                     <StackPanel>
                         <TextBlock Text="🔥 Verbrannte Kalorien" FontWeight="Bold" Foreground="White" TextAlignment="Center"/>
                         <TextBlock x:Name="txtVerbrannteKalorien" Text="0 kcal" FontSize="32" FontWeight="Bold" Foreground="White" TextAlignment="Center"/>
@@ -67,13 +63,14 @@
 
                 <Border Style="{StaticResource CardStyle}" Padding="15" Margin="0,0,0,15">
                     <StackPanel>
-                        <TextBlock Text="📋 Heutige Aktivitäten" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                        <ListBox x:Name="lstAktivitaeten" Height="150" BorderThickness="0"/>
+                        <TextBlock Text="📋 Heutige Aktivitäten" FontWeight="Medium" Margin="0,0,0,10"/>
+                        <ListBox x:Name="lstAktivitaeten" Height="150" BorderThickness="0" SelectionMode="Single"/>
                     </StackPanel>
                 </Border>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
                     <Button x:Name="btnSpeichern" Content="💾 Speichern" Width="120" Margin="5" Click="btnSpeichern_Click"/>
+                    <Button x:Name="btnLoeschen" Content="🗑 Löschen" Width="110" Margin="5" Click="btnLoeschen_Click"/>
                     <Button x:Name="btnSchliessen" Content="Schließen" Width="100" Margin="5" Click="btnSchliessen_Click"/>
                 </StackPanel>
             </StackPanel>

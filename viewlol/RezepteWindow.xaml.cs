@@ -35,7 +35,7 @@ namespace PantryToPlate
                 LadePantry();
                 foreach (Rezept r in alleRezepte)
                 {
-                    r.MatchProzent = rezeptRechner.BerechneMatch(r, pantryItems);
+                    r.SetzeMatchProzent(rezeptRechner.BerechneMatch(r, pantryItems));
                 }
                 FiltereUndZeigeRezepte();
                 if (aktuellesRezept != null)
@@ -77,26 +77,24 @@ namespace PantryToPlate
 
         private void LadeLebensmittel()
         {
-            List<Lebensmittel> lmListe = Lebensmittel.LadeAlleAusCsv();
-            lebensmittelKalorien.Clear();
-            foreach (Lebensmittel lm in lmListe)
-            {
-                lebensmittelKalorien[lm.Name.ToLower()] = lm.KalorienPro100g;
-            }
+            lebensmittelKalorien = AppDaten.LebensmittelKalorien;
         }
 
         private void LadePantry()
         {
-            pantryItems = PantryItem.LadeAlleAusCsv();
+            pantryItems = AppDaten.Pantry;
         }
 
         private void LadeRezepte()
         {
-            alleRezepte = Rezept.LadeAlleAusCsv();
-            foreach (Rezept r in alleRezepte)
+            alleRezepte = AppDaten.Rezepte;
+
+            foreach (Rezept rezept in alleRezepte)
             {
-                r.KalorienProPortion = rezeptRechner.BerechneKalorien(r, lebensmittelKalorien);
-                r.MatchProzent = rezeptRechner.BerechneMatch(r, pantryItems);
+                double kalorien = rezeptRechner.BerechneKalorien(rezept, lebensmittelKalorien);
+                int match = rezeptRechner.BerechneMatch(rezept, pantryItems);
+                rezept.SetzeKalorienProPortion(kalorien);
+                rezept.SetzeMatchProzent(match);
             }
         }
 
@@ -363,12 +361,8 @@ namespace PantryToPlate
                     {
                         abzug = rest;
                     }
-                    pantryItems[i].Menge -= abzug;
+                    pantryItems[i].VerringereMenge(abzug);
                     rest -= abzug;
-                    if (pantryItems[i].Menge < 0)
-                    {
-                        pantryItems[i].Menge = 0;
-                    }
                 }
             }
         }
@@ -412,7 +406,7 @@ namespace PantryToPlate
                 bool gefundenAufListe = false;
                 for (int j = 0; j < einkaufsListe.Count; j++)
                 {
-                    string vorhandenerName = Namensvergleich.NameOhneMenge(einkaufsListe[j]);
+                    string vorhandenerName = Namensvergleich.NormalisiereName(einkaufsListe[j]);
                     if (Namensvergleich.BerechneAehnlichkeit(vorhandenerName, zutat) >= 120)
                     {
                         einkaufsListe[j] = neuerEintrag;
@@ -508,10 +502,9 @@ namespace PantryToPlate
             MahlzeitEintrag.Speichere(neuerEintrag);
             MessageBox.Show(r.Name + " (" + portionen + " Portionen) wurde gekocht!\n\n" + gesamtKal.ToString("0") + " kcal wurden hinzugefügt.", "Gekocht!", MessageBoxButton.OK, MessageBoxImage.Information);
             AppLogger.Info($"Rezept {r.Name} ({portionen} Portionen) gekocht. {gesamtKal} kcal hinzugefügt.");
-            LadePantry();
             foreach (Rezept rezept in alleRezepte)
             {
-                rezept.MatchProzent = rezeptRechner.BerechneMatch(rezept, pantryItems);
+                rezept.SetzeMatchProzent(rezeptRechner.BerechneMatch(rezept, pantryItems));
             }
             FiltereUndZeigeRezepte();
             if (aktuellesRezept != null)

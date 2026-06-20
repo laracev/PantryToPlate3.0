@@ -24,9 +24,9 @@
                 <TextBlock Text="Top-Empfehlung" FontSize="11" Foreground="#8360A6" HorizontalAlignment="Center" FontWeight="SemiBold"/>
             </StackPanel>
 
-            <TextBlock x:Name="txtRezeptName" Grid.Row="1" FontSize="14" FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center" Foreground="#1E293B" Margin="0,5,0,8"/>
+            <TextBlock Name="txtRezeptName" Grid.Row="1" FontSize="14" FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center" Foreground="#1E293B" Margin="0,5,0,8"/>
 
-            <Border x:Name="matchBorder" Background="#9ABF75" CornerRadius="20" Padding="8,3" HorizontalAlignment="Left" Margin="244,16,0,21">
+            <Border Name="matchBorder" Background="#9ABF75" CornerRadius="20" Padding="8,3" HorizontalAlignment="Left" Margin="244,16,0,21">
                 <TextBlock x:Name="txtMatchProzent" Text="0%" Foreground="White" FontSize="11" FontWeight="Bold"/>
             </Border>
 

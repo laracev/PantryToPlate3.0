@@ -1,6 +1,8 @@
-﻿using PantryToPlate.Models;
+﻿using PantryToPlate.logik;
+using PantryToPlate.Models;
 using PTP;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,16 +11,14 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace PantryToPlate
-
-   
 {
     public partial class SplashScreenWindow : Window
     {
-
-        //hab das ganze auf github gefunden also so eine animation vorlage hab einfach nur bestimmte dinge umgeändert und so
         private DispatcherTimer ladetimer;
         private int ladestatus = 0;
         private bool ladenAbgeschlossen = false;
+        private bool ladefehlerAufgetreten = false;
+
         private string[] statusTexte = new string[]
         {
             "Initialisiere...",
@@ -33,7 +33,7 @@ namespace PantryToPlate
         public SplashScreenWindow()
         {
             InitializeComponent();
-            this.Loaded += SplashScreenWindow_Loaded;
+            Loaded += SplashScreenWindow_Loaded;
         }
 
         private void SplashScreenWindow_Loaded(object sender, RoutedEventArgs e)
@@ -78,6 +78,7 @@ namespace PantryToPlate
             if (ladestatus < statusTexte.Length)
             {
                 txtStatus.Text = statusTexte[ladestatus];
+
                 try
                 {
                     switch (ladestatus)
@@ -89,7 +90,7 @@ namespace PantryToPlate
                             LadeLebensmittel();
                             break;
                         case 2:
-                            LadeBenutzer();
+                            Benutzer.LadeAusCsv();
                             break;
                         case 3:
                             LadePantry();
@@ -102,18 +103,24 @@ namespace PantryToPlate
                             break;
                     }
                 }
-                catch (Exception ex)
+                catch (IOException)
                 {
-                    AppLogger.Error("Fehler im SplashScreen: " + ex.Message);
+                    ladefehlerAufgetreten = true;
                 }
+
                 ladestatus++;
             }
             else if (!ladenAbgeschlossen)
             {
                 ladenAbgeschlossen = true;
                 ladetimer.Stop();
-                AppDaten.IstGeladen = true;
-                AppLogger.Info("Alle Daten geladen. Starte Hauptfenster.");
+                AppDaten.SetzeGeladen(!ladefehlerAufgetreten);
+
+                if (ladefehlerAufgetreten)
+                {
+                    MessageBox.Show("Einige Daten konnten nicht geladen werden.");
+                }
+
                 DispatcherTimer schliessTimer = new DispatcherTimer();
                 schliessTimer.Interval = TimeSpan.FromSeconds(0.5);
                 schliessTimer.Tick += SchliessTimer_Tick;
@@ -126,47 +133,49 @@ namespace PantryToPlate
             ((DispatcherTimer)sender).Stop();
             MainWindow main = new MainWindow();
             main.Show();
-            this.Close();
+            Close();
         }
 
         private void LadeLebensmittel()
         {
-            AppDaten.Lebensmittel = Lebensmittel.LadeAlleAusCsv();
+            List<Lebensmittel> lebensmittel = Lebensmittel.LadeAlleAusCsv();
+            AppDaten.SetzeLebensmittel(lebensmittel);
             AppDaten.LebensmittelKalorien.Clear();
-            foreach (Lebensmittel lm in AppDaten.Lebensmittel)
+
+            foreach (Lebensmittel eintrag in AppDaten.Lebensmittel)
             {
-                string nameLower = lm.Name.ToLower();
-                if (!AppDaten.LebensmittelKalorien.ContainsKey(nameLower))
+                string name = eintrag.Name.ToLower();
+                if (!AppDaten.LebensmittelKalorien.ContainsKey(name))
                 {
-                    AppDaten.LebensmittelKalorien.Add(nameLower, lm.KalorienPro100g);
+                    AppDaten.LebensmittelKalorien.Add(name, eintrag.KalorienPro100g);
                 }
             }
         }
 
-        private void LadeBenutzer()
-        {
-            Benutzer.LadeAusCsv();
-        }
-
         private void LadePantry()
         {
-            AppDaten.Pantry = PantryItem.LadeAlleAusCsv();
+            AppDaten.SetzePantry(PantryItem.LadeAlleAusCsv());
         }
 
         private void LadeRezepte()
         {
-            AppDaten.Rezepte = Rezept.LadeAlleAusCsv();
-            PantryToPlate.logik.RezeptRechner rechner = new PantryToPlate.logik.RezeptRechner();
-            foreach (Rezept r in AppDaten.Rezepte)
+            List<Rezept> rezepte = Rezept.LadeAlleAusCsv();
+            RezeptRechner rechner = new RezeptRechner();
+
+            foreach (Rezept rezept in rezepte)
             {
-                r.KalorienProPortion = rechner.BerechneKalorien(r, AppDaten.LebensmittelKalorien);
-                r.MatchProzent = rechner.BerechneMatch(r, AppDaten.Pantry);
+                rezept.SetzeKalorienProPortion(
+                    rechner.BerechneKalorien(rezept, AppDaten.LebensmittelKalorien));
+                rezept.SetzeMatchProzent(
+                    rechner.BerechneMatch(rezept, AppDaten.Pantry));
             }
+
+            AppDaten.SetzeRezepte(rezepte);
         }
 
         private void LadeMetEintraege()
         {
-            AppDaten.MetEintraege = MetEintrag.LadeAlleAusCsv();
+            AppDaten.SetzeMetEintraege(MetEintrag.LadeAlleAusCsv());
         }
     }
 }

@@ -25,6 +25,7 @@ namespace PTP
         public MainWindow()
         {
             InitializeComponent();
+            heuteGegessenAnzeigen.MahlzeitLoeschenAngefordert += MahlzeitLoeschen;
             LadeAlleDaten();
             updateTimer = new DispatcherTimer();
             updateTimer.Interval = TimeSpan.FromSeconds(60);
@@ -122,9 +123,13 @@ namespace PTP
         private void btnEinstellungen_Click(object sender, RoutedEventArgs e)
         {
             Window1 fenster = new Window1();
-            fenster.ShowDialog();
-            LadeBenutzerDaten();
-            AktualisiereAnzeige();
+            bool? wurdeGespeichert = fenster.ShowDialog();
+
+            if (wurdeGespeichert == true)
+            {
+                kalorienZiel = fenster.GespeichertesKalorienZiel;
+                AktualisiereAnzeige();
+            }
         }
 
         private void btnMahlzeitHinzufuegen_Click(object sender, RoutedEventArgs e)
@@ -139,7 +144,7 @@ namespace PTP
         {
             PantryWindow fenster = new PantryWindow();
             fenster.ShowDialog();
-            LadeHeutigeMahlzeiten(); // Pantry-Änderungen können Mahlzeiten beeinflussen? Nicht direkt, aber zur Sicherheit
+            LadeHeutigeMahlzeiten(); 
             AktualisiereAnzeige();
         }
 
@@ -163,6 +168,34 @@ namespace PTP
         {
             EinkaufslisteWindow fenster = new EinkaufslisteWindow();
             fenster.ShowDialog();
+        }
+
+        private void MahlzeitLoeschen(int index)
+        {
+            if (MessageBox.Show("Möchtest du diese Mahlzeit wirklich löschen?", "Mahlzeit löschen", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                bool geloescht = MahlzeitEintrag.LoescheVonTagNachIndex(DateTime.Now, index);
+
+                if (!geloescht)
+                {
+                    MessageBox.Show("Die Mahlzeit konnte nicht gefunden werden.");
+                    return;
+                }
+
+                LadeHeutigeMahlzeiten();
+                AktualisiereAnzeige();
+                AppLogger.Info("Mahlzeit gelöscht");
+            }
+            catch (System.IO.IOException)
+            {
+                AppLogger.Error("Fehler beim Löschen einer Mahlzeit");
+                MessageBox.Show("Die Mahlzeit konnte nicht gelöscht werden.");
+            }
         }
 
         protected override void OnClosed(EventArgs e)

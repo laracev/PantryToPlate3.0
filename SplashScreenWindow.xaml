@@ -4,7 +4,7 @@
         Title="Laden..." Height="350" Width="500"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" ResizeMode="NoResize">
-    <Grid Background="#8D64B1">
+    <Grid Background="#6F5A8A">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -14,27 +14,27 @@
 
         <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock Text="Pantry To Plate" FontSize="32" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
-            <TextBlock FontSize="16" Foreground="#BDC3C7" HorizontalAlignment="Center"><Run Language="de-at" Text="Healthy Eating made easy •ᴗ•"/></TextBlock>
+            <TextBlock FontSize="16" Foreground="#D9D4DF" HorizontalAlignment="Center"><Run Language="de-at" Text="Healthy Eating made easy •ᴗ•"/></TextBlock>
         </StackPanel>
 
-        <Border Grid.Row="1" Height="30" Width="400" Background="#C0A7D9" CornerRadius="15" Margin="20" HorizontalAlignment="Center">
-            <Border x:Name="progressBar" Width="0" Background="#9ABF75" CornerRadius="15" HorizontalAlignment="Left"/>
+        <Border Grid.Row="1" Height="30" Width="400" Background="#AFA0C4" CornerRadius="8" Margin="20" HorizontalAlignment="Center">
+            <Border x:Name="progressBar" Width="0" Background="#7FA36A" CornerRadius="8" HorizontalAlignment="Left"/>
         </Border>
 
-        <TextBlock x:Name="txtStatus" Grid.Row="2" Text="Initialisiere..." Foreground="#BDC3C7" HorizontalAlignment="Center" Margin="10"/>
+        <TextBlock x:Name="txtStatus" Grid.Row="2" Text="Initialisiere..." Foreground="#D9D4DF" HorizontalAlignment="Center" Margin="10"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Ellipse x:Name="dot1" Width="10" Height="10" Fill="#8360A6" Margin="5">
+            <Ellipse x:Name="dot1" Width="10" Height="10" Fill="#6F5A8A" Margin="5">
                 <Ellipse.RenderTransform>
                     <ScaleTransform CenterX="5" CenterY="5"/>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="dot2" Width="10" Height="10" Fill="#9ABF75" Margin="5">
+            <Ellipse x:Name="dot2" Width="10" Height="10" Fill="#7FA36A" Margin="5">
                 <Ellipse.RenderTransform>
                     <ScaleTransform CenterX="5" CenterY="5"/>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="dot3" Width="10" Height="10" Fill="#C6D9B4" Margin="5">
+            <Ellipse x:Name="dot3" Width="10" Height="10" Fill="#D7E3CF" Margin="5">
                 <Ellipse.RenderTransform>
                     <ScaleTransform CenterX="5" CenterY="5"/>
                 </Ellipse.RenderTransform>
