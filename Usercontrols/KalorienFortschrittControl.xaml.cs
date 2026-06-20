@@ -41,7 +41,6 @@ namespace PantryToPlate.Usercontrols
 
             txtProzent.Text = ((int)prozent).ToString() + "%";
 
-            // Farbe je nach Fortschritt ändern
             if (prozent > 90)
             {
                 fortschrittsBogen.Stroke = new SolidColorBrush(Colors.IndianRed);
@@ -97,10 +96,7 @@ namespace PantryToPlate.Usercontrols
         }
         //ki ende
 
-        public void SetzeBeschreibung(string text)
-        {
-           
-        }
+
     }
 }
     

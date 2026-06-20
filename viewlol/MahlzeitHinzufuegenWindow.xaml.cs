@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
+//der timer wurde mit ki gemacht (chatgpt)
+
 namespace PantryToPlate
 {
     public partial class MahlzeitHinzufuegenWindow : Window
@@ -38,7 +40,7 @@ namespace PantryToPlate
         {
             try
             {
-                alleLebensmittel = Lebensmittel.LadeAlleAusCsv();
+                alleLebensmittel = new List<Lebensmittel>(AppDaten.Lebensmittel);
                 if (alleLebensmittel.Count == 0)
                 {
                     LadeStandardLebensmittel();

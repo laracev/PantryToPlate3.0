@@ -13,8 +13,7 @@ namespace PantryToPlate.Models
         public string Aktivitaetslevel { get; private set; }
         public string Ziel { get; private set; }
 
-        public Benutzer(double kalorienZiel, double gewicht, double groesse, int alter,
-                        string geschlecht, string aktivitaet, string ziel)
+        public Benutzer(double kalorienZiel, double gewicht, double groesse, int alter, string geschlecht, string aktivitaet, string ziel)
         {
             KalorienZiel = kalorienZiel;
             Gewicht = gewicht;
@@ -42,10 +41,7 @@ namespace PantryToPlate.Models
                 return null;
             }
 
-            if (double.TryParse(teile[0], NumberStyles.Any, CultureInfo.InvariantCulture, out double ziel) &&
-                double.TryParse(teile[1], NumberStyles.Any, CultureInfo.InvariantCulture, out double gewicht) &&
-                double.TryParse(teile[2], NumberStyles.Any, CultureInfo.InvariantCulture, out double groesse) &&
-                int.TryParse(teile[3], out int alter))
+            if (double.TryParse(teile[0], NumberStyles.Any, CultureInfo.InvariantCulture, out double ziel) && double.TryParse(teile[1], NumberStyles.Any, CultureInfo.InvariantCulture, out double gewicht) && double.TryParse(teile[2], NumberStyles.Any, CultureInfo.InvariantCulture, out double groesse) && int.TryParse(teile[3], out int alter))
             {
                 return new Benutzer(ziel, gewicht, groesse, alter, teile[4], teile[5], teile[6]);
             }

@@ -2,20 +2,20 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="⚙️ Einstellungen" 
-        Height="963" Width="1057"
+        Height="871" Width="1057"
         WindowStartupLocation="CenterOwner"
         WindowState="Maximized"
-        Background="#F0F4F8">
+        Background="#F5F6F8">
 
     <Window.Resources>
-        <SolidColorBrush x:Key="Primary" Color="#8360A6"/>
-        <SolidColorBrush x:Key="Success" Color="#C0A7D9"/>
-        <SolidColorBrush x:Key="Danger" Color="#C6D9B4"/>
+        <SolidColorBrush x:Key="Primary" Color="#6F5A8A"/>
+        <SolidColorBrush x:Key="Success" Color="#AFA0C4"/>
+        <SolidColorBrush x:Key="Danger" Color="#D7E3CF"/>
         <SolidColorBrush x:Key="Warning" Color="#F2F2F2"/>
-        <SolidColorBrush x:Key="TextDark" Color="#1E293B"/>
-        <SolidColorBrush x:Key="TextGray" Color="#64748B"/>
+        <SolidColorBrush x:Key="TextDark" Color="#2E2933"/>
+        <SolidColorBrush x:Key="TextGray" Color="#6E6873"/>
         <SolidColorBrush x:Key="BgWhite" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="BgGray" Color="#F1F5F9"/>
+        <SolidColorBrush x:Key="BgGray" Color="#F0F1F3"/>
 
         <Style x:Key="Card" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource BgWhite}"/>
@@ -42,7 +42,7 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="12,0"/>
             <Setter Property="Background" Value="{StaticResource BgWhite}"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderBrush" Value="#D8D4DC"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="13"/>
             <Style.Triggers>
@@ -58,7 +58,7 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="10,0"/>
             <Setter Property="Background" Value="{StaticResource BgWhite}"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderBrush" Value="#D8D4DC"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="13"/>
         </Style>
@@ -70,41 +70,41 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="20">
+    <Grid Margin="20,20,20,11">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Background="{StaticResource Primary}" CornerRadius="16" Padding="20" Margin="0,7,0,7">
+        <Border Grid.Row="0" Background="{StaticResource Primary}" CornerRadius="8" Padding="20" Margin="0,5,0,13">
             <StackPanel>
-                <TextBlock Text="Einstellungen" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                <TextBlock Text="Einstellungen" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Height="30"/>
             </StackPanel>
         </Border>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,1">
             <StackPanel>
 
-                <Border Style="{StaticResource Card}" Margin="0,0,0,15" Height="506">
+                <Border Style="{StaticResource Card}" Margin="0,0,0,15" Height="417">
                     <StackPanel>
 
                         <TextBlock Style="{StaticResource Label}" Text="Gewicht (kg)"/>
-                        <TextBox x:Name="txtGewicht" Margin="0,0,0,15"/>
+                        <TextBox x:Name="txtGewicht" Margin="0,0,0,15" Height="33"/>
 
                         <TextBlock Style="{StaticResource Label}" Text="Größe (cm)"/>
-                        <TextBox x:Name="txtGroesse" Margin="0,0,0,15"/>
+                        <TextBox x:Name="txtGroesse" Margin="0,0,0,15" Height="30"/>
 
                         <TextBlock Style="{StaticResource Label}" Text="Alter"/>
-                        <TextBox x:Name="txtAlter" Margin="0,0,0,15"/>
+                        <TextBox x:Name="txtAlter" Margin="0,0,0,15" Height="27"/>
 
                         <TextBlock Style="{StaticResource Label}" Text="Geschlecht"/>
-                        <ComboBox x:Name="cboGeschlecht" Margin="0,0,0,15">
+                        <ComboBox x:Name="cboGeschlecht" Margin="0,0,0,15" Height="29">
                             <ComboBoxItem Content="👩 Weiblich"/>
                             <ComboBoxItem Content="👨 Männlich"/>
                         </ComboBox>
 
                         <TextBlock Style="{StaticResource Label}" Text="Aktivitätslevel"/>
-                        <ComboBox x:Name="cboAktivitaet" Margin="0,0,0,15">
+                        <ComboBox x:Name="cboAktivitaet" Margin="0,0,0,15" Height="28">
                             <ComboBoxItem Content="🛋️ Wenig bewegt (1.2)"/>
                             <ComboBoxItem Content="🚶 Leicht aktiv (1.375)"/>
                             <ComboBoxItem Content="🏃 Mäßig aktiv (1.55)"/>
@@ -112,7 +112,7 @@
                         </ComboBox>
 
                         <TextBlock Style="{StaticResource Label}" Text="Ziel"/>
-                        <ComboBox x:Name="cboZiel" Margin="0,0,0,10">
+                        <ComboBox x:Name="cboZiel" Margin="0,0,0,10" Height="28">
                             <ComboBoxItem Content="⬇️ Abnehmen (-500 kcal)"/>
                             <ComboBoxItem Content="⚖️ Gewicht halten (0 kcal)"/>
                             <ComboBoxItem Content="⬆️ Zunehmen (+500 kcal)"/>
@@ -120,17 +120,17 @@
                     </StackPanel>
                 </Border>
 
-                <Border Style="{StaticResource Card}" Margin="0,0,0,15" Height="224">
+                <Border Style="{StaticResource Card}" Margin="0,0,0,15" Height="226">
                     <StackPanel>
                         <TextBlock Text="🎯 Dein Kalorienziel" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextDark}" Margin="0,0,0,15"/>
 
-                        <Border Background="{StaticResource Primary}" CornerRadius="12" Padding="20" Margin="0,0,0,15" Height="113">
+                        <Border Background="{StaticResource Primary}" CornerRadius="8" Padding="20" Margin="0,0,0,15" Height="113">
                             <StackPanel>
                                 <TextBlock x:Name="txtKalorienZiel" Text="0" FontSize="48" FontWeight="Bold" Foreground="White" TextAlignment="Center" Height="54" Width="608"/>
-                                <TextBlock Text="kcal pro Tag" Foreground="#C7D2FE" TextAlignment="Center" FontSize="14" Height="21"/>
+                                <TextBlock Text="kcal pro Tag" Foreground="#EEE9F3" TextAlignment="Center" FontSize="14" Height="21"/>
                             </StackPanel>
                         </Border>
-                        <Button x:Name="btnBerechnen" Content="Empfehlung berechnen" Background="{StaticResource Warning}" Click="btnBerechnen_Click" Height="19" Width="190"/>
+                        <Button x:Name="btnBerechnen" Content="Empfehlung berechnen" Background="{StaticResource Primary}" Click="btnBerechnen_Click" Height="19" Width="190"/>
                     </StackPanel>
                 </Border>
 

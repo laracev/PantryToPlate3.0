@@ -1,5 +1,6 @@
 ﻿using PantryToPlate.helpers;
 using PantryToPlate.Models;
+using PantryToPlate.logik;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -30,7 +31,7 @@ namespace PantryToPlate
         {
             try
             {
-                pantryItems = PantryItem.LadeAlleAusCsv();
+                pantryItems = AppDaten.Pantry;
             }
             catch (Exception ex)
             {
@@ -167,7 +168,8 @@ namespace PantryToPlate
             {
                 if (item.IstGekauft)
                 {
-             
+
+                    gekaufteItems.Add(item.Name);
                     gekaufteMengen.Add(Namensvergleich.MengeAusText(item.Name));
                 }
                 else
@@ -175,7 +177,6 @@ namespace PantryToPlate
                     neueListe.Add(item);
                 }
             }
-
             if (gekaufteItems.Count == 0)
             {
                 MessageBox.Show("Keine Items zum Einkaufen ausgewählt!\nBitte hake ab, was du gekauft hast.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -191,7 +192,7 @@ namespace PantryToPlate
                 {
                     if (Namensvergleich.NormalisiereName(p.Name) == Namensvergleich.NormalisiereName(passenderName))
                     {
-                        p.Menge += menge;
+                        p.ErhoeheMenge(menge);
                         gefunden = true;
                         break;
                     }
@@ -206,6 +207,8 @@ namespace PantryToPlate
             try
             {
                 PantryItem.SpeichereAlle(pantryItems);
+                AppDaten.SetzePantry(pantryItems);
+                AktualisiereRezeptProzente();
             }
             catch (Exception ex)
             {
@@ -229,6 +232,12 @@ namespace PantryToPlate
             }
             MessageBox.Show("Folgende Items wurden zur Pantry hinzugefügt:\n\n" + gekaufteListe, "Erfolg!", MessageBoxButton.OK, MessageBoxImage.Information);
             AppLogger.Info("Gekaufte Items zur Pantry hinzugefügt: " + gekaufteListe);
+        }
+
+        private void AktualisiereRezeptProzente()
+        {
+            RezeptRechner rezeptRechner = new RezeptRechner();
+            rezeptRechner.AktualisiereMatches(AppDaten.Rezepte, AppDaten.Pantry);
         }
 
         private void btnLeeren_Click(object sender, RoutedEventArgs e)

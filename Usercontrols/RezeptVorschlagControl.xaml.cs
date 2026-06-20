@@ -27,15 +27,15 @@ namespace PantryToPlate.Usercontrols
             }
 
             bestesRezept = rezept;
-            //chatgpt start: promt: Kürze den Rezeptnamen auf maximal 40 Zeichen
+
+            //chatgpt start: promt: Kürze den Rezeptnamen auf maximal 40 Zeichen und hilf mir diese matching prozent anzeigen zu können
             string name = rezept.Name;
             if (name.Length > 40)
             {
-                name = name.Substring(0, 37) + "...";
+                name = name.Substring(0, 37) + "..."; 
             }
             txtRezeptName.Text = name;
-            //chatgpt end
-
+           
             txtMatchProzent.Text = rezept.MatchProzent + "%";
 
             if (rezept.MatchProzent >= 80)
@@ -54,6 +54,7 @@ namespace PantryToPlate.Usercontrols
  
             btnZumRezept.IsEnabled = true;
         }
+        //chatgpt end
 
         private void btnZumRezept_Click(object sender, RoutedEventArgs e)
         {

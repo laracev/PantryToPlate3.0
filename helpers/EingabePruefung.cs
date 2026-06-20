@@ -1,78 +1,84 @@
-﻿using System;
-
-namespace PantryToPlate.helpers
+﻿namespace PantryToPlate.helpers
 {
-    static class EingabePruefung
+    public static class EingabePruefung
     {
         public static bool IstGueltigesGewicht(string text)
         {
-            double gewicht;
-
-  
-            if (!double.TryParse(text, out gewicht))
-            {
-                return false;
-            }
-            if (gewicht < 20 || gewicht > 500)
-            {
-                return false;
-            }
-            return true;
+            return VersucheGewichtZuLesen(text, out double gewicht);
         }
 
         public static bool IstGueltigeGroesse(string text)
         {
-            double groesse;
-            if (!double.TryParse(text, out groesse))
-            {
-                return false;
-            }
-            if (groesse < 100 || groesse > 250)
-            {
-                return false;
-            }
-            return true;
+            return VersucheGroesseZuLesen(text, out double groesse);
         }
 
         public static bool IstGueltigesAlter(string text)
         {
-            int alter;
-            if (!int.TryParse(text, out alter))
-            {
-                return false;
-            }
-            if (alter < 14 || alter > 120)
-            {
-                return false;
-            }
-            return true;
+            return VersucheAlterZuLesen(text, out int alter);
         }
 
         public static bool IstGueltigeMenge(string text)
         {
-            double menge;
-            if (!double.TryParse(text, out menge))
-            {
-                return false;
-            }
-            if (menge <= 0)
-            {
-                return false;
-            }
-            return true;
+            return VersucheMengeZuLesen(text, out double menge);
         }
 
         public static bool IstGueltigeDauer(string text)
         {
-            double dauer;
-            if (!double.TryParse(text, out dauer))
+            return VersucheDauerZuLesen(text, out double dauer);
+        }
+
+        public static bool VersucheGewichtZuLesen(string text, out double gewicht)
+        {
+            gewicht = 0;
+            if (!double.TryParse(text, out double wert) || wert < 20 || wert > 500)
             {
                 return false;
             }
-            if (dauer <= 0 || dauer > 1440)
+            gewicht = wert;
+            return true;
+        }
+
+        public static bool VersucheGroesseZuLesen(string text, out double groesse)
+        {
+            groesse = 0;
+            if (!double.TryParse(text, out double wert) || wert < 100 || wert > 250)
             {
                 return false;
             }
+            groesse = wert;
+            return true;
+        }
+
+        public static bool VersucheAlterZuLesen(string text, out int alter)
+        {
+            alter = 0;
+            if (!int.TryParse(text, out int wert) || wert < 14 || wert > 120)
+            {
+                return false;
+            }
+            alter = wert;
+            return true;
+        }
+
+        public static bool VersucheMengeZuLesen(string text, out double menge)
+        {
+            menge = 0;
+            if (!double.TryParse(text, out double wert) || wert <= 0 || wert > 100000)
+            {
+                return false;
+            }
+            menge = wert;
+            return true;
+        }
+
+        public static bool VersucheDauerZuLesen(string text, out double dauer)
+        {
+            dauer = 0;
+            if (!double.TryParse(text, out double wert) || wert <= 0 || wert > 1440)
+            {
+                return false;
+            }
+            dauer = wert;
             return true;
         }
 

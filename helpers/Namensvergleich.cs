@@ -11,7 +11,9 @@ namespace PantryToPlate.helpers
             {
                 return 0;
             }
+
             text = text.Trim().Replace(" kcal", "").Replace("g", "").Replace(" ", "");
+
             if (text.Contains(",") && !text.Contains("."))
             {
                 text = text.Replace(",", ".");
@@ -24,7 +26,7 @@ namespace PantryToPlate.helpers
         }
 
 
-        //chatgpt, promt: Schreibe eine Funktion, die aus einem Text die Menge in Gramm oder Milliliter extrahiert. Die Menge steht immer in Klammern und kann entweder mit "kg", "g", "l" oder "ml" angegeben sein. Wenn die Menge mit "kg" oder "l" angegeben ist, soll sie in Gramm umgerechnet werden (1 kg = 1000 g, 1 l = 1000 ml). Wenn keine gültige Menge gefunden wird, soll 100 zurückgegeben werden.
+        //chatgpt, promt: Schreibe eine Funktion, die aus einem Text die Menge in Gramm oder Milliliter extrahiert
         public static double MengeAusText(string text)
         {
             int start = text.LastIndexOf('(');
@@ -51,7 +53,7 @@ namespace PantryToPlate.helpers
         //chatgpt ende
 
 
-        //chatgpt, promt: Schreibe eine Funktion, die einen Namen normalisiert, indem sie Umlaute ersetzt, bestimmte Wörter entfernt und Pluralformen reduziert. Die Funktion soll auch alle Wörter in Kleinbuchstaben umwandeln und überflüssige Leerzeichen entfernen.
+        //chatgpt, promt: Schreibe eine Funktion, die einen Namen normalisiert, indem sie Umlaute ersetzt, bestimmte Wörter entfernt
         public static string NormalisiereName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -121,7 +123,7 @@ namespace PantryToPlate.helpers
             }
 
 
-            //chatgpt, promt: Schreibe eine Funktion, die die Ähnlichkeit von zwei Namen berechnet, indem sie die Anzahl der gemeinsamen Wörter zählt. Jedes gemeinsame Wort erhöht die Ähnlichkeit um 200 Punkte. Wenn ein Wort in einem Namen im anderen Namen enthalten ist (z.B. "Apfel" und "Apfelmus"), erhöht das die Ähnlichkeit um 120 Punkte. Wenn die Ähnlichkeit 0 ist, aber die ersten 4 Buchstaben der Namen gleich sind, soll die Ähnlichkeit 150 Punkte betragen.
+            //chatgpt, promt: wie amche ich, dass die Ähnlichkeit von zwei Namen berechnet, indem sie die Anzahl der gemeinsamen Wörter zählt. Jedes gemeinsame Wort erhöht die Ähnlichkeit um 200 Punkte. Wenn ein Wort in einem Namen im anderen Namen enthalten ist (z.B. "Apfel" und "Apfelmus"), erhöht das die Ähnlichkeit um 120 Punkte. Wenn die Ähnlichkeit 0 ist, aber die ersten 4 Buchstaben der Namen gleich sind, soll die Ähnlichkeit 150 Punkte betragen.
             string[] aWoerter = a.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             string[] bWoerter = b.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             int score = 0;

@@ -1,7 +1,9 @@
 ﻿using PantryToPlate.helpers;
 using PantryToPlate.logik;
 using PantryToPlate.Models;
+using Serilog.Core;
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,8 +11,10 @@ namespace PantryToPlate
 {
     public partial class Window1 : Window
     {
-        private double berechnetesZiel = 2000;
+        private double berechnetesZiel = 0;
         private KalorienzielRechner kalorienzielRechner = new KalorienzielRechner();
+     
+        public double GespeichertesKalorienZiel { get; private set; }
 
         public Window1()
         {
@@ -28,7 +32,8 @@ namespace PantryToPlate
                     txtGewicht.Text = benutzer.Gewicht.ToString();
                     txtGroesse.Text = benutzer.Groesse.ToString();
                     txtAlter.Text = benutzer.Alter.ToString();
-                    cboGeschlecht.SelectedIndex = (benutzer.Geschlecht == "Weiblich") ? 0 : 1;
+                    cboGeschlecht.SelectedIndex = benutzer.Geschlecht == "Weiblich" ? 0 : 1;
+
                     for (int i = 0; i < cboAktivitaet.Items.Count; i++)
                     {
                         ComboBoxItem item = (ComboBoxItem)cboAktivitaet.Items[i];
@@ -38,6 +43,7 @@ namespace PantryToPlate
                             break;
                         }
                     }
+
                     for (int i = 0; i < cboZiel.Items.Count; i++)
                     {
                         ComboBoxItem item = (ComboBoxItem)cboZiel.Items[i];
@@ -47,13 +53,20 @@ namespace PantryToPlate
                             break;
                         }
                     }
+
                     berechnetesZiel = benutzer.KalorienZiel;
+                    GespeichertesKalorienZiel = berechnetesZiel;
                     txtKalorienZiel.Text = berechnetesZiel.ToString("0");
                 }
             }
-            catch (Exception ex)
+            catch (IOException)
             {
-                AppLogger.Error(ex, "Fehler beim Laden der Benutzerdaten");
+                MessageBox.Show("Die Benutzerdaten konnten nicht geladen werden.");
+            }
+
+            if (cboGeschlecht.SelectedIndex < 0)
+            {
+                cboGeschlecht.SelectedIndex = 0;
             }
             if (cboAktivitaet.SelectedIndex < 0)
             {
@@ -65,99 +78,124 @@ namespace PantryToPlate
             }
         }
 
-        private void btnBerechnen_Click(object sender, RoutedEventArgs e)
+        private bool VersucheEingabenZuLesen(out double gewicht, out double groesse, out int alter)
         {
-            if (!EingabePruefung.IstGueltigesGewicht(txtGewicht.Text))
+            gewicht = 0;
+            groesse = 0;
+            alter = 0;
+
+            if (!EingabePruefung.VersucheGewichtZuLesen(txtGewicht.Text, out gewicht))
             {
                 MessageBox.Show("Bitte ein gültiges Gewicht zwischen 20 und 500 kg eingeben.");
-                return;
+                return false;
             }
-            if (!EingabePruefung.IstGueltigeGroesse(txtGroesse.Text))
+            if (!EingabePruefung.VersucheGroesseZuLesen(txtGroesse.Text, out groesse))
             {
                 MessageBox.Show("Bitte eine gültige Größe zwischen 100 und 250 cm eingeben.");
-                return;
+                return false;
             }
-            if (!EingabePruefung.IstGueltigesAlter(txtAlter.Text))
+            if (!EingabePruefung.VersucheAlterZuLesen(txtAlter.Text, out alter))
             {
                 MessageBox.Show("Bitte ein gültiges Alter zwischen 14 und 120 Jahren eingeben.");
-                return;
+                return false;
             }
             if (cboGeschlecht.SelectedItem == null || cboAktivitaet.SelectedItem == null || cboZiel.SelectedItem == null)
             {
                 MessageBox.Show("Bitte alle Felder auswählen.");
-                return;
+                return false;
             }
 
-            if (!double.TryParse(txtGewicht.Text, out double gewicht))
-            {
-                MessageBox.Show("Gewicht ungültig");
-                return;
-            }
-            if (!double.TryParse(txtGroesse.Text, out double groesse))
-            {
-                MessageBox.Show("Größe ungültig");
-                return;
-            }
-            if (!int.TryParse(txtAlter.Text, out int alter))
-            {
-                MessageBox.Show("Alter ungültig");
-                return;
-            }
+            return true;
+        }
 
+        private double ErmittleAktivitaetsfaktor()
+        {
+            switch (cboAktivitaet.SelectedIndex)
+            {
+                case 0:
+                    return 1.2;
+                case 1:
+                    return 1.375;
+                case 2:
+                    return 1.55;
+                case 3:
+                    return 1.725;
+                default:
+                    return 1.2;
+            }
+        }
+
+        private string ErmittleZiel()
+        {
+            switch (cboZiel.SelectedIndex)
+            {
+                case 0:
+                    return "Abnehmen";
+                case 2:
+                    return "Zunehmen";
+                default:
+                    return "Halten";
+            }
+        }
+
+        private void BerechneZiel(double gewicht, double groesse, int alter)
+        {
             string geschlecht = ((ComboBoxItem)cboGeschlecht.SelectedItem).Content.ToString();
-            string aktivitaet = ((ComboBoxItem)cboAktivitaet.SelectedItem).Content.ToString();
-            string ziel = ((ComboBoxItem)cboZiel.SelectedItem).Content.ToString();
+            double aktivitaetsfaktor = ErmittleAktivitaetsfaktor();
+            string ziel = ErmittleZiel();
 
-            berechnetesZiel = kalorienzielRechner.BerechneKalorienziel(gewicht, groesse, alter, geschlecht, aktivitaet, ziel);
+            berechnetesZiel = kalorienzielRechner.BerechneKalorienziel(
+                gewicht, groesse, alter, geschlecht, aktivitaetsfaktor, ziel);
+
             txtKalorienZiel.Text = berechnetesZiel.ToString("0");
+        }
+
+        private void btnBerechnen_Click(object sender, RoutedEventArgs e)
+        {
+            if (!VersucheEingabenZuLesen(out double gewicht, out double groesse, out int alter))
+            {
+                return;
+            }
+
+            BerechneZiel(gewicht, groesse, alter);
         }
 
         private void btnSpeichern_Click(object sender, RoutedEventArgs e)
         {
-            if (berechnetesZiel <= 0)
+            if (!VersucheEingabenZuLesen(out double gewicht, out double groesse, out int alter))
             {
-                MessageBox.Show("Bitte zuerst berechnen.");
-                return;
-            }
-            if (cboGeschlecht.SelectedItem == null || cboAktivitaet.SelectedItem == null || cboZiel.SelectedItem == null)
-            {
-                MessageBox.Show("Bitte alle Felder auswählen.");
                 return;
             }
 
-            if (!double.TryParse(txtGewicht.Text, out double gewicht))
-            {
-                MessageBox.Show("Gewicht ungültig");
-                return;
-            }
-            if (!double.TryParse(txtGroesse.Text, out double groesse))
-            {
-                MessageBox.Show("Größe ungültig");
-                return;
-            }
-            if (!int.TryParse(txtAlter.Text, out int alter))
-            {
-                MessageBox.Show("Alter ungültig");
-                return;
-            }
+            BerechneZiel(gewicht, groesse, alter);
 
-            string geschlecht = ((ComboBoxItem)cboGeschlecht.SelectedItem).Content.ToString();
-            string aktivitaet = ((ComboBoxItem)cboAktivitaet.SelectedItem).Content.ToString();
-            string ziel = ((ComboBoxItem)cboZiel.SelectedItem).Content.ToString();
-
-            Benutzer benutzer = new Benutzer(berechnetesZiel, gewicht, groesse, alter, geschlecht, aktivitaet, ziel);
             try
             {
-                benutzer.Speichere();
-                MessageBox.Show("Einstellungen gespeichert");
-                AppLogger.Info("Benutzereinstellungen gespeichert");
-                Close();
+                string geschlecht = ((ComboBoxItem)cboGeschlecht.SelectedItem).Content.ToString();
+                string aktivitaet = ((ComboBoxItem)cboAktivitaet.SelectedItem).Content.ToString();
+                string ziel = ((ComboBoxItem)cboZiel.SelectedItem).Content.ToString();
+
+                Benutzer benutzer = new Benutzer(berechnetesZiel, gewicht, groesse, alter, geschlecht, aktivitaet, ziel);
+                try
+                {
+                    benutzer.Speichere();
+                    GespeichertesKalorienZiel = berechnetesZiel;
+                    MessageBox.Show("Einstellungen gespeichert");
+                    AppLogger.Info("Benutzereinstellungen gespeichert");
+                    DialogResult = true;
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("Die Einstellungen konnten nicht gespeichert werden.");
+                }
+
             }
-            catch (Exception ex)
+            catch
             {
-                AppLogger.Error(ex, "Fehler beim Speichern");
-                MessageBox.Show("Fehler beim Speichern.");
+                AppLogger.Error("Es gab schwierigkeiten beim speichern. haben sie vielleicht nicht das bilogische geschlecht ausgewählt?");
             }
+
+           
         }
 
         private void btnAbbrechen_Click(object sender, RoutedEventArgs e)

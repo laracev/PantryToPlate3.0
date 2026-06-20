@@ -39,7 +39,7 @@ namespace PantryToPlate
         {
             try
             {
-                alleLebensmittel = Lebensmittel.LadeAlleAusCsv();
+                alleLebensmittel = new List<Lebensmittel>(AppDaten.Lebensmittel);
                 ZeigeAlleLebensmittel();
             }
             catch (Exception ex)
@@ -53,7 +53,7 @@ namespace PantryToPlate
         {
             try
             {
-                pantryItems = PantryItem.LadeAlleAusCsv();
+                pantryItems = AppDaten.Pantry;
             }
             catch (Exception ex)
             {
@@ -221,7 +221,7 @@ namespace PantryToPlate
             {
                 if (item.Name == ausgewaehltesLebensmittel.Name)
                 {
-                    item.Menge += menge;
+                    item.ErhoeheMenge(menge);
                     gefunden = true;
                     break;
                 }

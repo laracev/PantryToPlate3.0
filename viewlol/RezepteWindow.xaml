@@ -1,177 +1,79 @@
-﻿<Window x:Class="PantryToPlate.RezepteWindow"
+<Window x:Class="PantryToPlate.RezepteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Rezeptempfehlungen" 
-        Height="800" Width="1200"
-        WindowStartupLocation="CenterOwner"
-        WindowState="Maximized"
-        Background="#F7F9FC">
-
+        Title="Rezepte" WindowState="Maximized" MinWidth="900" MinHeight="620"
+        WindowStartupLocation="CenterOwner" Background="#F5F3F7">
     <Window.Resources>
-        <SolidColorBrush x:Key="PrimaryColor" Color="#8360A6"/>
-        <SolidColorBrush x:Key="SecondaryColor" Color="#F2F2F2"/>
-        <SolidColorBrush x:Key="SuccessColor" Color="#C0A7D9"/>
-        <SolidColorBrush x:Key="WarningColor" Color="#C6D9B4"/>
-        <SolidColorBrush x:Key="InfoColor" Color="#9ABF75"/>
-        <SolidColorBrush x:Key="LightGray" Color="#F7E3FC"/>
-        <SolidColorBrush x:Key="MediumGray" Color="#BDC3C7"/>
-
-        <Style x:Key="CardStyle" TargetType="Border">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="CornerRadius" Value="12"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
+        <SolidColorBrush x:Key="Purple" Color="#755B8E"/>
+        <SolidColorBrush x:Key="Green" Color="#789777"/>
         <Style TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#34495E"/>
-                </Trigger>
-            </Style.Triggers>
+            <Setter Property="Background" Value="{StaticResource Purple}"/><Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/><Setter Property="Padding" Value="11,7"/><Setter Property="Cursor" Value="Hand"/>
         </Style>
-
-        <Style x:Key="SuccessButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background" Value="{StaticResource SuccessColor}"/>
-        </Style>
-
-        <Style TargetType="ComboBox">
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="Padding" Value="8,0"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#DDDDDD"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Cursor" Value="Hand"/>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="White"/><Setter Property="BorderBrush" Value="#DDD7E2"/><Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="7"/><Setter Property="Padding" Value="16"/>
         </Style>
     </Window.Resources>
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" 
-                CornerRadius="12" Padding="15" Margin="0,0,0,20">
-            <StackPanel>
-                <TextBlock Text="Rezeptempfehlungen" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
-            </StackPanel>
+    <Grid Margin="18">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <Border Background="{StaticResource Purple}" CornerRadius="7" Padding="15" Margin="0,0,0,12">
+            <TextBlock Text="Rezepte" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
         </Border>
 
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1.5*"/>
-            </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions><ColumnDefinition Width="0.9*"/><ColumnDefinition Width="1.3*"/></Grid.ColumnDefinitions>
 
-     
-            <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,15,0" Padding="0">
+            <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,10,0">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <Border Grid.Row="0" Background="{StaticResource LightGray}" Padding="15,10" CornerRadius="12,12,0,0">
-                        <StackPanel>
-                            <TextBlock Text="📂 Kategorie" FontSize="12" Foreground="Gray" Margin="0,0,0,5"/>
-                            <ComboBox x:Name="cboKategorie" SelectionChanged="cboKategorie_SelectionChanged">
-                                <ComboBoxItem Content="📋 Alle Rezepte" Tag="Alle" IsSelected="True"/>
-                                <ComboBoxItem Content="🍝 Pasta" Tag="Pasta"/>
-                                <ComboBoxItem Content="🥗 Bowl" Tag="Bowl"/>
-                                <ComboBoxItem Content="🍕 Normale Pizza" Tag="Normale Pizza"/>
-                                <ComboBoxItem Content="🌱 Vegane Pizza" Tag="Vegane Pizza"/>
-                                <ComboBoxItem Content="🍛 Curry" Tag="Curry"/>
-                                <ComboBoxItem Content="🥣 Suppe" Tag="Suppe"/>
-                                <ComboBoxItem Content="🍲 Auflauf" Tag="Auflauf"/>
-                                <ComboBoxItem Content="🍳 Omelett" Tag="Omelett"/>
-                                <ComboBoxItem Content="🌯 Wrap" Tag="Wrap"/>
-                                <ComboBoxItem Content="🍳 Pfannengericht" Tag="Pfannengericht"/>
-                                <ComboBoxItem Content="🔥 Ofengericht" Tag="Ofengericht"/>
-                                <ComboBoxItem Content="🍰 Kuchen" Tag="Kuchen"/>
-                                <ComboBoxItem Content="🍪 Kekse" Tag="Kekse"/>
-                                <ComboBoxItem Content="🥤 Smoothie" Tag="Smoothie"/>
-                                <ComboBoxItem Content="🌅 Frühstück" Tag="Frühstück"/>
-                                <ComboBoxItem Content="🍮 Dessert" Tag="Dessert"/>
-                            </ComboBox>
-                        </StackPanel>
-                    </Border>
-
-                    <Border Grid.Row="1" Background="White" Padding="15,10" CornerRadius="0">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox x:Name="txtSuche" Grid.Column="0" Height="35" Padding="10,0" TextChanged="txtSuche_TextChanged"/>
-                            <TextBlock Grid.Column="1" Text="🔍" FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                        </Grid>
-                    </Border>
-
-                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Background="#F8F9FA">
-                        <StackPanel x:Name="spRezeptListe" Margin="10"/>
-                    </ScrollViewer>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <TextBlock Text="Rezepte suchen" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <StackPanel Grid.Row="1" Margin="0,0,0,10">
+                        <TextBlock Text="Kategorie" Margin="0,0,0,4"/>
+                        <ComboBox x:Name="cboKategorie" Height="34" SelectionChanged="cboKategorie_SelectionChanged">
+                            <ComboBoxItem Content="Alle Rezepte" Tag="Alle" IsSelected="True"/><ComboBoxItem Content="Pasta" Tag="Pasta"/>
+                            <ComboBoxItem Content="Bowl" Tag="Bowl"/><ComboBoxItem Content="Normale Pizza" Tag="Normale Pizza"/>
+                            <ComboBoxItem Content="Vegane Pizza" Tag="Vegane Pizza"/><ComboBoxItem Content="Curry" Tag="Curry"/>
+                            <ComboBoxItem Content="Suppe" Tag="Suppe"/><ComboBoxItem Content="Auflauf" Tag="Auflauf"/>
+                            <ComboBoxItem Content="Omelett" Tag="Omelett"/><ComboBoxItem Content="Wrap" Tag="Wrap"/>
+                            <ComboBoxItem Content="Pfannengericht" Tag="Pfannengericht"/><ComboBoxItem Content="Ofengericht" Tag="Ofengericht"/>
+                            <ComboBoxItem Content="Kuchen" Tag="Kuchen"/><ComboBoxItem Content="Kekse" Tag="Kekse"/>
+                            <ComboBoxItem Content="Smoothie" Tag="Smoothie"/><ComboBoxItem Content="Frühstück" Tag="Frühstück"/>
+                            <ComboBoxItem Content="Dessert" Tag="Dessert"/>
+                        </ComboBox>
+                        <TextBlock Text="Suche" Margin="0,9,0,4"/>
+                        <TextBox x:Name="txtSuche" Height="34" Padding="8,0" VerticalContentAlignment="Center" TextChanged="txtSuche_TextChanged"/>
+                    </StackPanel>
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto"><StackPanel x:Name="spRezeptListe"/></ScrollViewer>
                 </Grid>
             </Border>
 
-            <Border Grid.Column="1" Style="{StaticResource CardStyle}" Padding="0">
+            <Border Grid.Column="1" Style="{StaticResource Card}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel x:Name="spDetails" Margin="20">
-          
-                        <TextBlock x:Name="txtRezeptName" FontSize="22" FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center" Foreground="{StaticResource PrimaryColor}" Margin="0,0,0,15"/>
-
-                        
-                        <TextBlock x:Name="txtKeinRezept" Text="👈 Wähle ein Rezept aus der Liste" FontSize="16" Foreground="Gray" HorizontalAlignment="Center" Margin="0,50,0,0" Visibility="Visible"/>
-
+                    <StackPanel x:Name="spDetails">
+                        <TextBlock x:Name="txtRezeptName" FontSize="22" FontWeight="Bold" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                        <TextBlock x:Name="txtKeinRezept" Text="Wähle links ein Rezept aus." Foreground="#6F6973" HorizontalAlignment="Center" Margin="0,45,0,0"/>
                         <StackPanel x:Name="spDetailsInhalt" Visibility="Collapsed">
-
-                            <Border Background="{StaticResource InfoColor}" CornerRadius="10" Padding="12" Margin="0,0,0,15">
-                                <StackPanel>
-                                    <TextBlock Text="Kalorien pro Portion" Foreground="White" TextAlignment="Center" FontSize="12"/>
-                                    <TextBlock x:Name="txtKalorien" Text="0 kcal" FontSize="28" FontWeight="Bold" Foreground="White" TextAlignment="Center"/>
-                                </StackPanel>
+                            <Border Background="#EEE8F3" CornerRadius="5" Padding="10" Margin="0,0,0,14">
+                                <StackPanel><TextBlock Text="Kalorien pro Portion" HorizontalAlignment="Center"/><TextBlock x:Name="txtKalorien" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/></StackPanel>
                             </Border>
-                            
-                            <TextBlock Text="Zutaten" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,10"/>
-
-                            <StackPanel x:Name="spZutaten" Margin="0,0,0,15"/>
-
-                            
-                            <TextBlock Text="Anleitung" FontWeight="SemiBold" FontSize="14" Margin="0,15,0,10"/>
-
-                            <Border Background="#F8F9FA" CornerRadius="8" Padding="12" Margin="0,0,0,15">
-                                <TextBlock x:Name="txtAnleitung" Text="-" FontSize="12" TextWrapping="Wrap"/>
+                            <TextBlock Text="Zutaten" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
+                            <StackPanel x:Name="spZutaten" Margin="0,0,0,14"/>
+                            <TextBlock Text="Anleitung" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
+                            <Border Background="#F7F5F8" BorderBrush="#E3DEE6" BorderThickness="1" CornerRadius="5" Padding="12">
+                                <TextBlock x:Name="txtAnleitung" TextWrapping="Wrap"/>
                             </Border>
-
-                            <Border Background="#F0F0F0" CornerRadius="10" Padding="15">
-                                <StackPanel>
-                                    <TextBlock Text="Verfügbarkeit" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,10"/>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
-                                        <Button x:Name="btnFehlendeKaufen" Content="Fehlende kaufen" Width="160" Margin="5" Click="btnFehlendeKaufen_Click"/>
-                                        <Button x:Name="btnRezeptKochen" Content="Rezept kochen" Width="140" Margin="5" Style="{StaticResource SuccessButton}" Click="btnRezeptKochen_Click"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
+                            <WrapPanel HorizontalAlignment="Center" Margin="0,16,0,0">
+                                <Button x:Name="btnFehlendeKaufen" Content="Fehlende Zutaten kaufen" Margin="4" Click="btnFehlendeKaufen_Click"/>
+                                <Button x:Name="btnRezeptKochen" Content="Rezept kochen" Margin="4" Background="{StaticResource Green}" Click="btnRezeptKochen_Click"/>
+                            </WrapPanel>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
             </Border>
         </Grid>
 
-        <Button Grid.Row="2" x:Name="btnSchliessen" Content="Schließen" Width="100" Height="35" HorizontalAlignment="Center" Margin="0,15,0,0" Click="btnSchliessen_Click"/>
+        <Button x:Name="btnSchliessen" Grid.Row="2" Content="Schließen" Width="100" HorizontalAlignment="Center" Margin="0,12,0,0" Click="btnSchliessen_Click"/>
     </Grid>
 </Window>
