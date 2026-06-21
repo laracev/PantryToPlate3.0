@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" Height="148" Width="400">
 
-    <Border Background="White" CornerRadius="16" Padding="15">
+    <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="16" Padding="15">
         <Border.Effect>
             <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
         </Border.Effect>
@@ -21,16 +21,16 @@
 
             <StackPanel Grid.Row="0" Margin="0,0,0,6">
                 <TextBlock Text="🌟" FontSize="28" HorizontalAlignment="Center"/>
-                <TextBlock Text="Top-Empfehlung" FontSize="11" Foreground="#8360A6" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                <TextBlock Text="Top-Empfehlung" FontSize="11" Foreground="{DynamicResource StandardPrimaryBrush}" HorizontalAlignment="Center" FontWeight="SemiBold"/>
             </StackPanel>
 
-            <TextBlock Name="txtRezeptName" Grid.Row="1" FontSize="14" FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center" Foreground="#1E293B" Margin="0,5,0,8"/>
+            <TextBlock Name="txtRezeptName" Grid.Row="1" FontSize="14" FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center" Foreground="{DynamicResource WindowTextBrush}" Margin="0,5,0,8"/>
 
-            <Border Name="matchBorder" Background="#9ABF75" CornerRadius="20" Padding="8,3" HorizontalAlignment="Left" Margin="244,16,0,21">
-                <TextBlock x:Name="txtMatchProzent" Text="0%" Foreground="White" FontSize="11" FontWeight="Bold"/>
+            <Border Name="matchBorder" Background="{DynamicResource RecipePercentBrush}" CornerRadius="20" Padding="8,3" HorizontalAlignment="Left" Margin="244,16,0,21">
+                <TextBlock x:Name="txtMatchProzent" Text="0%" Foreground="{DynamicResource WhiteTextBrush}" FontSize="11" FontWeight="Bold"/>
             </Border>
 
-            <Button x:Name="btnZumRezept" Grid.Row="4" Content="📖 Zum Rezept" Background="#8360A6" Foreground="White" FontSize="11" FontWeight="SemiBold" Height="30" Click="btnZumRezept_Click" Cursor="Hand" BorderThickness="0"/>
+            <Button x:Name="btnZumRezept" Grid.Row="4" Content="📖 Zum Rezept" Foreground="{DynamicResource WhiteTextBrush}" FontSize="11" FontWeight="SemiBold" Height="30" Click="btnZumRezept_Click" Cursor="Hand" BorderThickness="0" Background="#FFBD89FF"/>
         </Grid>
     </Border>
 </UserControl>

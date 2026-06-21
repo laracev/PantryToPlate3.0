@@ -4,27 +4,27 @@
     {
         public static bool IstGueltigesGewicht(string text)
         {
-            return VersucheGewichtZuLesen(text, out double gewicht);
+            return VersucheGewichtZuLesen(text, out _);
         }
 
         public static bool IstGueltigeGroesse(string text)
         {
-            return VersucheGroesseZuLesen(text, out double groesse);
+            return VersucheGroesseZuLesen(text, out _);
         }
 
         public static bool IstGueltigesAlter(string text)
         {
-            return VersucheAlterZuLesen(text, out int alter);
+            return VersucheAlterZuLesen(text, out _);
         }
 
         public static bool IstGueltigeMenge(string text)
         {
-            return VersucheMengeZuLesen(text, out double menge);
+            return VersucheMengeZuLesen(text, out _);
         }
 
         public static bool IstGueltigeDauer(string text)
         {
-            return VersucheDauerZuLesen(text, out double dauer);
+            return VersucheDauerZuLesen(text, out _);
         }
 
         public static bool VersucheGewichtZuLesen(string text, out double gewicht)

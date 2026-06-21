@@ -228,7 +228,7 @@ namespace PantryToPlate
                     nameKurz = nameKurz.Substring(0, 52) + "...";
                 }
                 Border border = new Border();
-                border.Background = new SolidColorBrush(Color.FromRgb(248, 249, 250));
+                border.SetResourceReference(Border.BackgroundProperty, "GeneratedListItemBackgroundBrush");
                 border.CornerRadius = new CornerRadius(8);
                 border.Padding = new Thickness(12, 10, 12, 10);
                 border.Margin = new Thickness(0, 5, 0, 5);
@@ -249,11 +249,11 @@ namespace PantryToPlate
                 TextBlock matchTextBlock = new TextBlock();
                 matchTextBlock.Text = r.MatchProzent + "% verfügbar";
                 matchTextBlock.FontSize = 10;
-                matchTextBlock.Foreground = new SolidColorBrush(Colors.Gray);
+                matchTextBlock.SetResourceReference(TextBlock.ForegroundProperty, "GeneratedMutedTextBrush");
                 sp.Children.Add(matchTextBlock);
                 grid.Children.Add(sp);
                 Border prozentBorder = new Border();
-                prozentBorder.Background = new SolidColorBrush(Color.FromRgb(154, 191, 117));
+                prozentBorder.SetResourceReference(Border.BackgroundProperty, "RecipePercentBrush");
                 prozentBorder.CornerRadius = new CornerRadius(10);
                 prozentBorder.Padding = new Thickness(8, 3, 8, 3);
                 Grid.SetColumn(prozentBorder, 2);
@@ -272,7 +272,7 @@ namespace PantryToPlate
                 TextBlock emptyText = new TextBlock();
                 emptyText.Text = "Keine Rezepte gefunden";
                 emptyText.FontSize = 14;
-                emptyText.Foreground = new SolidColorBrush(Colors.Gray);
+                emptyText.SetResourceReference(TextBlock.ForegroundProperty, "GeneratedMutedTextBrush");
                 emptyText.HorizontalAlignment = HorizontalAlignment.Center;
                 emptyText.Margin = new Thickness(0, 30, 0, 0);
                 spRezeptListe.Children.Add(emptyText);
@@ -307,7 +307,7 @@ namespace PantryToPlate
             for (int i = 0; i < rezept.Zutaten.Count; i++)
             {
                 Border zutatBorder = new Border();
-                zutatBorder.Background = new SolidColorBrush(Color.FromRgb(248, 249, 250));
+                zutatBorder.SetResourceReference(Border.BackgroundProperty, "GeneratedListItemBackgroundBrush");
                 zutatBorder.Padding = new Thickness(8, 5, 8, 5);
                 zutatBorder.Margin = new Thickness(0, 2, 0, 2);
                 zutatBorder.CornerRadius = new CornerRadius(6);

@@ -7,10 +7,12 @@ namespace PTP
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e); // Wichtig: Basis-Methode aufrufen
+            base.OnStartup(e);
 
+            ThemeManager.Initialize();
             AppLogger.Init();
             AppLogger.Info("Anwendung gestartet");
+            
 
             SplashScreenWindow splash = new SplashScreenWindow();
             splash.Show();
