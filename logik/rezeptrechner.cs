@@ -6,6 +6,8 @@ namespace PantryToPlate.logik
 {
     public class RezeptRechner
     {
+
+        //chatgpt start, promt: wie kann ich berechnen wie viele kalorien der user durch ein rezept aufgenommen hat?
         public double BerechneKalorien(Rezept rezept, Dictionary<string, double> kalorienTabelle)
         {
             double gesamt = 0;
@@ -45,7 +47,7 @@ namespace PantryToPlate.logik
 
             return gesamt;
         }
-
+        //chatgpt ende
         public int BerechneMatch(Rezept rezept, List<PantryItem> pantryItems)
         {
             int vorhanden = 0;

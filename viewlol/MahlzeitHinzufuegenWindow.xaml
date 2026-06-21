@@ -179,8 +179,8 @@
 
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                    <Button x:Name="btnHinzufuegen" Content="➕ Hinzufügen" Width="120" Background="{StaticResource Success}" Click="btnHinzufuegen_Click"/>
-                    <Button x:Name="btnAbbrechen" Content="Abbrechen" Width="100" Margin="10,0,0,0" Background="{StaticResource Danger}" Click="btnAbbrechen_Click"/>
+                    <Button x:Name="btnHinzufuegen" Content="➕ Hinzufügen" Width="120" Click="btnHinzufuegen_Click" Background="#FFAF76FF"/>
+                    <Button x:Name="btnAbbrechen" Content="Abbrechen" Width="100" Margin="10,0,0,0" Click="btnAbbrechen_Click" Background="#FFADFF76"/>
                 </StackPanel>
 
             </StackPanel>

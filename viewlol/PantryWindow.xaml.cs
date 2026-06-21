@@ -118,12 +118,15 @@ namespace PantryToPlate
             {
                 return 100;
             }
+
             int matches = 0;
             int maxLength = suchLower.Length;
+
             if (maxLength > nameLower.Length)
             {
                 maxLength = nameLower.Length;
             }
+
             for (int i = 0; i < maxLength; i++)
             {
                 if (nameLower[i] == suchLower[i])

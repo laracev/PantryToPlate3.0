@@ -92,7 +92,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox x:Name="txtSuche" TextChanged="txtSuche_TextChanged"/>
-                        <Button x:Name="btnAlleAnzeigen" Grid.Column="1" Content="Alle anzeigen" Margin="8,0,0,0" Click="btnAlleAnzeigen_Click" Background="#FFC8A4EB"/>
+                        <Button x:Name="btnAlleAnzeigen" Grid.Column="1" Content="Alle anzeigen" Margin="8,0,0,0" Click="btnAlleAnzeigen_Click" Background="#FFA950FF"/>
                     </Grid>
                     <ListBox x:Name="lstLebensmittel" Grid.Row="2" SelectionChanged="lstLebensmittel_SelectionChanged" BorderBrush="{DynamicResource PantryBorderBrush}" BorderThickness="1"/>
                     <TextBlock x:Name="txtAnzahlErgebnisse" Grid.Row="3" Foreground="{DynamicResource PantryMutedTextBrush}" Margin="0,6,0,10"/>
@@ -111,7 +111,7 @@
                                 <TextBlock Text="Menge in g" FontSize="11"/>
                                 <TextBox x:Name="txtMenge" Width="80" TextAlignment="Center"/>
                             </StackPanel>
-                            <Button x:Name="btnZurPantryHinzufuegen" Grid.Column="2" Content="Hinzufügen" VerticalAlignment="Bottom" Click="btnZurPantryHinzufuegen_Click" Background="#FFD8C0EE"/>
+                            <Button x:Name="btnZurPantryHinzufuegen" Grid.Column="2" Content="Hinzufügen" VerticalAlignment="Bottom" Click="btnZurPantryHinzufuegen_Click" Background="#FF9726FF"/>
                         </Grid>
                     </Border>
                 </Grid>
@@ -137,6 +137,6 @@
             </Border>
         </Grid>
 
-        <Button x:Name="btnSchliessen" Grid.Row="2" Content="Schließen" Width="100" HorizontalAlignment="Center" Margin="0,12,0,0" Click="btnSchliessen_Click" Background="#FFDBC2F3"/>
+        <Button x:Name="btnSchliessen" Grid.Row="2" Content="Schließen" Width="100" HorizontalAlignment="Center" Margin="0,12,0,0" Click="btnSchliessen_Click" Background="#FFB466FF"/>
     </Grid>
 </Window>

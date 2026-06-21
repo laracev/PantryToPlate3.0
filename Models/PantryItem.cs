@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Windows;
 
 namespace PantryToPlate.Models
 {
@@ -14,11 +15,13 @@ namespace PantryToPlate.Models
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentException("Der Name darf nicht leer sein.");
+                MessageBox.Show("der Name darf nicht leer sein");
+                AppLogger.Info("der vollidiot hat versucht ohne namen hinzuzufügen in pantry lol");
             }
             if (menge < 0)
             {
-                throw new ArgumentException("Die Menge darf nicht negativ sein.");
+                MessageBox.Show("Die Menge darf nicht negativ sein.");
+                AppLogger.Info("der vollidiot hat versucht ohne menge bzw negative menge hinzuzufügen in pantry lol");
             }
 
             Name = name.Trim();

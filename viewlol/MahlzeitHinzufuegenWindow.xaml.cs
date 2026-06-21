@@ -1,7 +1,5 @@
 ﻿using PantryToPlate.helpers;
 using PantryToPlate.Models;
-using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -231,12 +229,7 @@ namespace PantryToPlate
             }
             double gramm = Helper.ToDouble(txtGramm.Text);
             double faktor = gramm / 100.0;
-            MahlzeitEintrag neuerEintrag = new MahlzeitEintrag(
-                ausgewaehltesLebensmittel.Name, gramm,
-                ausgewaehltesLebensmittel.KalorienPro100g * faktor,
-                ausgewaehltesLebensmittel.ProteinePro100g * faktor,
-                ausgewaehltesLebensmittel.KohlenhydratePro100g * faktor,
-                ausgewaehltesLebensmittel.FettPro100g * faktor);
+            MahlzeitEintrag neuerEintrag = new MahlzeitEintrag(ausgewaehltesLebensmittel.Name, gramm, ausgewaehltesLebensmittel.KalorienPro100g * faktor, ausgewaehltesLebensmittel.ProteinePro100g * faktor, ausgewaehltesLebensmittel.KohlenhydratePro100g * faktor, ausgewaehltesLebensmittel.FettPro100g * faktor);
             try
             {
                 MahlzeitEintrag.Speichere(neuerEintrag);

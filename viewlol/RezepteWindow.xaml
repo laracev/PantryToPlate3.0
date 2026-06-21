@@ -3,9 +3,46 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Rezepte" WindowState="Maximized" MinWidth="900" MinHeight="620"
         WindowStartupLocation="CenterOwner" Background="{DynamicResource PantryWindowBackgroundBrush}" Foreground="{DynamicResource WindowTextBrush}">
+
     <Window.Resources>
         <SolidColorBrush x:Key="Purple" Color="{DynamicResource PantryPrimaryColorValue}"/>
         <SolidColorBrush x:Key="Green" Color="{DynamicResource RecipeGreenColorValue}"/>
+
+        <DataTemplate x:Key="ComboBoxBlackTextTemplate">
+            <TextBlock Text="{Binding}" Foreground="Black"/>
+        </DataTemplate>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Background" Value="#E5E5E5"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="TextElement.Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="#BDBDBD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="8,0"/>
+        </Style>
+
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Background" Value="#E5E5E5"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="TextElement.Foreground" Value="Black"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="ContentTemplate" Value="{StaticResource ComboBoxBlackTextTemplate}"/>
+            <Style.Triggers>
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter Property="Background" Value="#D0D0D0"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="TextElement.Foreground" Value="Black"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#C8C8C8"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="TextElement.Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style TargetType="Button">
             <Setter Property="Background" Value="{StaticResource Purple}"/>
             <Setter Property="Foreground" Value="White"/>
@@ -14,6 +51,7 @@
             <Setter Property="Padding" Value="11,7"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
+
         <Style x:Key="Card" TargetType="Border">
             <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource PantryBorderBrush}"/>
@@ -21,7 +59,6 @@
             <Setter Property="CornerRadius" Value="7"/>
             <Setter Property="Padding" Value="16"/>
         </Style>
-
     </Window.Resources>
 
     <Grid Margin="18">
@@ -30,6 +67,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
         <Border Background="{StaticResource Purple}" CornerRadius="7" Padding="15" Margin="0,0,0,12">
             <TextBlock Text="Rezepte" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource WhiteTextBrush}" HorizontalAlignment="Center"/>
         </Border>
@@ -47,9 +85,12 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
+
                     <TextBlock Text="Rezepte suchen" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
                     <StackPanel Grid.Row="1" Margin="0,0,0,10">
                         <TextBlock Text="Kategorie" Margin="0,0,0,4"/>
+
                         <ComboBox x:Name="cboKategorie" Height="34" SelectionChanged="cboKategorie_SelectionChanged">
                             <ComboBoxItem Content="Alle Rezepte" Tag="Alle" IsSelected="True"/>
                             <ComboBoxItem Content="Pasta" Tag="Pasta"/>
@@ -69,9 +110,11 @@
                             <ComboBoxItem Content="Frühstück" Tag="Frühstück"/>
                             <ComboBoxItem Content="Dessert" Tag="Dessert"/>
                         </ComboBox>
+
                         <TextBlock Text="Suche" Margin="0,9,0,4"/>
                         <TextBox x:Name="txtSuche" Height="34" Padding="8,0" VerticalContentAlignment="Center" TextChanged="txtSuche_TextChanged"/>
                     </StackPanel>
+
                     <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
                         <StackPanel x:Name="spRezeptListe"/>
                     </ScrollViewer>
@@ -83,6 +126,7 @@
                     <StackPanel x:Name="spDetails">
                         <TextBlock x:Name="txtRezeptName" FontSize="22" FontWeight="Bold" TextWrapping="Wrap" Margin="0,0,0,12"/>
                         <TextBlock x:Name="txtKeinRezept" Text="Wähle links ein Rezept aus." Foreground="{DynamicResource PantryMutedTextBrush}" HorizontalAlignment="Center" Margin="0,45,0,0"/>
+
                         <StackPanel x:Name="spDetailsInhalt" Visibility="Collapsed">
                             <Border Background="{DynamicResource SurfaceAltBrush}" CornerRadius="5" Padding="10" Margin="0,0,0,14">
                                 <StackPanel>
@@ -90,12 +134,15 @@
                                     <TextBlock x:Name="txtKalorien" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
                                 </StackPanel>
                             </Border>
+
                             <TextBlock Text="Zutaten" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
                             <StackPanel x:Name="spZutaten" Margin="0,0,0,14"/>
+
                             <TextBlock Text="Anleitung" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
                             <Border Background="{DynamicResource RecipeInstructionBackgroundBrush}" BorderBrush="{DynamicResource RecipeInstructionBorderBrush}" BorderThickness="1" CornerRadius="5" Padding="12">
                                 <TextBlock x:Name="txtAnleitung" TextWrapping="Wrap"/>
                             </Border>
+
                             <WrapPanel HorizontalAlignment="Center" Margin="0,16,0,0">
                                 <Button x:Name="btnFehlendeKaufen" Content="Fehlende Zutaten kaufen" Margin="4" Click="btnFehlendeKaufen_Click"/>
                                 <Button x:Name="btnRezeptKochen" Content="Rezept kochen" Margin="4" Background="{StaticResource Green}" Click="btnRezeptKochen_Click"/>
@@ -106,6 +153,6 @@
             </Border>
         </Grid>
 
-        <Button x:Name="btnSchliessen" Grid.Row="2" Content="Schließen" Width="100" HorizontalAlignment="Center" Margin="0,12,0,0" Click="btnSchliessen_Click" Foreground="White" Background="#FFC2A0E3"/>
+        <Button x:Name="btnSchliessen" Grid.Row="2" Content="Schließen" Width="100" HorizontalAlignment="Center" Margin="0,12,0,0" Click="btnSchliessen_Click" Foreground="White" Background="#FFB86FFF"/>
     </Grid>
 </Window>
