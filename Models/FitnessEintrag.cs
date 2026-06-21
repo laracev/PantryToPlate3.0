@@ -50,7 +50,6 @@ namespace PantryToPlate.Models
 
         public static void Speichere(FitnessEintrag eintrag, string dateiPfad = "data/FitnessEintraege.csv")
         {
-            Directory.CreateDirectory("data");
 
             string zeile = eintrag.Datum.ToString("yyyy-MM-dd") + ";" + eintrag.Aktivitaet + ";" + eintrag.VerbrannteKalorien.ToString(CultureInfo.InvariantCulture);
 

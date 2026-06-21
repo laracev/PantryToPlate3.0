@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 
 namespace PantryToPlate.Models
 {
@@ -12,7 +11,9 @@ namespace PantryToPlate.Models
             {
                 return eintraege;
             }
+
             string[] zeilen = File.ReadAllLines(dateiPfad);
+
             for (int i = 1; i < zeilen.Length; i++)
             {
                 if (!string.IsNullOrWhiteSpace(zeilen[i]))
@@ -25,7 +26,7 @@ namespace PantryToPlate.Models
 
         public static void Speichere(List<string> eintraege, string dateiPfad = "data/Einkaufsliste.csv")
         {
-            Directory.CreateDirectory("data");
+            _ = Directory.CreateDirectory("data");
             List<string> zeilen = new List<string> { "Zutat" };
             zeilen.AddRange(eintraege); // aus internet genommen, is kinda einfacher als andere stuff
             File.WriteAllLines(dateiPfad, zeilen);

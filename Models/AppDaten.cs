@@ -1,5 +1,4 @@
 ﻿using PantryToPlate.Models;
-using System.Collections.Generic;
 
 namespace PantryToPlate
 {
@@ -14,12 +13,12 @@ namespace PantryToPlate
 
         public static void SetzeLebensmittel(List<Lebensmittel> lebensmittel)
         {
-            Lebensmittel = lebensmittel ?? new List<Lebensmittel>();
+            Lebensmittel = lebensmittel ?? new List<Lebensmittel>(); //wenn lebensmittel nd null ist, nimm lebensmittel lul
         }
 
         public static void SetzeRezepte(List<Rezept> rezepte)
         {
-            Rezepte = rezepte ?? new List<Rezept>();
+            Rezepte = rezepte ?? new List<Rezept>(); 
         }
 
         public static void SetzePantry(List<PantryItem> pantry)

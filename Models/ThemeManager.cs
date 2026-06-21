@@ -21,8 +21,7 @@ namespace PantryToPlate
             {
                 if (File.Exists(EinstellungsDatei))
                 {
-                    darkMode = File.ReadAllText(EinstellungsDatei).Trim()
-                        .Equals("dark", StringComparison.OrdinalIgnoreCase);
+                    darkMode = File.ReadAllText(EinstellungsDatei).Trim().Equals("dark", StringComparison.OrdinalIgnoreCase);
                 }
             }
             catch
@@ -46,8 +45,7 @@ namespace PantryToPlate
             {
                 string source = dictionaries[i].Source?.OriginalString ?? string.Empty;
 
-                if (source.EndsWith("Theme.Light.xaml", StringComparison.OrdinalIgnoreCase) ||
-                    source.EndsWith("Theme.Dark.xaml", StringComparison.OrdinalIgnoreCase))
+                if (source.EndsWith("Theme.Light.xaml", StringComparison.OrdinalIgnoreCase) ||source.EndsWith("Theme.Dark.xaml", StringComparison.OrdinalIgnoreCase))
                 {
                     dictionaries.RemoveAt(i);
                 }

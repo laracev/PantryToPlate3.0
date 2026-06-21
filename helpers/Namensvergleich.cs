@@ -26,7 +26,6 @@ namespace PantryToPlate.helpers
         }
 
 
-        //chatgpt, promt: Schreibe eine Funktion, die aus einem Text die Menge in Gramm oder Milliliter extrahiert
         public static double MengeAusText(string text)
         {
             int start = text.LastIndexOf('(');
@@ -50,8 +49,7 @@ namespace PantryToPlate.helpers
             }
             return 100;
         }
-        //chatgpt ende
-
+       
 
         //chatgpt, promt: Schreibe eine Funktion, die einen Namen normalisiert, indem sie Umlaute ersetzt, bestimmte Wörter entfernt
         public static string NormalisiereName(string name)
