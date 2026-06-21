@@ -1,8 +1,6 @@
 ﻿using PantryToPlate.helpers;
 using PantryToPlate.logik;
 using PantryToPlate.Models;
-using Serilog.Core;
-using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,12 +11,18 @@ namespace PantryToPlate
     {
         private double berechnetesZiel = 0;
         private KalorienzielRechner kalorienzielRechner = new KalorienzielRechner();
-     
+        private bool themeWirdGeladen;
+
         public double GespeichertesKalorienZiel { get; private set; }
 
         public Window1()
         {
             InitializeComponent();
+
+            themeWirdGeladen = true;
+            chkDarkMode.IsChecked = ThemeManager.IsDarkMode;
+            themeWirdGeladen = false;
+
             LadeVorhandeneDaten();
         }
 
@@ -61,7 +65,7 @@ namespace PantryToPlate
             }
             catch (IOException)
             {
-                MessageBox.Show("Die Benutzerdaten konnten nicht geladen werden.");
+                _ = MessageBox.Show("Die Benutzerdaten konnten nicht geladen werden.");
             }
 
             if (cboGeschlecht.SelectedIndex < 0)
@@ -78,64 +82,63 @@ namespace PantryToPlate
             }
         }
 
+        //mit chatgpt
         private bool VersucheEingabenZuLesen(out double gewicht, out double groesse, out int alter)
         {
-            gewicht = 0;
             groesse = 0;
             alter = 0;
 
             if (!EingabePruefung.VersucheGewichtZuLesen(txtGewicht.Text, out gewicht))
             {
-                MessageBox.Show("Bitte ein gültiges Gewicht zwischen 20 und 500 kg eingeben.");
+                _ = MessageBox.Show("Bitte ein gültiges Gewicht zwischen 20 und 500 kg eingeben.");
                 return false;
             }
             if (!EingabePruefung.VersucheGroesseZuLesen(txtGroesse.Text, out groesse))
             {
-                MessageBox.Show("Bitte eine gültige Größe zwischen 100 und 250 cm eingeben.");
+                _ = MessageBox.Show("Bitte eine gültige Größe zwischen 100 und 250 cm eingeben.");
                 return false;
             }
             if (!EingabePruefung.VersucheAlterZuLesen(txtAlter.Text, out alter))
             {
-                MessageBox.Show("Bitte ein gültiges Alter zwischen 14 und 120 Jahren eingeben.");
+                _ = MessageBox.Show("Bitte ein gültiges Alter zwischen 14 und 120 Jahren eingeben.");
                 return false;
             }
-            if (cboGeschlecht.SelectedItem == null || cboAktivitaet.SelectedItem == null || cboZiel.SelectedItem == null)
+            if (cboGeschlecht.SelectedItem != null && cboAktivitaet.SelectedItem != null && cboZiel.SelectedItem != null)
             {
-                MessageBox.Show("Bitte alle Felder auswählen.");
-                return false;
+                return true;
             }
 
-            return true;
+            _ = MessageBox.Show("Bitte alle Felder auswählen.");
+            return false;
         }
+        //chatgpt ende
 
         private double ErmittleAktivitaetsfaktor()
         {
-            switch (cboAktivitaet.SelectedIndex)
+            double[] faktoren = { 1.2, 1.375, 1.55, 1.725 };
+
+            if (cboAktivitaet.SelectedIndex >= 0 &&
+                cboAktivitaet.SelectedIndex < faktoren.Length)
             {
-                case 0:
-                    return 1.2;
-                case 1:
-                    return 1.375;
-                case 2:
-                    return 1.55;
-                case 3:
-                    return 1.725;
-                default:
-                    return 1.2;
+                return faktoren[cboAktivitaet.SelectedIndex];
             }
+
+            return 1.2;
         }
 
         private string ErmittleZiel()
         {
-            switch (cboZiel.SelectedIndex)
+            if (cboZiel.SelectedIndex == 0)
             {
-                case 0:
-                    return "Abnehmen";
-                case 2:
-                    return "Zunehmen";
-                default:
-                    return "Halten";
+                return "Abnehmen";
             }
+
+            if (cboZiel.SelectedIndex == 2)
+            {
+                return "Zunehmen";
+            }
+
+            return "Halten";
         }
 
         private void BerechneZiel(double gewicht, double groesse, int alter)
@@ -144,8 +147,7 @@ namespace PantryToPlate
             double aktivitaetsfaktor = ErmittleAktivitaetsfaktor();
             string ziel = ErmittleZiel();
 
-            berechnetesZiel = kalorienzielRechner.BerechneKalorienziel(
-                gewicht, groesse, alter, geschlecht, aktivitaetsfaktor, ziel);
+            berechnetesZiel = kalorienzielRechner.BerechneKalorienziel(gewicht, groesse, alter, geschlecht, aktivitaetsfaktor, ziel);
 
             txtKalorienZiel.Text = berechnetesZiel.ToString("0");
         }
@@ -159,6 +161,7 @@ namespace PantryToPlate
 
             BerechneZiel(gewicht, groesse, alter);
         }
+        //teilweise mit chatgpt
 
         private void btnSpeichern_Click(object sender, RoutedEventArgs e)
         {
@@ -180,13 +183,13 @@ namespace PantryToPlate
                 {
                     benutzer.Speichere();
                     GespeichertesKalorienZiel = berechnetesZiel;
-                    MessageBox.Show("Einstellungen gespeichert");
+                    _ = MessageBox.Show("Einstellungen gespeichert");
                     AppLogger.Info("Benutzereinstellungen gespeichert");
                     DialogResult = true;
                 }
                 catch (IOException)
                 {
-                    MessageBox.Show("Die Einstellungen konnten nicht gespeichert werden.");
+                    _ = MessageBox.Show("Die Einstellungen konnten nicht gespeichert werden.");
                 }
 
             }
@@ -195,12 +198,23 @@ namespace PantryToPlate
                 AppLogger.Error("Es gab schwierigkeiten beim speichern. haben sie vielleicht nicht das bilogische geschlecht ausgewählt?");
             }
 
-           
+
         }
+        //chatgpt ende
 
         private void btnAbbrechen_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void chkDarkMode_Changed(object sender, RoutedEventArgs e)
+        {
+            if (themeWirdGeladen)
+            {
+                return;
+            }
+
+            ThemeManager.SetDarkMode(chkDarkMode.IsChecked == true);
         }
     }
 }

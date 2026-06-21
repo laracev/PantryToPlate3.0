@@ -59,9 +59,9 @@ namespace PTP
                 AktualisiereAnzeige();
                 ZeigeBestesRezept();
             }
-            catch (Exception ex)
+            catch
             {
-                AppLogger.Error(ex, "Fehler in LadeAlleDaten");
+                AppLogger.Error("Fehler in LadeAlleDaten");
             }
         }
 
@@ -81,6 +81,8 @@ namespace PTP
                 mahlzeitenHeuteNamen.Add(m.Name);
                 mahlzeitenHeuteKalorien.Add(m.Kalorien);
             }
+
+
             gegesseneKalorien = kalorienRechner.BerechneGegesseneKalorien(mahlzeiten);
             proteineHeute = kalorienRechner.BerechneProteine(mahlzeiten);
             kohlenhydrateHeute = kalorienRechner.BerechneKohlenhydrate(mahlzeiten);
@@ -144,7 +146,7 @@ namespace PTP
         {
             PantryWindow fenster = new PantryWindow();
             fenster.ShowDialog();
-            LadeHeutigeMahlzeiten(); 
+            LadeHeutigeMahlzeiten();
             AktualisiereAnzeige();
         }
 
@@ -191,7 +193,7 @@ namespace PTP
                 AktualisiereAnzeige();
                 AppLogger.Info("Mahlzeit gelöscht");
             }
-            catch (System.IO.IOException)
+            catch
             {
                 AppLogger.Error("Fehler beim Löschen einer Mahlzeit");
                 MessageBox.Show("Die Mahlzeit konnte nicht gelöscht werden.");

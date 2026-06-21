@@ -68,7 +68,7 @@ namespace PantryToPlate
             {
                 EinkaufsItemMitCheckbox item = einkaufsliste[i];
                 Border itemBorder = new Border();
-                itemBorder.Background = new SolidColorBrush(Color.FromRgb(248, 249, 250));
+                itemBorder.SetResourceReference(Border.BackgroundProperty, "GeneratedListItemBackgroundBrush");
                 itemBorder.CornerRadius = new CornerRadius(8);
                 itemBorder.Padding = new Thickness(12, 8, 12, 8);
                 itemBorder.Margin = new Thickness(0, 5, 0, 5);
@@ -89,11 +89,11 @@ namespace PantryToPlate
                 if (item.IstGekauft)
                 {
                     txt.TextDecorations = TextDecorations.Strikethrough;
-                    txt.Foreground = new SolidColorBrush(Colors.Gray);
+                    txt.SetResourceReference(TextBlock.ForegroundProperty, "GeneratedMutedTextBrush");
                 }
                 else
                 {
-                    txt.Foreground = new SolidColorBrush(Color.FromRgb(30, 41, 59));
+                    txt.SetResourceReference(TextBlock.ForegroundProperty, "GeneratedListTextBrush");
                 }
                 Grid.SetColumn(txt, 1);
 
@@ -107,7 +107,7 @@ namespace PantryToPlate
                 TextBlock emptyText = new TextBlock();
                 emptyText.Text = "✨ Die Einkaufsliste ist leer! ✨";
                 emptyText.FontSize = 14;
-                emptyText.Foreground = new SolidColorBrush(Colors.Gray);
+                emptyText.SetResourceReference(TextBlock.ForegroundProperty, "GeneratedMutedTextBrush");
                 emptyText.HorizontalAlignment = HorizontalAlignment.Center;
                 emptyText.Margin = new Thickness(0, 50, 0, 0);
                 spEinkaufsliste.Children.Add(emptyText);

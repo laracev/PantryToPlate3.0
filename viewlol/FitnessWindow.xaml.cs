@@ -60,7 +60,7 @@ namespace PantryToPlate
 
             foreach (MetEintrag metEintrag in metEintraege)
             {
-                cboAktivitaet.Items.Add(metEintrag.Aktivitaet + " (MET " + metEintrag.MetWert.ToString("0.0") +")");
+                cboAktivitaet.Items.Add(metEintrag.Aktivitaet + " (MET " + metEintrag.MetWert.ToString("0.0") + ")");
             }
 
             if (cboAktivitaet.Items.Count > 0)
@@ -104,7 +104,7 @@ namespace PantryToPlate
                     lstAktivitaeten.Items.Add(eintrag.Aktivitaet + " - " + eintrag.VerbrannteKalorien.ToString("0") + " kcal");
                 }
             }
-            catch 
+            catch
             {
                 AppLogger.Error("Fehler beim Laden der heutigen Fitnessaktivitäten");
                 heutigeAktivitaeten = new List<FitnessEintrag>();
@@ -163,7 +163,7 @@ namespace PantryToPlate
                 return;
             }
 
-            if (MessageBox.Show("Möchtest du die ausgewählte Aktivität wirklich löschen?","Aktivität löschen",
+            if (MessageBox.Show("Möchtest du die ausgewählte Aktivität wirklich löschen?", "Aktivität löschen",
                 MessageBoxButton.YesNo, //war ein random video auf meiner fy und wollte es direkt ausprobieren
                 MessageBoxImage.Question) != MessageBoxResult.Yes)
             {
@@ -172,7 +172,7 @@ namespace PantryToPlate
 
             try
             {
-                bool geloescht = FitnessEintrag.LoescheVonTagNachIndex( DateTime.Now, index);
+                bool geloescht = FitnessEintrag.LoescheVonTagNachIndex(DateTime.Now, index);
 
                 if (!geloescht)
                 {

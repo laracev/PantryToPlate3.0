@@ -55,9 +55,9 @@ namespace PantryToPlate
             {
                 pantryItems = AppDaten.Pantry;
             }
-            catch (Exception ex)
+            catch
             {
-                AppLogger.Error(ex, "Fehler beim Laden der Pantry");
+                AppLogger.Error("Fehler beim Laden der Pantry");
                 pantryItems = new List<PantryItem>();
             }
         }
@@ -68,9 +68,9 @@ namespace PantryToPlate
             {
                 PantryItem.SpeichereAlle(pantryItems);
             }
-            catch (Exception ex)
+            catch
             {
-                AppLogger.Error(ex, "Fehler beim Speichern der Pantry");
+                AppLogger.Error("Fehler beim Speichern der Pantry");
                 MessageBox.Show("Die Pantry konnte nicht gespeichert werden.");
             }
         }
@@ -253,7 +253,6 @@ namespace PantryToPlate
                 AppLogger.Info($"Aus Pantry gelöscht: {item.Name}");
             }
         }
-
         private void btnSchliessen_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

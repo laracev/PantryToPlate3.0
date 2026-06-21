@@ -17,8 +17,7 @@ namespace PantryToPlate
 
             Directory.CreateDirectory("logs");
 
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(Path.Combine("logs", "log-.txt"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}").CreateLogger();
+            Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine("logs", "log-.txt"), rollingInterval: RollingInterval.Day, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}").CreateLogger();
 
             istInitialisiert = true;
         }

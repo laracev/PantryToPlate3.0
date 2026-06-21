@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Background="Transparent"
+             Foreground="{DynamicResource WindowTextBrush}"
              Height="257"
              Width="338">
 
@@ -10,8 +11,8 @@
             <Setter Property="Width" Value="25"/>
             <Setter Property="Height" Value="25"/>
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#8360A6"/>
+            <Setter Property="Foreground" Value="{DynamicResource WhiteTextBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource StandardPrimaryBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Padding" Value="0"/>
@@ -23,29 +24,29 @@
             <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
         </Canvas.Effect>
 
-        <Rectangle Fill="White" Height="206" Width="336" Canvas.Left="-11" Canvas.Top="12" RadiusX="20" RadiusY="20">
+        <Rectangle Fill="{DynamicResource SurfaceBrush}" Height="206" Width="336" Canvas.Left="-11" Canvas.Top="12" RadiusX="20" RadiusY="20">
             <Rectangle.Effect>
-                <DropShadowEffect BlurRadius="7" Color="#FFE2DCDC" Opacity="0.4"/>
+                <DropShadowEffect BlurRadius="7" Color="{DynamicResource CardShadowColorValue}" Opacity="0.4"/>
             </Rectangle.Effect>
         </Rectangle>
 
         <Canvas Margin="19,5,25,19">
-            <Label Content="Mahlzeiten Heute" Foreground="#8360A6" FontWeight="SemiBold" FontSize="18" Height="29" Width="165" Canvas.Left="55" Canvas.Top="17"/>
+            <Label Content="Mahlzeiten Heute" Foreground="{DynamicResource StandardPrimaryBrush}" FontWeight="SemiBold" FontSize="18" Height="29" Width="165" Canvas.Left="55" Canvas.Top="17"/>
 
-            <Label x:Name="ersteMahlzeitLabel" Height="35" Width="170" Canvas.Left="-17" Canvas.Top="49"/>
-            <Label x:Name="zweiteMahlzeitLabel" Height="32" Width="170" Canvas.Left="-17" Canvas.Top="87"/>
-            <Label x:Name="dritteMahlzeitLabel" Height="33" Width="170" Canvas.Left="-18" Canvas.Top="125"/>
-            <Label x:Name="vierteMahlzeitLabel" Height="33" Width="170" Canvas.Left="-18" Canvas.Top="162"/>
+            <Label x:Name="ersteMahlzeitLabel" Foreground="{DynamicResource WindowTextBrush}" Height="35" Width="170" Canvas.Left="-17" Canvas.Top="49"/>
+            <Label x:Name="zweiteMahlzeitLabel" Foreground="{DynamicResource WindowTextBrush}" Height="32" Width="170" Canvas.Left="-17" Canvas.Top="87"/>
+            <Label x:Name="dritteMahlzeitLabel" Foreground="{DynamicResource WindowTextBrush}" Height="33" Width="170" Canvas.Left="-18" Canvas.Top="125"/>
+            <Label x:Name="vierteMahlzeitLabel" Foreground="{DynamicResource WindowTextBrush}" Height="33" Width="170" Canvas.Left="-18" Canvas.Top="162"/>
 
-            <Label x:Name="ersteMahlzeitKalorienLabel" Foreground="#8360A6" Height="23" Width="70" Canvas.Left="190" Canvas.Top="51"/>
-            <Label x:Name="zweiteMahlzeitKalorienLabel" Foreground="#8360A6" Height="23" Width="70" Canvas.Left="190" Canvas.Top="87"/>
-            <Label x:Name="dritteMahlzeitKalorienLabel" Foreground="#8360A6" Height="24" Width="70" Canvas.Left="190" Canvas.Top="125"/>
-            <Label x:Name="vierteMahlzeitKalorienLabel" Foreground="#8360A6" Height="26" Width="70" Canvas.Left="190" Canvas.Top="164"/>
+            <Label x:Name="ersteMahlzeitKalorienLabel" Foreground="{DynamicResource StandardPrimaryBrush}" Height="23" Width="70" Canvas.Left="190" Canvas.Top="51"/>
+            <Label x:Name="zweiteMahlzeitKalorienLabel" Foreground="{DynamicResource StandardPrimaryBrush}" Height="23" Width="70" Canvas.Left="190" Canvas.Top="87"/>
+            <Label x:Name="dritteMahlzeitKalorienLabel" Foreground="{DynamicResource StandardPrimaryBrush}" Height="24" Width="70" Canvas.Left="190" Canvas.Top="125"/>
+            <Label x:Name="vierteMahlzeitKalorienLabel" Foreground="{DynamicResource StandardPrimaryBrush}" Height="26" Width="70" Canvas.Left="190" Canvas.Top="164"/>
 
-            <Button x:Name="btnMahlzeit1Loeschen" Content="✕" Tag="0" Style="{StaticResource DeleteButtonStyle}" Canvas.Left="270" Canvas.Top="50" Click="btnMahlzeitLoeschen_Click"/>
-            <Button x:Name="btnMahlzeit2Loeschen" Content="✕" Tag="1" Style="{StaticResource DeleteButtonStyle}" Canvas.Left="270" Canvas.Top="87" Click="btnMahlzeitLoeschen_Click"/>
-            <Button x:Name="btnMahlzeit3Loeschen" Content="✕" Tag="2" Style="{StaticResource DeleteButtonStyle}" Canvas.Left="270" Canvas.Top="124" Click="btnMahlzeitLoeschen_Click"/>
-            <Button x:Name="btnMahlzeit4Loeschen" Content="✕" Tag="3" Style="{StaticResource DeleteButtonStyle}" Canvas.Left="270" Canvas.Top="161" Click="btnMahlzeitLoeschen_Click"/>
+            <Button x:Name="btnMahlzeit1Loeschen" Content="✕" Tag="0" Style="{StaticResource DeleteButtonStyle}" Canvas.Left="270" Canvas.Top="50" Click="btnMahlzeitLoeschen_Click" Background="#FFBA93ED"/>
+            <Button x:Name="btnMahlzeit2Loeschen" Content="✕" Tag="1" Style="{StaticResource DeleteButtonStyle}" Canvas.Left="270" Canvas.Top="87" Click="btnMahlzeitLoeschen_Click" Background="#FFBA93ED"/>
+            <Button x:Name="btnMahlzeit3Loeschen" Content="✕" Tag="2" Style="{StaticResource DeleteButtonStyle}" Canvas.Left="270" Canvas.Top="124" Click="btnMahlzeitLoeschen_Click" Background="#FFBA93ED"/>
+            <Button x:Name="btnMahlzeit4Loeschen" Content="✕" Tag="3" Style="{StaticResource DeleteButtonStyle}" Canvas.Left="270" Canvas.Top="161" Click="btnMahlzeitLoeschen_Click" Background="#FFBA93ED" />
         </Canvas>
     </Canvas>
 </UserControl>

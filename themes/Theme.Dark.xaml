@@ -1,0 +1,128 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- mithilfe von chatty -->
+    <Color x:Key="MainPrimaryColorValue">#896bb4</Color>
+    <Color x:Key="MainSecondaryColorValue">#8d7ea0</Color>
+    <Color x:Key="MainSuccessColorValue">#755F8F</Color>
+    <Color x:Key="MainWarningColorValue">#68765E</Color>
+    <Color x:Key="MainInfoColorValue">#789B62</Color>
+    <Color x:Key="MainLightGrayColorValue">#292C35</Color>
+    <Color x:Key="MainMediumGrayColorValue">#C5C1CA</Color>
+
+    <Color x:Key="StandardPrimaryColorValue">#9A7DB8</Color>
+    <Color x:Key="StandardSuccessColorValue">#755F8F</Color>
+    <Color x:Key="StandardDangerLightColorValue">#4A5547</Color>
+    <Color x:Key="StandardWarningColorValue">#789B62</Color>
+    <Color x:Key="StandardNeutralColorValue">#2A2D35</Color>
+    <Color x:Key="StandardTextDarkColorValue">#F2F2F4</Color>
+    <Color x:Key="StandardTextGrayColorValue">#B4B5BC</Color>
+    <Color x:Key="StandardSurfaceColorValue">#1E2028</Color>
+    <Color x:Key="StandardSurfaceAltColorValue">#292C35</Color>
+
+    <Color x:Key="PantryPrimaryColorValue">#9A7DB8</Color>
+    <Color x:Key="PantryLightColorValue">#292C35</Color>
+    <Color x:Key="RecipeGreenColorValue">#719071</Color>
+
+    <SolidColorBrush x:Key="MainWindowBackgroundBrush" Color="#121318"/>
+    <SolidColorBrush x:Key="StandardWindowBackgroundBrush" Color="#121318"/>
+    <SolidColorBrush x:Key="PantryWindowBackgroundBrush" Color="#121318"/>
+    <SolidColorBrush x:Key="WindowTextBrush" Color="#F2F2F4"/>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#1E2028"/>
+    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#252832"/>
+    <SolidColorBrush x:Key="SurfaceAltBrush" Color="#292C35"/>
+    <SolidColorBrush x:Key="MainButtonHoverBrush" Color="#7E639D"/>
+    <SolidColorBrush x:Key="MainButtonPressedBrush" Color="#604A79"/>
+    <SolidColorBrush x:Key="MainMediumGrayBrush" Color="#C5C1CA"/>
+    <SolidColorBrush x:Key="StandardHeaderSubtitleBrush" Color="#DDD5E3"/>
+    <SolidColorBrush x:Key="StandardBorderBrush" Color="#3B3E48"/>
+    <SolidColorBrush x:Key="StandardKcalSubtitleBrush" Color="#EEE9F3"/>
+    <SolidColorBrush x:Key="PantryBorderBrush" Color="#3B3E48"/>
+    <SolidColorBrush x:Key="PantryInputBorderBrush" Color="#4A4D58"/>
+    <SolidColorBrush x:Key="PantryMutedTextBrush" Color="#B4B5BC"/>
+    <SolidColorBrush x:Key="RecipeInstructionBackgroundBrush" Color="#252832"/>
+    <SolidColorBrush x:Key="RecipeInstructionBorderBrush" Color="#3B3E48"/>
+    <SolidColorBrush x:Key="PantryDeleteBrush" Color="#A86565"/>
+    <SolidColorBrush x:Key="DestructiveRedBrush" Color="#B95B57"/>
+    <SolidColorBrush x:Key="GeneratedListItemBackgroundBrush" Color="#292C35"/>
+    <SolidColorBrush x:Key="GeneratedListTextBrush" Color="#F2F2F4"/>
+    <SolidColorBrush x:Key="RecipePercentBrush" Color="#789B62"/>
+    <SolidColorBrush x:Key="GeneratedMutedTextBrush" Color="#A8A9B0"/>
+    <SolidColorBrush x:Key="DataGridHeaderBrush" Color="#292C35"/>
+    <SolidColorBrush x:Key="TransparentThemeBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="WhiteTextBrush" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="StandardPrimaryBrush" Color="{DynamicResource StandardPrimaryColorValue}"/>
+    <SolidColorBrush x:Key="PantryPrimaryBrush" Color="{DynamicResource PantryPrimaryColorValue}"/>
+    <SolidColorBrush x:Key="ProgressTrackBrush" Color="#3B3E48"/>
+    <Color x:Key="CardShadowColorValue">#000000</Color>
+
+
+    <Style TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>
+    </Style>
+
+    <Style TargetType="CheckBox">
+        <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>
+    </Style>
+
+    <Style TargetType="ListBoxItem">
+        <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{DynamicResource StandardPrimaryBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+   
+    <Style TargetType="TextBox">
+        <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource WindowTextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource StandardBorderBrush}"/>
+        <Setter Property="SelectionBrush" Value="{DynamicResource StandardPrimaryBrush}"/>
+    </Style>
+
+    <Style TargetType="ComboBox">
+        <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource StandardBorderBrush}"/>
+    </Style>
+
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>
+    </Style>
+
+    <Style TargetType="ListBox">
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource StandardBorderBrush}"/>
+    </Style>
+
+    <Style TargetType="DataGrid">
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>
+        <Setter Property="RowBackground" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="AlternatingRowBackground" Value="{DynamicResource SurfaceAltBrush}"/>
+        <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource PantryBorderBrush}"/>
+        <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource PantryBorderBrush}"/>
+    </Style>
+
+    <Style TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="{DynamicResource DataGridHeaderBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PantryBorderBrush}"/>
+    </Style>
+
+    <Style TargetType="DataGridCell">
+        <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PantryBorderBrush}"/>
+    </Style>
+
+</ResourceDictionary>

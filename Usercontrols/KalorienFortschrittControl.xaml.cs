@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
+        
 namespace PantryToPlate.Usercontrols
 {
     /// <summary>
@@ -36,7 +26,10 @@ namespace PantryToPlate.Usercontrols
             if (maximal > 0)
             {
                 prozent = (aktuell / maximal) * 100;
-                if (prozent > 100) prozent = 100;
+                if (prozent > 100)
+                {
+                    prozent = 100;
+                }
             }
 
             txtProzent.Text = ((int)prozent).ToString() + "%";
@@ -83,8 +76,8 @@ namespace PantryToPlate.Usercontrols
 
 
             //das hier ist nur ki
-            StreamGeometry geometry = new StreamGeometry(); 
-            using (StreamGeometryContext ctx = geometry.Open()) 
+            StreamGeometry geometry = new StreamGeometry();
+            using (StreamGeometryContext ctx = geometry.Open())
             {
                 ctx.BeginFigure(new Point(startX, startY), false, false);
                 ctx.ArcTo(new Point(endX, endY), new Size(radius, radius), 0, isLargeArc, SweepDirection.Clockwise, true, false);
@@ -99,4 +92,3 @@ namespace PantryToPlate.Usercontrols
 
     }
 }
-    

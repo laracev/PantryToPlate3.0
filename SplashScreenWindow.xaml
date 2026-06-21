@@ -4,7 +4,7 @@
         Title="Laden..." Height="350" Width="500"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" ResizeMode="NoResize">
-    <Grid Background="#6F5A8A">
+    <Grid Background="#665282">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -12,10 +12,7 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Pantry To Plate" FontSize="32" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
-            <TextBlock FontSize="16" Foreground="#D9D4DF" HorizontalAlignment="Center"><Run Language="de-at" Text="Healthy Eating made easy •ᴗ•"/></TextBlock>
-        </StackPanel>
+        <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
         <Border Grid.Row="1" Height="30" Width="400" Background="#AFA0C4" CornerRadius="8" Margin="20" HorizontalAlignment="Center">
             <Border x:Name="progressBar" Width="0" Background="#7FA36A" CornerRadius="8" HorizontalAlignment="Left"/>
@@ -24,7 +21,7 @@
         <TextBlock x:Name="txtStatus" Grid.Row="2" Text="Initialisiere..." Foreground="#D9D4DF" HorizontalAlignment="Center" Margin="10"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Ellipse x:Name="dot1" Width="10" Height="10" Fill="#6F5A8A" Margin="5">
+            <Ellipse x:Name="dot1" Width="10" Height="10" Fill="#FFC187F7" Margin="5">
                 <Ellipse.RenderTransform>
                     <ScaleTransform CenterX="5" CenterY="5"/>
                 </Ellipse.RenderTransform>
@@ -45,6 +42,8 @@
                 </Ellipse.RenderTransform>
             </Ellipse>
         </StackPanel>
-        <Image Width="100" Height="100" Margin="15,19,385,75" Source="/logo.png" Stretch="Fill"/>
+        <Image Height="100" Margin="185,107,194,57" Source="/Pics/Logo_animation.png" Stretch="Fill" Grid.RowSpan="2"/>
+        <TextBlock Text="Pantry To Plate" FontSize="32" FontWeight="Bold" Foreground="White" Margin="138,45,134,107"/>
+        <TextBlock FontSize="16" Foreground="#D9D4DF" HorizontalAlignment="Left" Margin="151,93,0,80"><Run Language="de-at" Text="Healthy Eating made easy •ᴗ•"/></TextBlock>
     </Grid>
 </Window> 
