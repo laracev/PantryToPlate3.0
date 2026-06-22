@@ -32,10 +32,10 @@ namespace PantryToPlate.Usercontrols
             string name = rezept.Name;
             if (name.Length > 40)
             {
-                name = name.Substring(0, 37) + "..."; 
+                name = name.Substring(0, 37) + "...";
             }
             txtRezeptName.Text = name;
-           
+
             txtMatchProzent.Text = rezept.MatchProzent + "%";
 
             if (rezept.MatchProzent >= 80)
@@ -44,14 +44,14 @@ namespace PantryToPlate.Usercontrols
             }
             else if (rezept.MatchProzent >= 50)
             {
-                matchBorder.Background = new SolidColorBrush(Color.FromRgb(245, 158, 11)); 
+                matchBorder.Background = new SolidColorBrush(Color.FromRgb(245, 158, 11));
             }
             else
             {
                 matchBorder.Background = new SolidColorBrush(Color.FromRgb(239, 68, 68));
             }
 
- 
+
             btnZumRezept.IsEnabled = true;
         }
         //chatgpt end

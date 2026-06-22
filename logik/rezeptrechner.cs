@@ -10,6 +10,11 @@ namespace PantryToPlate.logik
         //chatgpt start, promt: wie kann ich berechnen wie viele kalorien der user durch ein rezept aufgenommen hat?
         public double BerechneKalorien(Rezept rezept, Dictionary<string, double> kalorienTabelle)
         {
+            if (rezept == null || kalorienTabelle == null)
+            {
+                return 0;
+            }
+
             double gesamt = 0;
 
             for (int i = 0; i < rezept.Zutaten.Count; i++)
@@ -25,15 +30,18 @@ namespace PantryToPlate.logik
                 }
                 else
                 {
+                    int besterScore = 0;
                     foreach (string name in kalorienTabelle.Keys)
                     {
-                        if (name.Contains(zutat) || zutat.Contains(name))
+                        int score = Namensvergleich.BerechneAehnlichkeit(zutat, name);
+                        if (score > besterScore)
                         {
+                            besterScore = score;
                             kalorienPro100g = kalorienTabelle[name];
-                            gefunden = true;
-                            break;
                         }
                     }
+
+                    gefunden = besterScore >= 120;
                 }
 
                 if (!gefunden)
@@ -50,6 +58,11 @@ namespace PantryToPlate.logik
         //chatgpt ende
         public int BerechneMatch(Rezept rezept, List<PantryItem> pantryItems)
         {
+            if (rezept == null || pantryItems == null || rezept.Zutaten.Count == 0)
+            {
+                return 0;
+            }
+
             int vorhanden = 0;
 
             for (int i = 0; i < rezept.Zutaten.Count; i++)
@@ -73,17 +86,17 @@ namespace PantryToPlate.logik
                 }
             }
 
-            if (rezept.Zutaten.Count == 0)
-            {
-                return 0;
-            }
-
             return vorhanden * 100 / rezept.Zutaten.Count;
         }
 
         public List<string> ErmittleFehlendeZutaten(Rezept rezept, List<PantryItem> pantryItems)
         {
             List<string> fehlende = new List<string>();
+
+            if (rezept == null || pantryItems == null)
+            {
+                return fehlende;
+            }
 
             for (int i = 0; i < rezept.Zutaten.Count; i++)
             {
@@ -111,6 +124,11 @@ namespace PantryToPlate.logik
 
         public void AktualisiereMatches(List<Rezept> rezepte, List<PantryItem> pantryItems)
         {
+            if (rezepte == null)
+            {
+                return;
+            }
+
             foreach (Rezept rezept in rezepte)
             {
                 int match = BerechneMatch(rezept, pantryItems);

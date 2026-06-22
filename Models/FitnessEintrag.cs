@@ -50,6 +50,7 @@ namespace PantryToPlate.Models
 
         public static void Speichere(FitnessEintrag eintrag, string dateiPfad = "data/FitnessEintraege.csv")
         {
+            Directory.CreateDirectory("data");
 
             string zeile = eintrag.Datum.ToString("yyyy-MM-dd") + ";" + eintrag.Aktivitaet + ";" + eintrag.VerbrannteKalorien.ToString(CultureInfo.InvariantCulture);
 
@@ -142,9 +143,13 @@ namespace PantryToPlate.Models
             {
                 string[] teile = zeilen[i].Split(';');
 
-                if (teile.Length >= 2 && double.TryParse(teile[1].Replace('.', ','), out double metWert))
+                if (teile.Length >= 2)
                 {
-                    liste.Add(new MetEintrag(teile[0], metWert));
+                    string metText = teile[1].Trim().Replace(',', '.');
+                    if (double.TryParse(metText, NumberStyles.Any, CultureInfo.InvariantCulture, out double metWert))
+                    {
+                        liste.Add(new MetEintrag(teile[0], metWert));
+                    }
                 }
             }
 

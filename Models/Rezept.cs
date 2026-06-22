@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace PantryToPlate.Models
@@ -61,6 +62,8 @@ namespace PantryToPlate.Models
             return rezepteListe;
         }
 
+
+        //chatgpt, promt: bitte hilf mir, wie geht es das ich so die rezepte richtig auslesen kann und so?
         private static Rezept ParseZeile(string zeile)
         {
             if (string.IsNullOrWhiteSpace(zeile))
@@ -91,9 +94,9 @@ namespace PantryToPlate.Models
                 }
 
                 string zutatName = zutatBlock.Substring(0, doppelpunkt).Trim();
-                string mengeText = zutatBlock.Substring(doppelpunkt + 1).Trim().Replace('.', ',');
+                string mengeText = zutatBlock.Substring(doppelpunkt + 1).Trim().Replace(',', '.');
 
-                if (double.TryParse(mengeText, out double menge) && menge > 0 && !string.IsNullOrWhiteSpace(zutatName))
+                if (double.TryParse(mengeText, NumberStyles.Any, CultureInfo.InvariantCulture, out double menge) && menge > 0 && !string.IsNullOrWhiteSpace(zutatName))
                 {
                     zutatenListe.Add(zutatName);
                     mengenListe.Add(menge);
@@ -107,5 +110,6 @@ namespace PantryToPlate.Models
 
             return new Rezept(name, anleitung, zutatenListe, mengenListe);
         }
+        //chatgpt ende
     }
 }

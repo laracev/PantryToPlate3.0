@@ -58,9 +58,9 @@
 
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
-            <Button x:Name="btnGekaufteEntfernen" Content="✓ Gekaufte zur Pantry hinzufügen" Width="220" Margin="5" Click="btnGekaufteEntfernen_Click" Background="#FFC0E5AA"/>
-            <Button x:Name="btnLeeren" Content="Liste leeren" Background="{DynamicResource DestructiveRedBrush}" Width="120" Margin="5" Click="btnLeeren_Click"/>
-            <Button x:Name="btnSchliessen" Content="Schließen" Width="100" Margin="5" Click="btnSchliessen_Click" Background="#FFDBC0FF"/>
+            <Button x:Name="btnGekaufteEntfernen" Content="✓ Gekaufte zur Pantry hinzufügen" Width="220" Margin="5" Click="btnGekaufteEntfernen_Click" Background="#FF85FF3C"/>
+            <Button x:Name="btnLeeren" Content="Liste leeren" Background="#FFFF301A" Width="120" Margin="5" Click="btnLeeren_Click"/>
+            <Button x:Name="btnSchliessen" Content="Schließen" Width="100" Margin="5" Click="btnSchliessen_Click" Background="#FFA664FF"/>
         </StackPanel>
     </Grid>
 </Window>

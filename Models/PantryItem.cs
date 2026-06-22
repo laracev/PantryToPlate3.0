@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Windows;
 
 namespace PantryToPlate.Models
 {
@@ -11,23 +10,25 @@ namespace PantryToPlate.Models
         public string Name { get; private set; }
         public double Menge { get; private set; }
 
+        //chatgpt start, promt: bitte mach das es so name erkennt ohne probleme bitti
+
         public PantryItem(string name, double menge)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                MessageBox.Show("der Name darf nicht leer sein");
-                AppLogger.Info("der vollidiot hat versucht ohne namen hinzuzufügen in pantry lol");
+                AppLogger.Info("Ungueltiger Pantry-Eintrag: leerer Name.");
+                throw new ArgumentException("Der Name darf nicht leer sein.", nameof(name));
             }
             if (menge < 0)
             {
-                MessageBox.Show("Die Menge darf nicht negativ sein.");
-                AppLogger.Info("der vollidiot hat versucht ohne menge bzw negative menge hinzuzufügen in pantry lol");
+                AppLogger.Info("Ungueltiger Pantry-Eintrag: negative Menge.");
+                throw new ArgumentOutOfRangeException(nameof(menge), "Die Menge darf nicht negativ sein.");
             }
 
             Name = name.Trim();
             Menge = menge;
         }
-
+        //chatgpt ende
         public void ErhoeheMenge(double menge)
         {
             if (menge > 0)
@@ -61,7 +62,14 @@ namespace PantryToPlate.Models
                 string[] teile = zeilen[i].Split(';');
                 if (teile.Length >= 2 && double.TryParse(teile[1], NumberStyles.Any, CultureInfo.InvariantCulture, out double menge) && menge >= 0 && !string.IsNullOrWhiteSpace(teile[0]))
                 {
-                    liste.Add(new PantryItem(teile[0], menge));
+                    try
+                    {
+                        liste.Add(new PantryItem(teile[0], menge));
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Error(ex, "Ungueltiger Pantry-Eintrag wurde uebersprungen.");
+                    }
                 }
             }
             return liste;

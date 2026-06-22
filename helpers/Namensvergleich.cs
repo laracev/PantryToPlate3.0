@@ -49,7 +49,7 @@ namespace PantryToPlate.helpers
             }
             return 100;
         }
-       
+
 
         //chatgpt, promt: Schreibe eine Funktion, die einen Namen normalisiert, indem sie Umlaute ersetzt, bestimmte Wörter entfernt
         public static string NormalisiereName(string name)
@@ -58,7 +58,7 @@ namespace PantryToPlate.helpers
             {
                 return "";
             }
-        
+
             name = name.Replace("ä", "ae").Replace("ö", "oe").Replace("ü", "ue").Replace("ß", "ss");
             name = name.Replace(",", " ").Replace("/", " ").Replace("-", " ");
 
@@ -130,7 +130,7 @@ namespace PantryToPlate.helpers
 
                 foreach (string wb in bWoerter)
                 {
-             
+
                     if (wa == wb)
                     {
                         score += 200;

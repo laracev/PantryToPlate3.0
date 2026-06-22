@@ -1,4 +1,6 @@
-﻿namespace PantryToPlate
+﻿using System.Globalization;
+
+namespace PantryToPlate
 {
     public static class Helper
     {
@@ -8,8 +10,15 @@
             {
                 return 0;
             }
-            double.TryParse(text.Replace(',', '.'), out double result);
-            return result;
+
+            text = text.Trim().Replace(',', '.');
+
+            if (double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out double result))
+            {
+                return result;
+            }
+
+            return 0;
         }
     }
 }

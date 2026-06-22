@@ -1,4 +1,6 @@
-﻿namespace PantryToPlate.helpers
+﻿using System.Globalization;
+
+namespace PantryToPlate.helpers
 {
     public static class EingabePruefung
     {
@@ -27,10 +29,23 @@
             return VersucheDauerZuLesen(text, out _);
         }
 
+        private static bool VersucheDoubleZuLesen(string text, out double wert)
+        {
+            wert = 0;
+
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return false;
+            }
+
+            text = text.Trim().Replace(',', '.');
+            return double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out wert);
+        }
+
         public static bool VersucheGewichtZuLesen(string text, out double gewicht)
         {
             gewicht = 0;
-            if (!double.TryParse(text, out double wert) || wert < 20 || wert > 500)
+            if (!VersucheDoubleZuLesen(text, out double wert) || wert < 20 || wert > 500)
             {
                 return false;
             }
@@ -41,7 +56,7 @@
         public static bool VersucheGroesseZuLesen(string text, out double groesse)
         {
             groesse = 0;
-            if (!double.TryParse(text, out double wert) || wert < 100 || wert > 250)
+            if (!VersucheDoubleZuLesen(text, out double wert) || wert < 100 || wert > 250)
             {
                 return false;
             }
@@ -63,7 +78,7 @@
         public static bool VersucheMengeZuLesen(string text, out double menge)
         {
             menge = 0;
-            if (!double.TryParse(text, out double wert) || wert <= 0 || wert > 100000)
+            if (!VersucheDoubleZuLesen(text, out double wert) || wert <= 0 || wert > 100000)
             {
                 return false;
             }
@@ -74,7 +89,7 @@
         public static bool VersucheDauerZuLesen(string text, out double dauer)
         {
             dauer = 0;
-            if (!double.TryParse(text, out double wert) || wert <= 0 || wert > 1440)
+            if (!VersucheDoubleZuLesen(text, out double wert) || wert <= 0 || wert > 1440)
             {
                 return false;
             }

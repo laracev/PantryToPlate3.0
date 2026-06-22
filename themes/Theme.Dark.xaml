@@ -79,7 +79,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-   
+
     <Style TargetType="TextBox">
         <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource WindowTextBrush}"/>

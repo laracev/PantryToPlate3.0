@@ -50,6 +50,7 @@ namespace PantryToPlate.Models
 
         public void Speichere(string dateiPfad = "data/benutzer.csv")
         {
+            Directory.CreateDirectory("data");
             string inhalt = "Kalorienziel;Gewicht;Groesse;Alter;Geschlecht;Aktivitaet;Ziel\n" + KalorienZiel.ToString(CultureInfo.InvariantCulture) + ";" + Gewicht.ToString(CultureInfo.InvariantCulture) + ";" + Groesse.ToString(CultureInfo.InvariantCulture) + ";" + Alter + ";" + Geschlecht + ";" + Aktivitaetslevel + ";" + Ziel;
             File.WriteAllText(dateiPfad, inhalt);
         }

@@ -12,7 +12,7 @@ namespace PTP
             ThemeManager.Initialize();
             AppLogger.Init();
             AppLogger.Info("Anwendung gestartet");
-            
+
 
             SplashScreenWindow splash = new SplashScreenWindow();
             splash.Show();

@@ -2,9 +2,6 @@
 using System.IO;
 using System.Windows;
 using System.Collections.ObjectModel;
-using Serilog.Core;
-
-
 namespace PantryToPlate
 {
     public static class ThemeManager
@@ -45,7 +42,7 @@ namespace PantryToPlate
             {
                 string source = dictionaries[i].Source?.OriginalString ?? string.Empty;
 
-                if (source.EndsWith("Theme.Light.xaml", StringComparison.OrdinalIgnoreCase) ||source.EndsWith("Theme.Dark.xaml", StringComparison.OrdinalIgnoreCase))
+                if (source.EndsWith("Theme.Light.xaml", StringComparison.OrdinalIgnoreCase) || source.EndsWith("Theme.Dark.xaml", StringComparison.OrdinalIgnoreCase))
                 {
                     dictionaries.RemoveAt(i);
                 }
@@ -66,6 +63,7 @@ namespace PantryToPlate
 
             try
             {
+                Directory.CreateDirectory("data");
                 File.WriteAllText(EinstellungsDatei, darkMode ? "dark" : "light");
             }
             catch
