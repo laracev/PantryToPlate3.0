@@ -29,6 +29,19 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template" Value="{StaticResource RoundedButtonTemplate}"/>
 
+
+
+
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Background" Value="#E5E5E5"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="TextElement.Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="#BDBDBD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="8,0"/>
         </Style>
 
     </Window.Resources>

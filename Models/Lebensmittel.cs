@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace PantryToPlate.Models
@@ -22,6 +23,18 @@ namespace PantryToPlate.Models
             BallaststoffePro100g = ballast;
         }
 
+        private static bool VersucheZahlZuLesen(string text, out double wert)
+        {
+            wert = 0;
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return false;
+            }
+
+            text = text.Trim().Replace(',', '.');
+            return double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out wert);
+        }
+
         public static List<Lebensmittel> LadeAlleAusCsv(string dateiPfad = "data/test_utf8.csv")
         {
             List<Lebensmittel> liste = new List<Lebensmittel>();
@@ -41,9 +54,9 @@ namespace PantryToPlate.Models
                     continue;
                 }
 
-                if (double.TryParse(teile[1], out double kal) && double.TryParse(teile[2], out double pro) && double.TryParse(teile[3], out double fett) && double.TryParse(teile[4], out double kohlen))
+                if (VersucheZahlZuLesen(teile[1], out double kal) && VersucheZahlZuLesen(teile[2], out double pro) && VersucheZahlZuLesen(teile[3], out double fett) && VersucheZahlZuLesen(teile[4], out double kohlen))
                 {
-                    double ballast = (teile.Length >= 6 && double.TryParse(teile[5], out double b)) ? b : 0;
+                    double ballast = (teile.Length >= 6 && VersucheZahlZuLesen(teile[5], out double b)) ? b : 0;
                     liste.Add(new Lebensmittel(teile[0], kal, pro, fett, kohlen, ballast));
                 }
             }
