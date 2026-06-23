@@ -194,6 +194,7 @@ Das Klassendiagramm zeigt die wichtigsten Datenmodelle, Rechnerklassen und Bezie
 
 ![alt text](PantryToPlate_UML.png)
 
+(es tut mir leid das das uml so chaotisch undhässlich ist, aber es wurde von chatgpt gemacht weil ich extrem gestresst war und kein plan hatte was tun)
 Kurze Erklärung zum Klassendiagramm:
 
 - Datenmodelle wie `FoodItem`, `Recipe`, `PantryItem`, `Meal` und `UserProfile` speichern die fachlichen Daten.
