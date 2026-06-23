@@ -212,7 +212,7 @@ Der Zeitplan wurde an den tatsächlichen Projektverlauf angelehnt. Einzelne Arbe
 | 14.05.2026 | GitHub-Repository anlegen und Projektstruktur vorbereiten | Lara | 1 h | 1,5 h | Repository und erste Ordnerstruktur erstellt |
 | 15.05.2026 | MainWindow und erste Navigation umsetzen | Lara | 3 h | 4 h | Grundaufbau der Anwendung vorhanden |
 | 15.05.2026 | Datenmodelle und Klassenstruktur erstellen | Noel | 3 h | 3 h | Erste Modelle und Klassen ergänzt |
-| 16.05.2026 | CSV-Import, UTF-8-Probleme und Lebensmittelsuche bearbeiten | Lara & Noel | 4 h | 5 h | Datenimport stabilisiert |
+| 16.05.2026 | CSV-Import, UTF-8-Probleme und Lebensmittelsuche bearbeiten | Noel | 4 h | 5 h | Datenimport stabilisiert |
 | 17.05.2026 | UserControls, Karten und Kalorienfortschritt einbauen | Lara | 3 h | 4 h | Oberfläche besser strukturiert |
 | 18.05.2026 | Einstellungen und Kalorienzielberechnung umsetzen | Lara | 3 h | 3,5 h | Personalisierung funktioniert |
 | 19.05.2026 | Rezeptdaten, Rezeptsuche und Rezeptvorschläge umsetzen | Lara & Noel | 4 h | 5 h | Rezeptmodul funktionsfähig |
@@ -220,7 +220,7 @@ Der Zeitplan wurde an den tatsächlichen Projektverlauf angelehnt. Einzelne Arbe
 | 21.05.2026 | Einheitliches Design und Navigation überarbeiten | Lara | 3 h | 3 h | Einheitlicheres Erscheinungsbild |
 | 22.–26.05.2026 | Pantry, Einkaufsliste, Fitness und Fehlerbehandlung verbinden | Lara & Noel | 8 h | 10 h | Hauptmodule verbunden und stabilisiert |
 | 27.05.2026 | Manuelle Tests und Dokumentation ergänzen | Lara | 4 h | 5 h | Testfälle und Dokumentation vorbereitet |
-| 12.06.2026 | Bughunt und Bugfixes | Lara & Noel | 3 h | 4 h | Mehrere Fehler behoben |
+| 12.06.2026 | Bughunt und Bugfixes | Noel | 3 h | 4 h | Mehrere Fehler behoben |
 | 15.06.2026 | Feedback einarbeiten | Lara | 2 h | 3 h | Rückmeldungen umgesetzt |
 | 16.06.2026 | Code Cleaning und kleinere Verbesserungen | Lara | 2 h | 2 h | Code übersichtlicher |
 | 20.06.2026 | Präsentation und finale Abgabe vorbereiten | Lara & Noel | 4 h | 4 h | Präsentation und Abgabe vorbereitet |
