@@ -4,6 +4,7 @@ using PantryToPlate.Usercontrols;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using PantryToPlate.logik;
 
@@ -20,6 +21,7 @@ namespace PTP
         private double kohlenhydrateHeute = 0;
         private double fettHeute = 0;
         private KalorienRechner kalorienRechner = new KalorienRechner();
+        private RezeptRechner rezeptRechner = new RezeptRechner();
         private DispatcherTimer updateTimer;
 
         public MainWindow()
@@ -38,19 +40,11 @@ namespace PTP
             LadeHeutigeMahlzeiten();
             LadeHeutigeFitness();
             AktualisiereAnzeige();
+            ZeigeBestesRezept();
         }
 
         private void LadeAlleDaten()
         {
-            if (AppDaten.IstGeladen)
-            {
-                LadeBenutzerDaten();
-                LadeHeutigeMahlzeiten();
-                LadeHeutigeFitness();
-                AktualisiereAnzeige();
-                ZeigeBestesRezept();
-                return;
-            }
             try
             {
                 LadeBenutzerDaten();
@@ -69,6 +63,30 @@ namespace PTP
         {
             Benutzer benutzer = Benutzer.LadeAusCsv();
             kalorienZiel = (benutzer != null) ? benutzer.KalorienZiel : 2000;
+        }
+
+        private void LadePantryDaten()
+        {
+            try
+            {
+                AppDaten.SetzePantry(PantryItem.LadeAlleAusCsv());
+            }
+            catch
+            {
+                AppLogger.Error("Fehler beim Laden der Pantry-Daten");
+            }
+        }
+
+        private void LadeRezeptDaten()
+        {
+            try
+            {
+                AppDaten.SetzeRezepte(Rezept.LadeAlleAusCsv());
+            }
+            catch
+            {
+                AppLogger.Error("Fehler beim Laden der Rezept-Daten");
+            }
         }
 
         private void LadeHeutigeMahlzeiten()
@@ -104,10 +122,23 @@ namespace PTP
         {
             double netto = kalorienRechner.BerechneNettoKalorien(gegesseneKalorien, verbrannteKalorien);
             double uebrig = kalorienRechner.BerechneUebrigeKalorien(kalorienZiel, netto);
+            double ueberschuss = kalorienRechner.BerechneUeberschussKalorien(kalorienZiel, netto);
+
             txtKalorienZiel.Text = kalorienZiel.ToString("0") + " kcal";
             txtGegesseneKalorien.Text = gegesseneKalorien.ToString("0") + " kcal";
             txtVerbrannteKalorien.Text = verbrannteKalorien.ToString("0") + " kcal";
-            txtUebrigeKalorien.Text = "Übrig: " + uebrig.ToString("0") + " kcal";
+
+            if (ueberschuss > 0)
+            {
+                txtUebrigeKalorien.Text = "Überschuss: " + ueberschuss.ToString("0") + " kcal";
+                kalorienStatusBorder.Background = new SolidColorBrush(Color.FromRgb(239, 68, 68));
+            }
+            else
+            {
+                txtUebrigeKalorien.Text = "Übrig: " + uebrig.ToString("0") + " kcal";
+                kalorienStatusBorder.Background = (Brush)FindResource("SuccessColor");
+            }
+
             txtProteine.Text = proteineHeute.ToString("0") + " g";
             txtKohlenhydrate.Text = kohlenhydrateHeute.ToString("0") + " g";
             txtFett.Text = fettHeute.ToString("0") + " g";
@@ -116,10 +147,24 @@ namespace PTP
 
         private void ZeigeBestesRezept()
         {
-            if (AppDaten.Rezepte.Count > 0)
+            if (AppDaten.Rezepte == null || AppDaten.Rezepte.Count == 0)
             {
-                rezeptVorschlag.SetzeBestesRezept(AppDaten.Rezepte[0]);
+                rezeptVorschlag.SetzeBestesRezept(null);
+                return;
             }
+
+            rezeptRechner.AktualisiereMatches(AppDaten.Rezepte, AppDaten.Pantry);
+
+            Rezept bestesRezept = AppDaten.Rezepte[0];
+            for (int i = 1; i < AppDaten.Rezepte.Count; i++)
+            {
+                if (AppDaten.Rezepte[i].MatchProzent > bestesRezept.MatchProzent)
+                {
+                    bestesRezept = AppDaten.Rezepte[i];
+                }
+            }
+
+            rezeptVorschlag.SetzeBestesRezept(bestesRezept);
         }
 
         private void btnEinstellungen_Click(object sender, RoutedEventArgs e)
@@ -146,16 +191,21 @@ namespace PTP
         {
             PantryWindow fenster = new PantryWindow();
             fenster.ShowDialog();
+            LadePantryDaten();
             LadeHeutigeMahlzeiten();
             AktualisiereAnzeige();
+            ZeigeBestesRezept();
         }
 
         private void btnRezepte_Click(object sender, RoutedEventArgs e)
         {
             RezepteWindow fenster = new RezepteWindow();
             fenster.ShowDialog();
+            LadeRezeptDaten();
+            LadePantryDaten();
             LadeHeutigeMahlzeiten();
             AktualisiereAnzeige();
+            ZeigeBestesRezept();
         }
 
         private void btnFitness_Click(object sender, RoutedEventArgs e)
@@ -170,6 +220,8 @@ namespace PTP
         {
             EinkaufslisteWindow fenster = new EinkaufslisteWindow();
             fenster.ShowDialog();
+            LadePantryDaten();
+            ZeigeBestesRezept();
         }
 
         private void MahlzeitLoeschen(int index)

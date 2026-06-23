@@ -19,6 +19,11 @@ namespace PantryToPlate.Usercontrols
         {
             LeereAnzeige();
 
+            if (namen == null || kalorien == null)
+            {
+                return;
+            }
+
             Label[] mahlzeitLabels =
             {
                 ersteMahlzeitLabel,
@@ -45,6 +50,11 @@ namespace PantryToPlate.Usercontrols
 
             int anzahl = namen.Count;
 
+            if (kalorien.Count < anzahl)
+            {
+                anzahl = kalorien.Count;
+            }
+
             if (anzahl > 4)
             {
                 anzahl = 4;
@@ -52,7 +62,18 @@ namespace PantryToPlate.Usercontrols
 
             for (int i = 0; i < anzahl; i++)
             {
-                mahlzeitLabels[i].Content = namen[i];
+                string name = namen[i];
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    name = "-";
+                }
+
+                if (name.Length > 24)
+                {
+                    name = name.Substring(0, 21) + "...";
+                }
+
+                mahlzeitLabels[i].Content = name;
                 kalorienLabels[i].Content = kalorien[i].ToString("0") + " kcal";
                 loeschButtons[i].Visibility = Visibility.Visible;
             }
@@ -62,7 +83,7 @@ namespace PantryToPlate.Usercontrols
         {
             Button button = sender as Button;
 
-            if (button == null)
+            if (button == null || button.Tag == null)
             {
                 return;
             }

@@ -10,6 +10,8 @@ namespace PantryToPlate
 
         public static bool IsDarkMode { get; private set; }
 
+
+        //chatgpt start
         public static void Initialize()
         {
             bool darkMode = false;
@@ -28,6 +30,7 @@ namespace PantryToPlate
 
             SetDarkMode(darkMode, false);
         }
+        //chatgpt end
 
         public static void SetDarkMode(bool darkMode)
         {

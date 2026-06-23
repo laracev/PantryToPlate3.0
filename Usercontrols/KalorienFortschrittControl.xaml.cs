@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -22,38 +23,62 @@ namespace PantryToPlate.Usercontrols
             aktuellerWert = aktuell;
             maximalWert = maximal;
 
-            double prozent = 0;
+            double anzeigeProzent = 0;
+            double bogenProzent = 0;
+
             if (maximal > 0)
             {
-                prozent = (aktuell / maximal) * 100;
-                if (prozent > 100)
+                anzeigeProzent = (aktuell / maximal) * 100;
+                bogenProzent = anzeigeProzent;
+
+                if (bogenProzent > 100)
                 {
-                    prozent = 100;
+                    bogenProzent = 100;
+                }
+
+                if (bogenProzent < 0)
+                {
+                    bogenProzent = 0;
                 }
             }
 
-            txtProzent.Text = ((int)prozent).ToString() + "%";
+            txtProzent.Text = ((int)anzeigeProzent).ToString() + "%";
 
-            if (prozent > 90)
+            if (anzeigeProzent > 100)
             {
                 fortschrittsBogen.Stroke = new SolidColorBrush(Colors.IndianRed);
             }
-            else if (prozent > 70)
+            else if (anzeigeProzent > 90)
             {
-                fortschrittsBogen.Stroke = new SolidColorBrush(Colors.LightGoldenrodYellow);
+                fortschrittsBogen.Stroke = new SolidColorBrush(Colors.IndianRed);
+            }
+            else if (anzeigeProzent > 70)
+            {
+                fortschrittsBogen.Stroke = new SolidColorBrush(Colors.Goldenrod);
             }
             else
             {
                 fortschrittsBogen.Stroke = new SolidColorBrush(Colors.LawnGreen);
             }
 
-            ZeichneFortschritt(prozent);
+            ZeichneFortschritt(bogenProzent);
         }
 
 
         //Mit bissl chatgpt hilfe gemacht, also immer wieder mal paar ki hilfen weil kann kein mathe lul
         private void ZeichneFortschritt(double prozent)
         {
+            if (prozent <= 0)
+            {
+                fortschrittsBogen.Data = null;
+                return;
+            }
+
+            if (prozent >= 100)
+            {
+                prozent = 99.99; //sonst zeichnet WPF manchmal keinen kompletten Kreis
+            }
+
             double winkel = (prozent / 100.0) * 360.0;
 
             double startWinkel = -90;

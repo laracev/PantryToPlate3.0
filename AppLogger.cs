@@ -6,6 +6,8 @@ namespace PantryToPlate
 {
     public static class AppLogger
     {
+
+        //teilweise mit chatgpt gemacht: promt: kannst du mir das ganze bissl verbessern und auch serilog verwenden?
         private static bool istInitialisiert = false;
 
         public static void Init()
@@ -49,3 +51,4 @@ namespace PantryToPlate
         }
     }
 }
+//teilweise chatgpt ende

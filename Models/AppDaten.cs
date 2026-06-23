@@ -14,22 +14,50 @@ namespace PantryToPlate
 
         public static void SetzeLebensmittel(List<Lebensmittel> lebensmittel)
         {
-            Lebensmittel = lebensmittel ?? new List<Lebensmittel>(); //wenn lebensmittel nd null ist, nimm lebensmittel lul
+            if (lebensmittel == null)
+            {
+                Lebensmittel = new List<Lebensmittel>();
+            }
+            else
+            {
+                Lebensmittel = lebensmittel;
+            }
         }
 
         public static void SetzeRezepte(List<Rezept> rezepte)
         {
-            Rezepte = rezepte ?? new List<Rezept>();
+            if (rezepte == null)
+            {
+                Rezepte = new List<Rezept>();
+            }
+            else
+            {
+                Rezepte = rezepte;
+            }
         }
 
         public static void SetzePantry(List<PantryItem> pantry)
         {
-            Pantry = pantry ?? new List<PantryItem>();
+            if (pantry == null)
+            {
+                Pantry = new List<PantryItem>();
+            }
+            else
+            {
+                Pantry = pantry;
+            }
         }
 
         public static void SetzeMetEintraege(List<MetEintrag> metEintraege)
         {
-            MetEintraege = metEintraege ?? new List<MetEintrag>();
+            if (metEintraege == null)
+            {
+                MetEintraege = new List<MetEintrag>();
+            }
+            else
+            {
+                MetEintraege = metEintraege;
+            }
         }
 
         public static void SetzeGeladen(bool istGeladen)

@@ -12,6 +12,7 @@ namespace PantryToPlate
         private List<Lebensmittel> alleLebensmittel = new List<Lebensmittel>();
         private List<Lebensmittel> gefilterteLebensmittel = new List<Lebensmittel>();
         private List<PantryItem> pantryItems = new List<PantryItem>();
+        //der timer haben wir mit chatgpt gemacht, weil wir kein async nutzen durften
         private Lebensmittel ausgewaehltesLebensmittel = null;
         private string suchtext = "";
         private System.Windows.Threading.DispatcherTimer suchTimer;

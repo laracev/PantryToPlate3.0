@@ -124,7 +124,7 @@
                     </Grid>
                 </Border>
 
-                <Border Background="{StaticResource SuccessColor}" CornerRadius="10" Padding="15" Margin="0,15,0,0">
+                <Border x:Name="kalorienStatusBorder" Background="{StaticResource SuccessColor}" CornerRadius="10" Padding="15" Margin="0,15,0,0">
                     <TextBlock x:Name="txtUebrigeKalorien"  Text="" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource WhiteTextBrush}" TextAlignment="Center"/>
                 </Border>
             </StackPanel>

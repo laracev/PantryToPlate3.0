@@ -19,9 +19,10 @@ namespace PantryToPlate.Usercontrols
         {
             if (rezept == null)
             {
+                bestesRezept = null;
                 txtRezeptName.Text = "Keine Rezepte verfügbar";
                 txtMatchProzent.Text = "0%";
-
+                matchBorder.Background = new SolidColorBrush(Colors.Gray);
                 btnZumRezept.IsEnabled = false;
                 return;
             }
@@ -30,19 +31,34 @@ namespace PantryToPlate.Usercontrols
 
             //chatgpt start: promt: Kürze den Rezeptnamen auf maximal 40 Zeichen und hilf mir diese matching prozent anzeigen zu können
             string name = rezept.Name;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = "Unbenanntes Rezept";
+            }
+
             if (name.Length > 40)
             {
                 name = name.Substring(0, 37) + "...";
             }
             txtRezeptName.Text = name;
 
-            txtMatchProzent.Text = rezept.MatchProzent + "%";
+            int match = rezept.MatchProzent;
+            if (match < 0)
+            {
+                match = 0;
+            }
+            if (match > 100)
+            {
+                match = 100;
+            }
 
-            if (rezept.MatchProzent >= 80)
+            txtMatchProzent.Text = match + "%";
+
+            if (match >= 80)
             {
                 matchBorder.Background = new SolidColorBrush(Color.FromRgb(16, 185, 129)); //bin sehr stolz drauf das ich das rausgefunden hab lol ich bin voll gut mit rgb vom üben mit leds einstellen
             }
-            else if (rezept.MatchProzent >= 50)
+            else if (match >= 50)
             {
                 matchBorder.Background = new SolidColorBrush(Color.FromRgb(245, 158, 11));
             }

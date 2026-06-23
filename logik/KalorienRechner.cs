@@ -35,6 +35,17 @@ namespace PantryToPlate.logik
             return uebrig;
         }
 
+
+        public double BerechneUeberschussKalorien(double kalorienZiel, double nettoKalorien)
+        {
+            double ueberschuss = nettoKalorien - kalorienZiel;
+            if (ueberschuss < 0)
+            {
+                ueberschuss = 0;
+            }
+            return ueberschuss;
+        }
+
         public double BerechneProteine(List<MahlzeitEintrag> mahlzeiten)
         {
             double gesamt = 0;

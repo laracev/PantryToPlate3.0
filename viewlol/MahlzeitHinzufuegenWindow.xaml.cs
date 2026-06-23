@@ -3,7 +3,7 @@ using PantryToPlate.Models;
 using System.Windows;
 using System.Windows.Controls;
 
-//der timer wurde mit ki gemacht (chatgpt)
+//der timer wurde mit ki gemacht (chatgpt), weil wir kein async benutzen durften aber das programm flüssiger sein musste
 
 namespace PantryToPlate
 {
